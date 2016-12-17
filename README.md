@@ -17,11 +17,11 @@ Below is shown a brief introduction to the components included in this project:
 
 ### Iterable
 
-* **ArrayList**: implementation of a list of elements (permits duplicates).
-* **HashMap**: hash table used to store key-value elements (duplicate keys are not allowed).
-* **HashSet**: implementation of a set of elements (does not permit duplicates).
-* **PriorityQueue**: implementation of a queue that further provides a total ordering on its elements using its compareTo method (see Comparable interface) or an instance of Comparator (permits duplicates).
-* **SortedSet**: implementation of a set of ordered elements using its compareTo method (see Comparable interface) or an instance of Comparator (does not permit duplicates).
+* **ArrayList**: implementation of a list of elements (*permits duplicates*).
+* **HashMap**: hash table used to store key-value elements (*duplicate keys are not allowed*).
+* **HashSet**: implementation of a set of elements (*does not permit duplicates*).
+* **PriorityQueue**: implementation of a queue that further provides a total ordering on its elements using its compareTo method (see **Comparable** interface) or an instance of **Comparator** (*permits duplicates*).
+* **SortedSet**: implementation of a set of ordered elements using its compareTo method (see **Comparable** interface) or an instance of **Comparator** (*does not permit duplicates*).
 
 ### Common classes
 
@@ -33,16 +33,16 @@ Below is shown a brief introduction to the components included in this project:
 ### Functional programming features
 
 * **Predicate**: represents a predicate (boolean-valued function) of one argument.
-* **CompositePredicate**: complex Predicate on which we can add several logical conditions like: AND, OR, etc
-* **Stream**: interface used to provide of functional programming features to the collections: ArrayList, HashSet, PriorityQueue and SortedSet.
-* **BasicStream**: implementation of the Stream interface.
+* **CompositePredicate**: complex **Predicate** on which we can add several logical conditions like: AND, OR, etc
+* **Stream**: interface used to provide of functional programming features to the collections: **ArrayList**, **HashSet**, **PriorityQueue** and **SortedSet**.
+* **BasicStream**: implementation of the **Stream** interface.
 
 ## Iterable in more detail
 
-Now it is necessary to learn more about the Iterable hierarchy for this reason, the first thing is to see an image with all interfaces and classes included in the Iterable module: 
+Now it is necessary to learn more about the **Iterable** hierarchy for this reason, the first thing is to see an image with all interfaces and classes included in the Iterable module: 
 
 ![Alt text](/documentation/IterableUML.png?raw=true "Hierarchy of Iterable")
 
-As you can see it is a little bit complex than the "list of iterables" in the previous section however, we only need to know (and use) that previous list: ArrayList, HashMap, HashSet, PriorityQueue and SortedSet, that is, the final classes.
+As you can see it is a little bit complex than the "list of iterables" in the previous section however, we only need to know (and use) that previous list: **ArrayList**, **HashMap**, **HashSet**, **PriorityQueue** and **SortedSet**, that is, the final classes.
 
 
