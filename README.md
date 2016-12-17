@@ -368,7 +368,7 @@ $isIntXorPairOfMixedIntegers = (new CompositePredicate (new IsIntPredicate()))
 
 In the last section of this file we will learn how to use the functionality provided by **Stream** interface, implemented by **BasicStream** class: 
 
-```php and 3
+```php
 <?php
 
 namespace FunctionalPHP\example;
