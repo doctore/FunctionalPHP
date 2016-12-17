@@ -312,7 +312,8 @@ $hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
 foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
     echo "\nKey of current element of Map", $internalKey;
-    echo "\nValue of current element of Map: ", $internalValue->intProperty," - ", $internalValue->stringProperty;
+    echo "\nValue of current element of Map: ",$internalValue->intProperty, " - "
+                                              ,$internalValue->stringProperty;
 }
 ?>
 ```
@@ -336,25 +337,116 @@ $isIntOfEmpty = (new IsIntPredicate())->test();   // Return FALSE
 $isIntOfString = (new IsIntPredicate())->test ("A");                // Return FALSE
 $isIntOfSeveralStrings = (new IsIntPredicate())->test ("A", "B");   // Return FALSE
 
-$isIntOfInteger = (new IsIntPredicate())->test(1);              // Return TRUE
+$isIntOfInteger = (new IsIntPredicate())->test(1);               // Return TRUE
 $isIntOfSeveralIntegers = (new IsIntPredicate())->test (1, 2);   // Return TRUE
 
 $isIntOfMixedValues = (new IsIntPredicate())->test ("A", 2);   // Return FALSE
 
 
 // CompositePredicate
-$isIntAndPairOfEmpty = (new CompositePredicate (new IsIntPredicate()))->and (new IsIntAndPairPredicate())->test();                 // Return FALSE
-$isIntAndPairOfStrings = (new CompositePredicate (new IsIntPredicate()))->and (new IsIntAndPairPredicate())->test ("A", "B");      // Return FALSE
-$isIntAndPairOfIntegers = (new CompositePredicate (new IsIntPredicate()))->and (new IsIntAndPairPredicate())->test (1, 2);         // Return FALSE
-$isIntAndPairOfPairIntegers = (new CompositePredicate (new IsIntPredicate()))->and (new IsIntAndPairPredicate())->test (2, 4, 6);  // Return TRUE
+$isIntAndPairOfEmpty = (new CompositePredicate (new IsIntPredicate()))
+                                         ->and (new IsIntAndPairPredicate())->test();                 // Return FALSE
 
-$isIntXorPairOfPairIntegers = (new CompositePredicate (new IsIntPredicate()))->xor (new IsIntAndPairPredicate())->test (2, 4);    // Return FALSE
-$isIntXorPairOfMixedIntegers = (new CompositePredicate (new IsIntPredicate()))->xor (new IsIntAndPairPredicate())->test (1, 2);   // Return TRUE
+$isIntAndPairOfStrings = (new CompositePredicate (new IsIntPredicate()))
+                                           ->and (new IsIntAndPairPredicate())->test ("A", "B");      // Return FALSE
+
+$isIntAndPairOfIntegers = (new CompositePredicate (new IsIntPredicate()))
+                                            ->and (new IsIntAndPairPredicate())->test (1, 2);         // Return FALSE
+
+$isIntAndPairOfPairIntegers = (new CompositePredicate (new IsIntPredicate()))
+                                                ->and (new IsIntAndPairPredicate())->test (2, 4, 6);  // Return TRUE
+
+$isIntXorPairOfPairIntegers = (new CompositePredicate (new IsIntPredicate()))
+                                                ->xor (new IsIntAndPairPredicate())->test (2, 4);    // Return FALSE
+
+$isIntXorPairOfMixedIntegers = (new CompositePredicate (new IsIntPredicate()))
+                                                 ->xor (new IsIntAndPairPredicate())->test (1, 2);   // Return TRUE
 ?>
 ``` 
 
 ### Basic use of Stream
 
+In the last section of this file we will learn how to use the functionality provided by **Stream** interface, implemented by **BasicStream** class: 
 
+```php and 3
+<?php
+
+namespace FunctionalPHP\example;
+
+use FunctionalPHP\common\Optional;
+use FunctionalPHP\common\functional\BasicStream;
+use FunctionalPHP\example\DummyObject;
+use FunctionalPHP\example\DummyObjectComparator;
+use FunctionalPHP\example\HasDummyObjectOddIntPropertyPredicate;
+use FunctionalPHP\example\HasDummyObjectStringPropertyOfTwoCharactersPredicate;
+
+
+$dummyObject1 = new DummyObject (1, "a");
+$dummyObject2 = new DummyObject (2, "b");
+$dummyObject3 = new DummyObject (3, "c");
+$dummyObject4 = new DummyObject (4, "d");
+
+$arrayList = new ArrayList();
+$arrayList->add ($dummyObject1);
+$arrayList->add ($dummyObject2);
+$arrayList->add ($dummyObject3);
+$arrayList->add ($dummyObject4);
+
+$arrayList->stream()->allMatch (new HasDummyObjectOddIntPropertyPredicate());   // Return FALSE
+$arrayList->stream()->anyMatch (new HasDummyObjectOddIntPropertyPredicate());   // Return TRUE
+
+$arrayList->stream()->noneMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());   // Return TRUE
+
+
+
+$arrayList->stream()->filter (new HasDummyObjectOddIntPropertyPredicate())
+                    ->toArray();   // Return [$dummyObject1, $dummyObject3]                    
+
+$arrayList->stream()->filterByLambda (function (DummyObject $dummyObject) : bool {
+                              	                   return strcmp ($dummyObject->stringProperty, "a") == 0;
+                                                })
+                    ->toArray();   // Return [$dummyObject1]
+                    
+$arrayList->stream()->sortedByComparator (new DummyObjectComparator())
+                    ->toArray();   // Return [$dummyObject4, $dummyObject3, $dummyObject2, $dummyObject1]
+                    
+                    
+$stream = $arrayList->stream();
+$stream->forEach (function (DummyObject $dummyObject) {
+	                 $dummyObject->intProperty *= 2;
+                  });
+$stream->toArray();   // Return an array on which all intProperty values has been multiplied by 2
+                    
+                    
+$arrayList->stream()->sortedByLambda (function (DummyObject $dummyObject1, DummyObject $dummyObject2): int {
+		                                 return $dummyObject1->intProperty - $dummyObject2->intProperty;
+	                                  })
+	                ->toArray();   // Return [$dummyObject1, $dummyObject2, $dummyObject3, $dummyObject4]
+                    
+
+$arrayList->stream()->map (function (DummyObject $dummyObject) : int {
+			                            return $dummyObject->intProperty;
+		                   })
+	                ->toArray();   // Return [2, 4, 6, 8] due to we have modified intProperty in the previous forEach
+	                
+	                
+// And a last more complex example
+$arrayList->clear();
+$arrayList->add ($dummyObject1);
+$arrayList->add ($dummyObject2);
+$arrayList->add ($dummyObject3);
+$arrayList->add ($dummyObject4);
+$arrayList->add ($dummyObject1);
+
+// We want to get the list of different values of intProperty (only odd values) with ascending ordination
+$arrayList->stream()->filter (new HasDummyObjectOddIntPropertyPredicate())
+                    ->map (function (DummyObject $dummyObject) : int {
+			                  return $dummyObject->intProperty;
+		                   })
+		            ->distinct()
+		            ->sorted()
+		            ->toArray();   // Return [1, 3]
+?>
+```
 
 
