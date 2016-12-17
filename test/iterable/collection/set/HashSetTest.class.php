@@ -80,7 +80,7 @@ final class HashSetTest extends TestCase {
 		}
 
 		// Adds an "equal object"
-		$this->assertTrue ($hashSet->add ($dummyObject1Clone));
+		$this->assertFalse ($hashSet->add ($dummyObject1Clone));
 		$this->assertEquals (1, $hashSet->size());
 		$this->assertTrue ($hashSet->contains ($dummyObject1));
 		$this->assertTrue ($hashSet->contains ($dummyObject1Clone));
@@ -90,7 +90,7 @@ final class HashSetTest extends TestCase {
 
 			$this->assertEquals ($dummyObject1Clone->intProperty, $element->intProperty);
 			$this->assertEquals ($dummyObject1Clone->stringProperty, $element->stringProperty);
-			$this->assertEquals ($dummyObject1Clone->boolProperty, $element->boolProperty);
+			$this->assertNotEquals ($dummyObject1Clone->boolProperty, $element->boolProperty);
 		}
 		// Adds $dummyObject2
 		$this->assertTrue ($hashSet->add ($dummyObject2));

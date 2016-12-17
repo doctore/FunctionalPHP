@@ -76,7 +76,7 @@ class SortedSet extends AbstractSet {
 
 		// The given elements exists in this set
 		if ($searchInformation->isElementFound)
-			$this->internalData [$searchInformation->position] = $element;
+			return FALSE;
 
 		// The object will be added at the final position of this set
 		elseif ($searchInformation->position == $this->size())

@@ -109,17 +109,17 @@ final class SortedSetTest extends TestCase {
 		}
 
 		// Adds an "equal object"
-		$this->assertTrue ($sortedSet->add ($dummyObject1Clone));
+		$this->assertFalse ($sortedSet->add ($dummyObject1Clone));
 		$this->assertEquals (1, $sortedSet->size());
 		$this->assertTrue ($sortedSet->contains ($dummyObject1));
 		$this->assertTrue ($sortedSet->contains ($dummyObject1Clone));
 
-		// Checks that dummyObject1 was replaced by dummyObject1Clone
+		// Checks that dummyObject1 was not replaced by dummyObject1Clone
 		foreach ($sortedSet->iterator() as $element) {
 
 			$this->assertEquals ($dummyObject1Clone->intProperty, $element->intProperty);
 			$this->assertEquals ($dummyObject1Clone->stringProperty, $element->stringProperty);
-			$this->assertEquals ($dummyObject1Clone->boolProperty, $element->boolProperty);
+			$this->assertNotEquals ($dummyObject1Clone->boolProperty, $element->boolProperty);
 		}
 
 		// Adds the "rest of dummy objects"
@@ -127,7 +127,7 @@ final class SortedSetTest extends TestCase {
 		$this->assertTrue ($sortedSet->add ($dummyObject2));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet, array ($dummyObject1Clone, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2, $dummyObject3));
 	}
 
 

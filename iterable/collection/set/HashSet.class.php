@@ -74,12 +74,9 @@ class HashSet extends AbstractSet {
 		else {
 			foreach ($this->internalData[$hashCode] as &$internalElement) {
 
-				// If this set contains an "equal element" => it will be replaced by the given one
-				if ($internalElement->equals ($element)) {
-
-					$internalElement = $element;
-					return TRUE;
-				}
+				// If this set contains an "equal element" => it won't be replaced
+				if ($internalElement->equals ($element))
+					return FALSE;
 			}
 			// The given element does not exists in this set
 			$this->internalData[$hashCode][] = $element;
