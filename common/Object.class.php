@@ -6,7 +6,7 @@ use FunctionalPHP\common\Comparable;
 use FunctionalPHP\exception\IllegalArgumentException;
 
 /**
- * Root class of the hierarchy, that is, every new class should have this as superclass
+ * Root class of the hierarchy, that is, every new class should have it as superclass
  */
 abstract class Object implements Comparable {
 

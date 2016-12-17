@@ -45,10 +45,8 @@ final class Optional {
 		if ($this === $optional)
 			return TRUE;
 
-		if ($this->isPresent() && !$optional->isPresent())
-			return FALSE;
-
-		if (!$this->isPresent() && $optional->isPresent())
+		if (($this->isPresent() && !$optional->isPresent()) ||
+				(!$this->isPresent() && $optional->isPresent()))
 			return FALSE;
 
 		if (!$this->isPresent() && !$optional->isPresent())

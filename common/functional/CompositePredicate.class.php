@@ -31,6 +31,10 @@ final class CompositePredicate implements Predicate {
 	 *    Returns a CompositePredicate that represents a short-circuiting logical AND of the
 	 * "current predicate" and the given predicates.
 	 *
+	 * @example
+	 *	 (new CompositePredicate (new TrueForPairsNumbersCustomPredicate()))
+	 *                               ->and (new TrueForNumberGreaterThanTenCustomPredicate())->test(1, 5, 10, 15)
+	 *
 	 * @param Predicate ...$predicates
 	 *    Predicates "joined" to the current one using short-circuiting logical AND operation
 	 *
@@ -51,6 +55,9 @@ final class CompositePredicate implements Predicate {
 	/**
 	 * Returns a Predicate that represents the logical negation of the current one.
 	 *
+	 * @example
+	 *   (new CompositePredicate (new IsNumericCustomPredicate()))->not()->test (12, "AA")
+	 *
 	 * @return CompositePredicate
 	 */
 	public function not() : CompositePredicate {
@@ -62,6 +69,10 @@ final class CompositePredicate implements Predicate {
 	/**
 	 *    Returns a CompositePredicate that represents a short-circuiting logical OR of the
 	 * "current predicate" and the given predicates.
+	 *
+	 * @example
+	 *	 (new CompositePredicate (new TrueForPairsNumbersCustomPredicate()))
+	 *                               ->or (new TrueForNumberGreaterThanTenPredicate())->test(1, 5, 10, 15)
 	 *
 	 * @param Predicate ...$predicates
 	 *    Predicates "joined" to the current one using short-circuiting logical OR operation
@@ -83,6 +94,10 @@ final class CompositePredicate implements Predicate {
 	/**
 	 *    Returns a CompositePredicate that represents a logical XOR of the "current predicate" and
 	 * the given predicates.
+	 *
+	 * @example
+	 *	 (new CompositePredicate (new TrueForPairsNumbersCustomPredicate()))
+	 *                               ->xor (new TrueForNumberGreaterThanTenPredicate())->test(1, 5, 10, 15)
 	 *
 	 * @param Predicate ...$predicates
 	 *    Predicates "joined" to the current one using the logical XOR operation
