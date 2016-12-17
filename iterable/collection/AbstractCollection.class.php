@@ -1,9 +1,9 @@
 <?php
 
-namespace FunctionalPHP\collection;
+namespace FunctionalPHP\iterable\collection;
 
-use FunctionalPHP\collection\AbstractIterable;
-use FunctionalPHP\collection\Collection;
+use FunctionalPHP\iterable\AbstractIterable;
+use FunctionalPHP\iterable\collection\Collection;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\functional\Stream;
 use FunctionalPHP\common\functional\BasicStream;

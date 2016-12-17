@@ -2,9 +2,9 @@
 
 namespace FunctionalPHP\common\functional;
 
-use FunctionalPHP\collection\Collection;
-use FunctionalPHP\collection\queue\PriorityQueue;
-use FunctionalPHP\collection\set\HashSet;
+use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\iterable\collection\queue\PriorityQueue;
+use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\common\Comparator;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;

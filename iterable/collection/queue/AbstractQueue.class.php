@@ -1,10 +1,10 @@
 <?php
 
-namespace FunctionalPHP\collection\queue;
+namespace FunctionalPHP\iterable\collection\queue;
 
-use FunctionalPHP\collection\AbstractCollection;
-use FunctionalPHP\collection\Collection;
-use FunctionalPHP\collection\queue\Queue;
+use FunctionalPHP\iterable\collection\AbstractCollection;
+use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\iterable\collection\queue\Queue;
 use FunctionalPHP\common\Optional;
 
 

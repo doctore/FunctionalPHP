@@ -1,10 +1,10 @@
 <?php
 
-namespace FunctionalPHP\collection\set;
+namespace FunctionalPHP\iterable\collection\set;
 
-use FunctionalPHP\collection\Collection;
-use FunctionalPHP\collection\set\Set;
-use FunctionalPHP\collection\set\AbstractSet;
+use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\iterable\collection\set\Set;
+use FunctionalPHP\iterable\collection\set\AbstractSet;
 use FunctionalPHP\common\Comparator;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;

@@ -1,6 +1,6 @@
 <?php
 
-namespace FunctionalPHP\collection\map;
+namespace FunctionalPHP\iterable\map;
 
 use FunctionalPHP\common\Object;
 

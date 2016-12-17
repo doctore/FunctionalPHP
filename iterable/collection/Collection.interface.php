@@ -1,8 +1,8 @@
 <?php
 
-namespace FunctionalPHP\collection;
+namespace FunctionalPHP\iterable\collection;
 
-use FunctionalPHP\collection\Iterable;
+use FunctionalPHP\iterable\Iterable;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\functional\Stream;
 

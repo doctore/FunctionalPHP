@@ -1,6 +1,6 @@
 <?php
 
-namespace FunctionalPHP\collection;
+namespace FunctionalPHP\iterable;
 
 /**
  * Implementing this interface allows an object to be the target of the "for-each loop" statement.

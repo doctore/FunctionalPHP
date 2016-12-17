@@ -1,10 +1,10 @@
 <?php
 
-namespace FunctionalPHP\collection\lists;
+namespace FunctionalPHP\iterable\collection\lists;
 
-use FunctionalPHP\collection\Collection;
-use FunctionalPHP\collection\lists\Lists;
-use FunctionalPHP\collection\lists\AbstractLists;
+use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\iterable\collection\lists\Lists;
+use FunctionalPHP\iterable\collection\lists\AbstractLists;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\exception\IllegalArgumentException;
 

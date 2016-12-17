@@ -6,8 +6,8 @@ require_once '../../LoadRequiredFiles.php';
 
 use PHPUnit\Framework\TestCase;
 
-use FunctionalPHP\collection\lists\ArrayList;
-use FunctionalPHP\collection\queue\PriorityQueue;
+use FunctionalPHP\iterable\collection\lists\ArrayList;
+use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\common\functional\BasicStream;
 use FunctionalPHP\test\DummyObject;

@@ -1,8 +1,8 @@
 <?php
 
-namespace FunctionalPHP\collection\queue;
+namespace FunctionalPHP\iterable\collection\queue;
 
-use FunctionalPHP\collection\Collection;
+use FunctionalPHP\iterable\collection\Collection;
 use FunctionalPHP\common\Optional;
 
 /**

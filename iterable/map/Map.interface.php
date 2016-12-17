@@ -1,9 +1,9 @@
 <?php
 
-namespace FunctionalPHP\collection\map;
+namespace FunctionalPHP\iterable\map;
 
-use FunctionalPHP\collection\Iterable;
-use FunctionalPHP\collection\set\Set;
+use FunctionalPHP\iterable\Iterable;
+use FunctionalPHP\iterable\collection\set\Set;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;
 

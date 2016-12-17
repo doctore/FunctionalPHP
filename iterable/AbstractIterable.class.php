@@ -1,8 +1,8 @@
 <?php
 
-namespace FunctionalPHP\collection;
+namespace FunctionalPHP\iterable;
 
-use FunctionalPHP\collection\Iterable;
+use FunctionalPHP\iterable\Iterable;
 
 /**
  *    This class provides a skeletal implementation of the Iterable interface, to minimize the effort

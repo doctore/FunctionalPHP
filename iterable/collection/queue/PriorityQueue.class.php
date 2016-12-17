@@ -1,9 +1,9 @@
 <?php
 
-namespace FunctionalPHP\collection\queue;
+namespace FunctionalPHP\iterable\collection\queue;
 
-use FunctionalPHP\collection\Collection;
-use FunctionalPHP\collection\queue\AbstractQueue;
+use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\iterable\collection\queue\AbstractQueue;
 use FunctionalPHP\common\Comparator;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;

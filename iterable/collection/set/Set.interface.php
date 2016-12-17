@@ -1,8 +1,8 @@
 <?php
 
-namespace FunctionalPHP\collection\set;
+namespace FunctionalPHP\iterable\collection\set;
 
-use FunctionalPHP\collection\Collection;
+use FunctionalPHP\iterable\collection\Collection;
 
 /**
  *    A collection that contains no duplicate elements. More formally, sets contain no pair of

@@ -1,8 +1,8 @@
 <?php
 
-namespace FunctionalPHP\collection\lists;
+namespace FunctionalPHP\iterable\collection\lists;
 
-use FunctionalPHP\collection\Collection;
+use FunctionalPHP\iterable\collection\Collection;
 use FunctionalPHP\common\Object;
 
 /**

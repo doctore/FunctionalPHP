@@ -1,10 +1,10 @@
 <?php
 
-namespace FunctionalPHP\collection\set;
+namespace FunctionalPHP\iterable\collection\set;
 
-use FunctionalPHP\collection\AbstractCollection;
-use FunctionalPHP\collection\Collection;
-use FunctionalPHP\collection\set\Set;
+use FunctionalPHP\iterable\collection\AbstractCollection;
+use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\iterable\collection\set\Set;
 
 /**
  *    This class provides a skeletal implementation of the Set interface, to minimize the effort

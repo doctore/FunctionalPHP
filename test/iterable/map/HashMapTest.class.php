@@ -1,13 +1,13 @@
 <?php
 
-namespace FunctionalPHP\test\collection\map;
+namespace FunctionalPHP\test\iterable\map;
 
 require_once '../../LoadRequiredFiles.php';
 
 use PHPUnit\Framework\TestCase;
-use FunctionalPHP\collection\map\EntryHashMap;
-use FunctionalPHP\collection\map\HashMap;
-use FunctionalPHP\collection\map\Map;
+use FunctionalPHP\iterable\map\EntryHashMap;
+use FunctionalPHP\iterable\map\HashMap;
+use FunctionalPHP\iterable\map\Map;
 use FunctionalPHP\test\DummyObject;
 
 /**

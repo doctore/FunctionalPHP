@@ -1,9 +1,9 @@
 <?php
 
-namespace FunctionalPHP\collection\map;
+namespace FunctionalPHP\iterable\map;
 
-use FunctionalPHP\collection\AbstractIterable;
-use FunctionalPHP\collection\map\Map;
+use FunctionalPHP\iterable\AbstractIterable;
+use FunctionalPHP\iterable\map\Map;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\exception\IllegalArgumentException;

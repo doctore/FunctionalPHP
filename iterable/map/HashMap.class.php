@@ -1,10 +1,10 @@
 <?php
 
-namespace FunctionalPHP\collection\map;
+namespace FunctionalPHP\iterable\map;
 
-use FunctionalPHP\collection\map\EntryMap;
-use FunctionalPHP\collection\map\AbstractEntryMap;
-use FunctionalPHP\collection\map\AbstractMap;
+use FunctionalPHP\iterable\map\EntryMap;
+use FunctionalPHP\iterable\map\AbstractEntryMap;
+use FunctionalPHP\iterable\map\AbstractMap;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\exception\IllegalArgumentException;

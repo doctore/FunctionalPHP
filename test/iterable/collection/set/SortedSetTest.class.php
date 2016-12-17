@@ -1,15 +1,15 @@
 <?php
 
-namespace FunctionalPHP\test\collection\set;
+namespace FunctionalPHP\test\iterable\collection\set;
 
-require_once '../../LoadRequiredFiles.php';
+require_once '../../../LoadRequiredFiles.php';
 
 use PHPUnit\Framework\TestCase;
 
-use FunctionalPHP\collection\lists\ArrayList;
-use FunctionalPHP\collection\queue\PriorityQueue;
-use FunctionalPHP\collection\set\HashSet;
-use FunctionalPHP\collection\set\SortedSet;
+use FunctionalPHP\iterable\collection\lists\ArrayList;
+use FunctionalPHP\iterable\collection\queue\PriorityQueue;
+use FunctionalPHP\iterable\collection\set\HashSet;
+use FunctionalPHP\iterable\collection\set\SortedSet;
 use FunctionalPHP\test\DummyObject;
 use FunctionalPHP\test\DummyObjectComparator;
 
