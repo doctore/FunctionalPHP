@@ -435,9 +435,9 @@ $arrayList->stream()->map (function (DummyObject $dummyObject) : int {
 	                
 // And a last more complex example
 $arrayList->clear();
-$arrayList->add ($dummyObject1);
 $arrayList->add ($dummyObject2);
 $arrayList->add ($dummyObject3);
+$arrayList->add ($dummyObject1);
 $arrayList->add ($dummyObject4);
 $arrayList->add ($dummyObject1);
 
@@ -456,4 +456,4 @@ It is important to have one thing in mind and we have seen in the previous examp
 
 For this reason, *forEach* method modifies the elements stored in "both classes": original Collection and destination Stream. This does not happen anymore when *map* method changes the type of the stored elements in the Stream.
 
-You can change this behaviuor modifying how the elements of the **Collection** are stored in the **Stream** (in this case *BasicStream::_construct*)
+Java 8 works in the same way, but if you want you can change this behaviuor modifying how the elements of the **Collection** are stored in the **Stream** (in this case *BasicStream::_construct*)
