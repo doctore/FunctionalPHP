@@ -398,32 +398,35 @@ $arrayList->stream()->anyMatch (new HasDummyObjectOddIntPropertyPredicate());   
 $arrayList->stream()->noneMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());   // Return TRUE
 
 
-
+// filter
 $arrayList->stream()->filter (new HasDummyObjectOddIntPropertyPredicate())
                     ->toArray();   // Return [$dummyObject1, $dummyObject3]                    
 
+// filterByLambda
 $arrayList->stream()->filterByLambda (function (DummyObject $dummyObject) : bool {
                               	                   return strcmp ($dummyObject->stringProperty, "a") == 0;
                                                 })
-                    ->toArray();   // Return [$dummyObject1]
-                    
-$arrayList->stream()->sortedByComparator (new DummyObjectComparator())
-                    ->toArray();   // Return [$dummyObject4, $dummyObject3, $dummyObject2, $dummyObject1]
-                    
-                    
+                    ->toArray();   // Return [$dummyObject1]                   
+                   
+// forEach                    
 $stream = $arrayList->stream();
 $stream->forEach (function (DummyObject $dummyObject) {
 	                 $dummyObject->intProperty *= 2;
                   });
-$stream->toArray();   // Return an array on which all intProperty values has been multiplied by 2
+$stream->toArray();      // Return an array on which all intProperty values has been multiplied by 2
+$arrayList->toArray();   // Return the same result.
                     
+// sortedByComparator                  
+$arrayList->stream()->sortedByComparator (new DummyObjectComparator())
+                    ->toArray();   // Return [$dummyObject4, $dummyObject3, $dummyObject2, $dummyObject1]                    
                     
+// sortedByLambda                    
 $arrayList->stream()->sortedByLambda (function (DummyObject $dummyObject1, DummyObject $dummyObject2): int {
 		                                 return $dummyObject1->intProperty - $dummyObject2->intProperty;
 	                                  })
 	                ->toArray();   // Return [$dummyObject1, $dummyObject2, $dummyObject3, $dummyObject4]
                     
-
+// map
 $arrayList->stream()->map (function (DummyObject $dummyObject) : int {
 			                            return $dummyObject->intProperty;
 		                   })
@@ -449,4 +452,8 @@ $arrayList->stream()->filter (new HasDummyObjectOddIntPropertyPredicate())
 ?>
 ```
 
+It is important to have one thing in mind and we have seen in the previous example, due to a performance reason, **the elements from the "original Collection" are the same that we stored in the "destination Stream"**, that is, we don't create copies of them.
 
+For this reason, *forEach* method modifies the elements stored in "both classes": original Collection and destination Stream. This does not happen anymore when *map* method changes the type of the stored elements in the Stream.
+
+You can change this behaviuor modifying how the elements of the **Collection** are stored in the **Stream** (in this case *BasicStream::_construct*)
