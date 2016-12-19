@@ -391,7 +391,7 @@ class BasicStream implements Stream {
 						                            ,"The returned type of the given closure function can not be null");
 
 		if (strcmp ($returnType, $this->currentTypeOfInternalData) != 0 &&
-				!in_array ($returnType, Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_MAP)) {
+				!in_array ($returnType, Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP)) {
 
 			// Test if it is a subclass of Object
 			if (!$this->isGivenTypeSubclassOfObject ($returnType))
@@ -399,7 +399,7 @@ class BasicStream implements Stream {
 						                                ,"The returned type of the given closure function: ".$returnType
 						                                   ." is not valid. Please use a subclass of ".Object::class
 						                                   ." or one of the following: "
-							                               .var_export (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_MAP, TRUE));
+							                               .var_export (Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP, TRUE));
 		}
 		return $returnType;
 	}

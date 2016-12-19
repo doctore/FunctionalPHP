@@ -18,8 +18,8 @@ final class ArrayUtil {
 	 * @param Comparator $comparator
 	 *
 	 * @return BinarySearchResult with the following information:
-	 *          - if the given object exists in this array => its position
-	 *          - if not exists => the position where it should
+	 *          - If the given object exists in this array => its position
+	 *          - If not exists => the position where it should be stored.
 	 */
 	public static function binaryObjectSearch (array $sortedArrayOfObjects, Object $elementToSearch
 			                                  ,Comparator $comparator = NULL) : BinarySearchResult {

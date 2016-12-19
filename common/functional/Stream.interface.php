@@ -22,7 +22,7 @@ interface Stream {
 	// Permited "returned types" of the functions that receives a closure function as parameter
 	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA = array ("bool");
 	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH = array ("void");
-	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_MAP = array ("bool", "float", "int", "string");
+	const VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP = array ("bool", "float", "int", "string");
 	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_SORTEDBYLAMBDA = array ("int");
 
 
