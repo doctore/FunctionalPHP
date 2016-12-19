@@ -105,7 +105,7 @@ class Person extends Object {
 ?>
 ```
 
-We have defined a "dummy subclass" of **Object** with two properties. As you can see, the method *compareTo* is used to compare the current **DummyObject** with another one. For this reason  we are going to define an instance of **Comparator** used to compare two **DummyObject**s at the inverse way as *compareTo* method (used for testing purpose):
+We have defined a subclass of **Object** with two properties. As you can see, the method *compareTo* is used to compare the current **Person** with another one. For this reason  we are going to define an instance of **Comparator** used to compare two **Person**s at the inverse way as *compareTo* method (used for testing purpose):
 
 
 ```php
@@ -245,7 +245,7 @@ final class HasPersonMoreThanOneWordAsNamePredicate implements Predicate {
 		if ($person instanceof \Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The given parameter is not an instance of ".Person::class
-					                               ." Its type is: ".gettype ($dummyObject));
+					                               ." Its type is: ".gettype ($person));
 
 		return (str_word_count ($person->name) > 1);
 	}
