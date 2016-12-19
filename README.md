@@ -66,31 +66,31 @@ use FunctionalPHP\common\Object;
 /**
  * Subclass of Object used in this example (used only for testing purpose).
  */
-class DummyObject extends Object {
+class Person extends Object {
 
-	protected $intProperty;
-	protected $stringProperty;
+	protected $name;
+	protected $age;
 
-	public function __construct (int $intValue, string $stringValue) {
-		$this->intProperty    = $intValue;
-		$this->stringProperty = $stringValue;
+	public function __construct (string $name, int $age) {
+		$this->name = $name;
+		$this->age  = $age;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Object::equals()
 	 */
-	public function equals (DummyObject $object): bool {
-		return $this->intProperty == $object->intProperty &&
-			   $this->stringProperty == $object->stringProperty;
+	public function equals (Person $object): bool {
+		return $this->name == $object->name &&
+		       $this->age == $object->age;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Object::hashCode()
 	 */
-	public function hashCode(): int {e tests related with collections and maps
-		return $this->intProperty % 10;
+	public function hashCode(): int {
+		return $this->age % 10;
 	}
 
 	/**
@@ -98,7 +98,7 @@ class DummyObject extends Object {
 	 * @see \FunctionalPHP\common\Object::compareTo()
 	 */
 	public function compareTo (Object $object): int {
-		return $this->intProperty - $object->intProperty;
+		return strcmp ($this->name, $object->name);
 	}
 }
 
@@ -117,9 +117,9 @@ use FunctionalPHP\common\Comparator;
 use FunctionalPHP\common\Object;
 
 /**
- * Comparator instance used to compare two different DummyObjects (used only for testing purpose).
+ * Comparator instance used to compare two different Person objects (used only for testing purpose).
  */
-class DummyObjectComparator implements Comparator {
+class PersonComparator implements Comparator {
 
 
 	/**
@@ -129,10 +129,10 @@ class DummyObjectComparator implements Comparator {
 	public function compare (Object $object1, Object $object2): int {
 
 		/**
-		 *    Assumes DummyObjects as parameters and returns the "inverse result" than
+		 *    Assumes Person as parameters and returns the "inverse result" than
 		 * $object1->compareTo ($object2)
 		 */
-		return $object2->intProperty - $object1->intProperty;
+		return strcmp ($object2->name, $object1->name);
 	}
 }
 
@@ -148,7 +148,7 @@ namespace FunctionalPHP\example;
 
 use FunctionalPHP\common\functional\Predicate;
 use FunctionalPHP\exception\IllegalArgumentException;
-use FunctionalPHP\example\DummyObject;
+use FunctionalPHP\example\Person;
 
 
 /**
@@ -200,9 +200,9 @@ final class IsIntAndPairPredicate implements Predicate {
 
 
 /**
- * Uses to test if the intProperty of the given DummyObject is odd or not (used only for testing purpose).
+ * Uses to test if the age of the given Person is odd or not (used only for testing purpose).
  */
-final class HasDummyObjectOddIntPropertyPredicate implements Predicate {
+final class HasPersonOddAgePredicate implements Predicate {
 
 	/**
 	 * {@inheritDoc}
@@ -213,22 +213,22 @@ final class HasDummyObjectOddIntPropertyPredicate implements Predicate {
 		if (count ($args) != 1)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The method has received more than one argument: "
-					                               .var_export($args));
-		$dummyObject = $args[0];
-		if ($dummyObject instanceof \DummyObject)
+					                               .var_export ($args));
+		$person = $args[0];
+		if ($person instanceof \Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of DummyObject. ".DummyObject::class
-					                               ." Its type is: ".gettype ($dummyObject));
+					                           ,"The given parameter is not an instance of ".Person::class
+					                               ." Its type is: ".gettype ($person));
 
-		return ($dummyObject->intProperty % 2 != 0);
+		return ($person->age % 2 != 0);
 	}
 }
 
 
 /**
- * Uses to test if the stringProperty of the given DummyObject has two characters (used only for testing purpose).
+ * Uses to test if the name of the given Person has more than one word (used only for testing purpose).
  */
-final class HasDummyObjectStringPropertyOfTwoCharactersPredicate implements Predicate {
+final class HasPersonMoreThanOneWordAsNamePredicate implements Predicate {
 
 	/**
 	 * {@inheritDoc}
@@ -239,14 +239,15 @@ final class HasDummyObjectStringPropertyOfTwoCharactersPredicate implements Pred
 		if (count ($args) != 1)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The method has received more than one argument: "
-					                               .var_export($args));
-		$dummyObject = $args[0];
-		if ($dummyObject instanceof \DummyObject)
+					                               .var_export ($args));
+
+		$person = $args[0];
+		if ($person instanceof \Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of DummyObject. "
+					                           ,"The given parameter is not an instance of ".Person::class
 					                               ." Its type is: ".gettype ($dummyObject));
 
-		return (strlen ($dummyObject->stringProperty)  == 2);
+		return (str_word_count ($person->name) > 1);
 	}
 }
 
@@ -262,58 +263,59 @@ Now we are going to learn how we can use classes like: **ArrayList**, **HashSet*
 
 namespace FunctionalPHP\example;
 
-use FunctionalPHP\example\DummyObject;
-use FunctionalPHP\example\DummyObjectComparator;
+use FunctionalPHP\example\Person;
+use FunctionalPHP\example\PersonComparator;
 use FunctionalPHP\iterable\map\Map;
 use FunctionalPHP\iterable\map\HashMap;
 use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\set\SortedSet;
 
-$dummyObject1 = new DummyObject (1, "a");
-$dummyObject2 = new DummyObject (2, "bb");
-$dummyObjectEqualsTo1 = new DummyObject (1, "a");
+$person1 = new Person ("John Snow", 23);
+$person2 = new Person ("Peter Pan", 11);
+$personEqualsTo1 = new Person ("John Snow", 23);
 
 
 // ArrayList
 $arrayList1 = new ArrayList();
-$arrayList1->add ($dummyObject1);
-$arrayList1->add ($dummyObjectEqualsTo1);   // Permits duplicates
+$arrayList1->add ($person1);
+$arrayList1->add ($personEqualsTo1);   // Permits duplicates
 
 $arrayList2 = new ArrayList ($arrayList1);   // Contains the same elements of $arrayList1
-$arrayList2->remove ($dummyObject2);         // Returns FALSE, $dummyObject2 does not exists in $arrayList2
-$arrayList2->remove ($dummyObject1);         // Returns TRUE, now $arrayList2 only has one element: $dummyObjectEqualsTo1
+$arrayList2->remove ($person2);              // Returns FALSE, $person2 does not exists in $arrayList2
+$arrayList2->remove ($person1);              // Returns TRUE, now $arrayList2 only has one element: $personEqualsTo1
 
 
 // SortedSet
 $sortedSet1 = new SortedSet();
-$sortedSet1->add ($dummyObject2);
-$sortedSet1->add ($dummyObject1);
-$sortedSet1->add ($dummyObjectEqualsTo1);   // This object will not inserted in the SortedSet
+$sortedSet1->add ($person2);
+$sortedSet1->add ($person1);
 
-$sortedSet2 = new SortedSet ($sortedSet1, new DummyObjectComparator());
+$sortedSet1->add ($personEqualsTo1);   // This object will not inserted in the SortedSet
 
-var_export ($sortedSet1->toArray());   // Returns the elements in the following order: $dummyObject1, $dummyObject2
-var_export ($sortedSet2->toArray());   // Returns the elements in the following order: $dummyObject2, $dummyObject1
+$sortedSet2 = new SortedSet ($sortedSet1, new PersonComparator());
+
+var_export ($sortedSet1->toArray());   // Returns the elements in the following order: $person1, $person2
+var_export ($sortedSet2->toArray());   // Returns the elements in the following order: $person2, $person1
 
 
 // We can iterate over any Iterable class using foreach loop
 foreach ($sortedSet1->iterator() as $element) {
 
-   echo "Int property", $element->intProperty;
-   echo "String property", $element->stringProperty;
+	echo "\nName property: ", $element->name;
+	echo "\nAge property: ", $element->age;
 }
 
 
 // HashMap
 $hashMap = new HashMap (Map::KEY_STRING_TYPE);
-$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
-$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+$hashMap->put ($person1->name, $person1);
+$hashMap->put ($person2->name, $person2);
 
 foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-    echo "\nKey of current element of Map", $internalKey;
-    echo "\nValue of current element of Map: ",$internalValue->intProperty, " - "
-                                              ,$internalValue->stringProperty;
+	echo "\nKey of current element of Map: ", $internalKey;
+	echo "\nValue of current element of Map: ", $internalValue->name, " - "
+			                                  , $internalValue->age;
 }
 ?>
 ```
@@ -375,80 +377,80 @@ namespace FunctionalPHP\example;
 
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\common\functional\BasicStream;
-use FunctionalPHP\example\DummyObject;
-use FunctionalPHP\example\DummyObjectComparator;
-use FunctionalPHP\example\HasDummyObjectOddIntPropertyPredicate;
-use FunctionalPHP\example\HasDummyObjectStringPropertyOfTwoCharactersPredicate;
+use FunctionalPHP\example\Person;
+use FunctionalPHP\example\PersonComparator;
+use FunctionalPHP\example\HasPersonOddAgePredicate;
+use FunctionalPHP\example\HasPersonMoreThanOneWordAsNamePredicate;
 
 
-$dummyObject1 = new DummyObject (1, "a");
-$dummyObject2 = new DummyObject (2, "b");
-$dummyObject3 = new DummyObject (3, "c");
-$dummyObject4 = new DummyObject (4, "d");
+$person1 = new Person ("John Snow", 23);
+$person2 = new Person ("Peter Pan", 11);
+$person3 = new Person ("Mike", 34);
+$person4 = new Person ("Tom", 20);
 
 $arrayList = new ArrayList();
-$arrayList->add ($dummyObject1);
-$arrayList->add ($dummyObject2);
-$arrayList->add ($dummyObject3);
-$arrayList->add ($dummyObject4);
+$arrayList->add ($person1);
+$arrayList->add ($person2);
+$arrayList->add ($person3);
+$arrayList->add ($person4);
 
-$arrayList->stream()->allMatch (new HasDummyObjectOddIntPropertyPredicate());   // Return FALSE
-$arrayList->stream()->anyMatch (new HasDummyObjectOddIntPropertyPredicate());   // Return TRUE
+$arrayList->stream()->allMatch (new HasPersonOddAgePredicate());   // Return FALSE
+$arrayList->stream()->anyMatch (new HasPersonOddAgePredicate());   // Return TRUE
 
-$arrayList->stream()->noneMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());   // Return TRUE
+$arrayList->stream()->noneMatch (new HasPersonMoreThanOneWordAsNamePredicate());   // Return FALSE
 
 
 // filter
-$arrayList->stream()->filter (new HasDummyObjectOddIntPropertyPredicate())
-                    ->toArray();   // Return [$dummyObject1, $dummyObject3]                    
+$arrayList->stream()->filter (new HasPersonOddAgePredicate())
+                    ->toArray();   // Return [$person1, $person2]
 
 // filterByLambda
-$arrayList->stream()->filterByLambda (function (DummyObject $dummyObject) : bool {
-                              	                   return strcmp ($dummyObject->stringProperty, "a") == 0;
-                                                })
-                    ->toArray();   // Return [$dummyObject1]                   
+$arrayList->stream()->filterByLambda (function (Person $person) : bool {
+	                                     return strcmp ($person->name, "Mike") == 0;
+                                      })
+                    ->toArray();   // Return [$person3]                   
                    
-// forEach                    
+// forEach
 $stream = $arrayList->stream();
-$stream->forEach (function (DummyObject $dummyObject) {
-	                 $dummyObject->intProperty *= 2;
+$stream->forEach (function (Person $person) {
+	                 $person->age *= 2;
                   });
-$stream->toArray();      // Return an array on which all intProperty values has been multiplied by 2
+$stream->toArray();      // Return an array on which all age values has been multiplied by 2
 $arrayList->toArray();   // Return the same result.
-                    
-// sortedByComparator                  
-$arrayList->stream()->sortedByComparator (new DummyObjectComparator())
-                    ->toArray();   // Return [$dummyObject4, $dummyObject3, $dummyObject2, $dummyObject1]                    
-                    
-// sortedByLambda                    
-$arrayList->stream()->sortedByLambda (function (DummyObject $dummyObject1, DummyObject $dummyObject2): int {
-		                                 return $dummyObject1->intProperty - $dummyObject2->intProperty;
-	                                  })
-	                ->toArray();   // Return [$dummyObject1, $dummyObject2, $dummyObject3, $dummyObject4]
-                    
+
+// sortedByComparator
+$arrayList->stream()->sortedByComparator (new PersonComparator())
+	                ->toArray();   // Return [$person4, $person2, $person3, $person1]
+
+// sortedByLambda
+$arrayList->stream()->sortedByLambda (function (Person $person1, Person $person2): int {
+				                         return strcmp ($person1->name, $person2->name);
+			                          })
+			        ->toArray();   // Return [$person1, $person3, $person2, $person4]
+
 // map
-$arrayList->stream()->map (function (DummyObject $dummyObject) : int {
-			                            return $dummyObject->intProperty;
-		                   })
-	                ->toArray();   // Return [2, 4, 6, 8] due to we have modified intProperty in the previous forEach
+$arrayList->stream()->map (function (Person $person1) : int {
+	                          return $person1->age;
+                           })
+                    ->toArray();   // Return [46, 22, 68, 40] due to we have modified age in the previous forEach
 	                
 	                
 // And a last more complex example
 $arrayList->clear();
-$arrayList->add ($dummyObject2);
-$arrayList->add ($dummyObject3);
-$arrayList->add ($dummyObject1);
-$arrayList->add ($dummyObject4);
-$arrayList->add ($dummyObject1);
+$arrayList->add ($person1);
+$arrayList->add ($person2);
+$arrayList->add ($person3);
+$arrayList->add ($person4);
+$arrayList->add ($person1);
 
-// We want to get the list of different values of intProperty (only odd values) with ascending ordination
-$arrayList->stream()->filter (new HasDummyObjectOddIntPropertyPredicate())
-                    ->map (function (DummyObject $dummyObject) : int {
-			                  return $dummyObject->intProperty;
-		                   })
-		            ->distinct()
-		            ->sorted()
-		            ->toArray();   // Return [1, 3]
+// We want to get the list of different values of age (only odd values) with ascending ordination
+$arrayList->stream()->filter (new HasPersonOddAgePredicate())
+                    ->map (function (Person $person) : int {
+	                          return $person->age;
+                           })
+                    ->distinct()
+                    ->sorted()
+                    ->toArray();   // Return [11, 23]
 ?>
 ```
 

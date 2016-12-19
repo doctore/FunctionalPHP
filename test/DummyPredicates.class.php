@@ -139,7 +139,7 @@ final class HasDummyObjectOddIntPropertyPredicate implements Predicate {
 		$dummyObject = $args[0];
 		if ($dummyObject instanceof \DummyObject)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of DummyObject. ".DummyObject::class
+					                           ,"The given parameter is not an instance of ".DummyObject::class
 					                               ." Its type is: ".gettype ($dummyObject));
 
 		return ($dummyObject->intProperty % 2 != 0);
@@ -166,7 +166,7 @@ final class HasDummyObjectStringPropertyOfTwoCharactersPredicate implements Pred
 		$dummyObject = $args[0];
 		if ($dummyObject instanceof \DummyObject)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of DummyObject. "
+					                           ,"The given parameter is not an instance of ".DummyObject::class
 					                               ." Its type is: ".gettype ($dummyObject));
 
 		return (strlen ($dummyObject->stringProperty)  == 2);
@@ -189,11 +189,11 @@ final class IsIntTheIntPropertyOfDummyObjectPredicate implements Predicate {
 		if (count ($args) != 1)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The method has received more than one argument: "
-					                               .var_export($args));
+					                               .var_export ($args));
 		$dummyObject = $args[0];
 		if ($dummyObject instanceof \DummyObject)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of DummyObject. "
+					                           ,"The given parameter is not an instance of ".DummyObject::class
 					                               ." Its type is: ".gettype ($dummyObject));
 
 		return is_int ($dummyObject->intProperty);
@@ -216,11 +216,11 @@ final class IsFloatTheIntPropertyOfDummyObjectPredicate implements Predicate {
 		if (count ($args) != 1)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                          ,"The method has received more than one argument: "
-					                              .var_export($args));
+					                              .var_export ($args));
 		$dummyObject = $args[0];
 		if ($dummyObject instanceof \DummyObject)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of DummyObject. "
+					                           ,"The given parameter is not an instance of ".DummyObject::class
 					                               ." Its type is: ".gettype ($dummyObject));
 
 		return is_float ($dummyObject->intProperty);
