@@ -145,6 +145,18 @@ interface Stream {
 	public function limit (int $maxSize) : Stream;
 
 	/**
+	 * Returns the minimum element of this stream according to the provided Comparator.
+	 *
+	 * @param Comparator $comparator
+	 *    Comparator to compare elements of this stream
+	 *
+	 * @return an Optional describing the minimum element of this stream
+	 *
+	 * @throws UnsupportedOperationException if the type of Stream's elements is not a subclass of Object
+	 */
+	public function min (Comparator $comparator) : Optional;
+
+	/**
 	 *    Returns a stream consisting of the results of applying the given function to the elements
 	 * of this stream. The given function must satisfies the following rules:
 	 *
@@ -168,6 +180,18 @@ interface Stream {
 	 * @throws UnsupportedOperationException if the given function is not valid
 	 */
 	public function map (\Closure $functionToApply) : Stream;
+
+	/**
+	 * Returns the maximum element of this stream according to the provided Comparator.
+	 *
+	 * @param Comparator $comparator
+	 *    Comparator to compare elements of this stream
+	 *
+	 * @return an Optional describing the maximum element of this stream
+	 *
+	 * @throws UnsupportedOperationException if the type of Stream's elements is not a subclass of Object
+	 */
+	public function max (Comparator $comparator) : Optional;
 
 	/**
 	 *    Returns whether no elements of this stream match the provided predicate. May not evaluate

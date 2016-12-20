@@ -126,7 +126,7 @@ class PriorityQueue extends AbstractQueue {
 		if ($this->isEmpty())
 			return new Optional (NULL);
 
-		return new Optional ($this->internalData[$this->size()-1]);
+		return new Optional ($this->internalData[0]);
 	}
 
 
@@ -139,8 +139,8 @@ class PriorityQueue extends AbstractQueue {
 		if ($this->isEmpty())
 			return new Optional (NULL);
 
-		$headElement = $this->internalData[$this->size()-1];
-		array_splice ($this->internalData, $this->size()-1, 1);
+		$headElement = $this->internalData[0];
+		array_splice ($this->internalData, 0, 1);
 
 		return new Optional ($headElement);
 	}

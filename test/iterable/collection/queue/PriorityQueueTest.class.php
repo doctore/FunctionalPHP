@@ -655,9 +655,9 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testPeekUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$dummyObject1 = new DummyObject (2, "b", FALSE);
+		$dummyObject2 = new DummyObject (3, "c", FALSE);
+		$dummyObject3 = new DummyObject (1, "a", FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($priorityQueue->peek()->isPresent());
@@ -669,7 +669,7 @@ final class PriorityQueueTest extends TestCase {
 		$priorityQueue->add ($dummyObject2);
 		$this->assertEquals (2, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($dummyObject1, $headElement);
 
 		$priorityQueue->add ($dummyObject3);
 		$this->assertEquals (3, $priorityQueue->size());
@@ -689,9 +689,9 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testPeekUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$dummyObject1 = new DummyObject (2, "b", FALSE);
+		$dummyObject2 = new DummyObject (3, "c", FALSE);
+		$dummyObject3 = new DummyObject (1, "a", FALSE);
 
 		$priorityQueue = new PriorityQueue (new PriorityQueue(), new DummyObjectComparator());
 		$this->assertFalse ($priorityQueue->peek()->isPresent());
@@ -708,13 +708,13 @@ final class PriorityQueueTest extends TestCase {
 		$priorityQueue->add ($dummyObject1);
 		$this->assertEquals (3, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($dummyObject2, $headElement);
 
 		// Permits duplicate elements
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($dummyObject1);
 		$this->assertEquals (4, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($dummyObject2, $headElement);
 	}
 
 
@@ -745,19 +745,19 @@ final class PriorityQueueTest extends TestCase {
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (3, $priorityQueue->size());
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($dummyObject1, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (2, $priorityQueue->size());
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($dummyObject1, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($dummyObject2, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertTrue ($priorityQueue->isEmpty());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($dummyObject3, $headElement);
 
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 	}
@@ -790,19 +790,19 @@ final class PriorityQueueTest extends TestCase {
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (3, $priorityQueue->size());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($dummyObject3, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (2, $priorityQueue->size());
-		$this->assertEquals ($dummyObject1, $headElement);
-
-		$headElement = $priorityQueue->poll()->get();
-		$this->assertEquals (1, $priorityQueue->size());
 		$this->assertEquals ($dummyObject2, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
+		$this->assertEquals (1, $priorityQueue->size());
+		$this->assertEquals ($dummyObject1, $headElement);
+
+		$headElement = $priorityQueue->poll()->get();
 		$this->assertTrue ($priorityQueue->isEmpty());
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($dummyObject1, $headElement);
 
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 	}

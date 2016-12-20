@@ -721,6 +721,117 @@ final class BasicStreamTest extends TestCase {
 
 
 	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::min
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMinOfEmptyBasicStream() {
+
+		$arrayList = new ArrayList();
+		$basicStream = new BasicStream ($arrayList);
+
+		$basicStream->min (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::min
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMinOfBasicStreamWithStringElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : string {
+			                  return $dummyObject->stringProperty;
+		                   });
+
+		$basicStream->min (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::min
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMinOfBasicStreamWithIntElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : int {
+			                  return $dummyObject->intProperty;
+		                   });
+
+		$basicStream->min (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::min
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMinOfBasicStreamWithFloatElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : float {
+			                  return $dummyObject->intProperty * 0.1;
+		                   });
+
+		$basicStream->min (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::min
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMinOfBasicStreamWithBoolElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : bool {
+			                  return TRUE;
+		                   });
+
+		$basicStream->min (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::min
+	 */
+	public function testMinOfBasicStreamWithObjects() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+
+		$priorityQueue = new PriorityQueue ($arrayList, new DummyObjectComparator());
+
+		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
+		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
+
+		// Get the min and compare with the first element in the PriorityQueue
+		$minInStream = $basicStream->min (new DummyObjectComparator());
+		$this->assertNotNull ($minInStream);
+		$this->assertTrue ($minInStream->isPresent());
+
+		// Get the first element of the priority queue
+		$minInPriorityQueue = $priorityQueue->peek();
+		$this->assertNotNull ($minInStream);
+		$this->assertTrue ($minInStream->isPresent());
+
+		$this->assertEquals ($minInPriorityQueue->get(), $minInStream->get());
+	}
+
+
+	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::map
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
@@ -864,6 +975,120 @@ final class BasicStreamTest extends TestCase {
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
 			$this->assertEquals (strlen ($arrayList->get($i)->stringProperty), $contentOfStream[$i]);
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::max
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMaxOfEmptyBasicStream() {
+
+		$arrayList = new ArrayList();
+		$basicStream = new BasicStream ($arrayList);
+
+		$basicStream->max (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::max
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMaxOfBasicStreamWithStringElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : string {
+			                  return $dummyObject->stringProperty;
+		                   });
+
+		$basicStream->max (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::max
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMaxOfBasicStreamWithIntElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : int {
+			                  return $dummyObject->intProperty;
+		                   });
+
+		$basicStream->max (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::max
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMaxOfBasicStreamWithFloatElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : float {
+			                  return $dummyObject->intProperty * 0.1;
+		                   });
+
+		$basicStream->max (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::max
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testMaxOfBasicStreamWithBoolElements() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+		$basicStream->map (function (DummyObject $dummyObject) : bool {
+			                  return TRUE;
+		                   });
+
+		$basicStream->max (new DummyObjectComparator());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::max
+	 */
+	public function testMaxOfBasicStreamWithObjects() {
+
+		$arrayList = $this->generateDummyArrayList();
+		$basicStream = new BasicStream ($arrayList);
+
+		$priorityQueue = new PriorityQueue ($arrayList, new DummyObjectComparator());
+
+		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
+		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
+
+		// Get the min and compare with the last element in the PriorityQueue
+		$maxInStream = $basicStream->max (new DummyObjectComparator());
+		$this->assertNotNull ($maxInStream);
+		$this->assertTrue ($maxInStream->isPresent());
+
+		// Get the last element of the priority queue
+		$maxInPriorityQueue = NULL;
+
+		foreach ($priorityQueue->iterator() as $element)
+			$maxInPriorityQueue = $element;
+
+		$this->assertNotNull ($maxInPriorityQueue);
+
+		$this->assertEquals ($maxInPriorityQueue, $maxInStream->get());
 	}
 
 
@@ -1146,7 +1371,7 @@ final class BasicStreamTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\common\functional\BasicStream::sorted
+	 * @covers FunctionalPHP\common\functional\BasicStream::sortedByComparator
 	 */
 	public function testSortedByComparatorOfBasicStreamWithObjects() {
 

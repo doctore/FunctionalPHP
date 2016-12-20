@@ -96,7 +96,7 @@ class BasicStream implements Stream {
 			return $this;
 
 		// The Stream stores elements belonging to a subclass of Object
-		if ($this->isGivenTypeSubclassOfObject ($this->currentTypeOfInternalData)) {
+		if ($this->isGivenTypeSubclassOfGivenList ($this->currentTypeOfInternalData, Object::class)) {
 
 			$hashSet = new HashSet();
 			$internalDataUniqueValues = array();
@@ -112,7 +112,7 @@ class BasicStream implements Stream {
 			}
 			$this->internalData = $internalDataUniqueValues;
 		}
-		// The Stream stores a "native type", see Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_MAP
+		// The Stream stores a "native type", see Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP
 		else
 			$this->internalData = array_values (array_unique ($this->internalData));
 
@@ -198,6 +198,31 @@ class BasicStream implements Stream {
 
 	/**
 	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Stream::min()
+	 */
+	public function min (Comparator $comparator) : Optional {
+
+		if (is_null ($this->currentTypeOfInternalData) ||
+				!$this->isGivenTypeSubclassOfGivenList ($this->currentTypeOfInternalData, Object::class))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"This operation only can be executed if the type of the stored elements "
+					                                    ."in the Stream is a subclass of ".Object::class.", the current "
+					                                    ."type of this Stream is: ".$this->currentTypeOfInternalData);
+		if ($this->count() == 0)
+			return new Optional (NULL);
+
+		$min = $this->internalData[0];
+		foreach ($this->internalData as $element) {
+
+			if ($comparator->compare ($min, $element) > 0)
+				$min = $element;
+		}
+		return new Optional ($min);
+	}
+
+
+	/**
+	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\functional\Stream::map()
 	 */
 	public function map (\Closure $functionToApply) : Stream {
@@ -212,6 +237,31 @@ class BasicStream implements Stream {
 		$this->currentTypeOfInternalData = $returnedTypeOfFunctionToApply;
 
 		return $this;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Stream::max()
+	 */
+	public function max (Comparator $comparator) : Optional {
+
+		if (is_null ($this->currentTypeOfInternalData) ||
+				!$this->isGivenTypeSubclassOfGivenList ($this->currentTypeOfInternalData, Object::class))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"This operation only can be executed if the type of the stored elements "
+					                                    ."in the Stream is a subclass of ".Object::class.", the current "
+					                                    ."type of this Stream is: ".$this->currentTypeOfInternalData);
+		if ($this->count() == 0)
+			return new Optional (NULL);
+
+		$max = $this->internalData[0];
+		foreach ($this->internalData as $element) {
+
+			if ($comparator->compare ($max, $element) < 0)
+				$max = $element;
+		}
+		return new Optional ($max);
 	}
 
 
@@ -240,7 +290,7 @@ class BasicStream implements Stream {
 			return $this;
 
 		// The Stream stores elements belonging to a subclass of Object
-		if ($this->isGivenTypeSubclassOfObject ($this->currentTypeOfInternalData)) {
+		if ($this->isGivenTypeSubclassOfGivenList ($this->currentTypeOfInternalData, Object::class)) {
 
 			$priorityQueue = new PriorityQueue();
 
@@ -249,7 +299,7 @@ class BasicStream implements Stream {
 
 			$this->internalData = $priorityQueue->toArray();
 		}
-		// The Stream stores a "native type", see Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_MAP
+		// The Stream stores a "native type", see Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP
 		else
 			sort ($this->internalData);
 
@@ -263,7 +313,8 @@ class BasicStream implements Stream {
 	 */
 	public function sortedByComparator (Comparator $comparator) : Stream {
 
-		if (is_null ($this->currentTypeOfInternalData) || !$this->isGivenTypeSubclassOfObject ($this->currentTypeOfInternalData))
+		if (is_null ($this->currentTypeOfInternalData) ||
+				!$this->isGivenTypeSubclassOfGivenList ($this->currentTypeOfInternalData, Object::class))
 			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                                ,"This operation only can be executed if the type of the stored elements "
 					                                    ."in the Stream is a subclass of ".Object::class.", the current "
@@ -386,6 +437,7 @@ class BasicStream implements Stream {
 
 		// 3. The returned type is not null and valid
 		$returnType = (string) $reflectionFunction->getReturnType();
+
 		if ($returnType == NULL || empty ($returnType))
 			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 						                            ,"The returned type of the given closure function can not be null");
@@ -394,11 +446,10 @@ class BasicStream implements Stream {
 				!in_array ($returnType, Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP)) {
 
 			// Test if it is a subclass of Object
-			if (!$this->isGivenTypeSubclassOfObject ($returnType))
+			if (!$this->isGivenTypeSubclassOfGivenList ($returnType, Object::class))
 				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-						                                ,"The returned type of the given closure function: ".$returnType
-						                                   ." is not valid. Please use a subclass of ".Object::class
-						                                   ." or one of the following: "
+						                                ,"The returned type of the given closure function: ".$returnType." is not "
+						                                   ."valid. Please use a subclass of ".Object::class." or one of the following: "
 							                               .var_export (Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP, TRUE));
 		}
 		return $returnType;
@@ -477,26 +528,33 @@ class BasicStream implements Stream {
 
 
 	/**
-	 * Checks if the given type is subclass of Object
+	 * Checks if the given type is subclass of the given class (or interface)
 	 *
 	 * @param string $typeToCheck
 	 *    Type to check
+	 * @param string ...$classesToCheck
+	 *    Class name (or interface) to check
 	 *
-	 * @return TRUE if the given class name is subclass of Object, FALSE otherwise.
+	 * @return TRUE if one of the given class name is subclass of the list of classes (or interface), FALSE otherwise.
 	 */
-	private function isGivenTypeSubclassOfObject (string $typeToCheck) : bool {
+	private function isGivenTypeSubclassOfGivenList (string $typeToCheck, string ...$classesToCheck) : bool {
 
 		if (is_null ($typeToCheck) || empty ($typeToCheck))
 			return FALSE;
 
-		$isSubclassOfObject = FALSE;
 		try {
-			if ((new \ReflectionClass ($typeToCheck))->isSubclassOf (Object::class))
-				$isSubclassOfObject = TRUE;
+			$reflectionClass = new \ReflectionClass ($typeToCheck);
 
-		} catch (\Exception $e) {}
+			foreach ($classesToCheck as $classToCheck) {
 
-		return $isSubclassOfObject;
+				if ($reflectionClass->isSubclassOf ($classToCheck))
+					return TRUE;
+			}
+
+		} catch (\Exception $e) {
+			return FALSE;
+		}
+		return FALSE;
 	}
 
 }
