@@ -236,7 +236,7 @@ class CarComparator implements Comparator {
 		 *    Assumes Car as parameters and returns the "inverse result" that
 		 * $car1->compareTo ($car2)
 		 */
-		return strcmp ($car2->name, $car1->name);
+		return strcmp ($car2->registration, $car1->registration);
 	}
 
 }
