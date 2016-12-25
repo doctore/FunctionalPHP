@@ -11,7 +11,6 @@ use FunctionalPHP\common\Object;
  */
 class PersonComparator implements Comparator {
 
-
 	/**
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Comparator::compare()
@@ -32,7 +31,6 @@ class PersonComparator implements Comparator {
  * Comparator instance used to compare two different Car objects, used only for testing purpose.
  */
 class CarComparator implements Comparator {
-
 
 	/**
 	 * {@inheritDoc}
