@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use FunctionalPHP\iterable\map\EntryHashMap;
 use FunctionalPHP\iterable\map\HashMap;
 use FunctionalPHP\iterable\map\Map;
-use FunctionalPHP\test\DummyObject;
+use FunctionalPHP\test\Person;
 
 /**
  * Class used to test FunctionalPHP\collection\map\HashMap
@@ -43,14 +43,14 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testCreateNotEmptyHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap1->put ($dummyObject1->stringProperty, $dummyObject1);
-		$hashMap1->put ($dummyObject2->stringProperty, $dummyObject2);
-		$hashMap1->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap1->put ($person1->name, $person1);
+		$hashMap1->put ($person2->name, $person2);
+		$hashMap1->put ($person3->name, $person3);
 
 		$hashMap2 = new HashMap (Map::KEY_STRING_TYPE, $hashMap1);
 		$this->assertFalse ($hashMap2->isEmpty());
@@ -65,17 +65,17 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testClearHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person1->age, $person1);
+		$hashMap->put ($person2->age, $person2);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (3, $hashMap->size());
 
@@ -92,12 +92,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsKeyWithNumericKeysStoredAndGivenStringKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->put ($dummyObject->intProperty, $dummyObject);
+		$hashMap->put ($person->age, $person);
 
-		$hashMap->containsKey ($dummyObject->stringProperty);
+		$hashMap->containsKey ($person->name);
 	}
 
 
@@ -108,12 +108,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsKeyWithNumericKeysStoredAndGivenBoolKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->put ($dummyObject->intProperty, $dummyObject);
+		$hashMap->put ($person->age, $person);
 
-		$hashMap->containsKey ($dummyObject->boolProperty);
+		$hashMap->containsKey ($person->isMale);
 	}
 
 
@@ -124,12 +124,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsKeyWithNumericKeysStoredAndGivenObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->put ($dummyObject->intProperty, $dummyObject);
+		$hashMap->put ($person->age, $person);
 
-		$hashMap->containsKey ($dummyObject);
+		$hashMap->containsKey ($person);
 	}
 
 
@@ -140,12 +140,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsKeyWithStringKeysStoredAndGivenBoolKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->put ($dummyObject->stringProperty, $dummyObject);
+		$hashMap->put ($person->name, $person);
 
-		$hashMap->containsKey ($dummyObject->boolProperty);
+		$hashMap->containsKey ($person->isMale);
 	}
 
 
@@ -156,12 +156,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsKeyWithStringKeysStoredAndGivenObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->put ($dummyObject->stringProperty, $dummyObject);
+		$hashMap->put ($person->name, $person);
 
-		$hashMap->containsKey ($dummyObject);
+		$hashMap->containsKey ($person);
 	}
 
 
@@ -172,12 +172,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsKeyWithBooleanKeysStoredAndGivenObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$hashMap->put ($dummyObject->boolProperty, $dummyObject);
+		$hashMap->put ($person->isMale, $person);
 
-		$hashMap->containsKey ($dummyObject);
+		$hashMap->containsKey ($person);
 	}
 
 
@@ -186,64 +186,64 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertFalse ($hashMap->containsKey ($person3->age));
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertFalse ($hashMap->containsKey ($person3->age));
 
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertTrue ($hashMap->containsKey ($person2->age));
+		$this->assertFalse ($hashMap->containsKey ($person3->age));
 
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertTrue ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
 
 		// Checks keys with float keys
 		$floatConverter = 0.1;
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty * $floatConverter));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty * $floatConverter));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty * $floatConverter));
+		$this->assertFalse ($hashMap->containsKey ($person1->age * $floatConverter));
+		$this->assertFalse ($hashMap->containsKey ($person2->age * $floatConverter));
+		$this->assertFalse ($hashMap->containsKey ($person3->age * $floatConverter));
 
-		$hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1);
+		$hashMap->put ($person1->age * $floatConverter, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty * $floatConverter));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty * $floatConverter));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty * $floatConverter));
+		$this->assertTrue ($hashMap->containsKey ($person1->age * $floatConverter));
+		$this->assertFalse ($hashMap->containsKey ($person2->age * $floatConverter));
+		$this->assertFalse ($hashMap->containsKey ($person3->age * $floatConverter));
 
-		$hashMap->put ($dummyObject2->intProperty * $floatConverter, $dummyObject2);
+		$hashMap->put ($person2->age * $floatConverter, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty * $floatConverter));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty * $floatConverter));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty * $floatConverter));
+		$this->assertTrue ($hashMap->containsKey ($person1->age * $floatConverter));
+		$this->assertTrue ($hashMap->containsKey ($person2->age * $floatConverter));
+		$this->assertFalse ($hashMap->containsKey ($person3->age * $floatConverter));
 
-		$hashMap->put ($dummyObject3->intProperty * $floatConverter, $dummyObject3);
+		$hashMap->put ($person3->age * $floatConverter, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty * $floatConverter));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty * $floatConverter));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty * $floatConverter));
+		$this->assertTrue ($hashMap->containsKey ($person1->age * $floatConverter));
+		$this->assertTrue ($hashMap->containsKey ($person2->age * $floatConverter));
+		$this->assertTrue ($hashMap->containsKey ($person3->age * $floatConverter));
 	}
 
 
@@ -252,35 +252,35 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertFalse ($hashMap->containsKey ($person3->name));
 
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		$hashMap->put ($person1->name, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertFalse ($hashMap->containsKey ($person3->name));
 
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		$hashMap->put ($person2->name, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertTrue ($hashMap->containsKey ($person2->name));
+		$this->assertFalse ($hashMap->containsKey ($person3->name));
 
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap->put ($person3->name, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertTrue ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
 	}
 
 
@@ -289,24 +289,24 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->isMale));
+		$this->assertFalse ($hashMap->containsKey ($person2->isMale));
 
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->isMale));
+		$this->assertFalse ($hashMap->containsKey ($person2->isMale));
 
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 	}
 
 
@@ -315,35 +315,35 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertFalse ($hashMap->containsKey ($person3));
 
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		$hashMap->put ($person1, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertFalse ($hashMap->containsKey ($person3));
 
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		$hashMap->put ($person2, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertTrue ($hashMap->containsKey ($person2));
+		$this->assertFalse ($hashMap->containsKey ($person3));
 
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		$hashMap->put ($person3, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertTrue ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
 	}
 
 
@@ -352,35 +352,35 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testContainsValue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject3));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertFalse ($hashMap->containsValue ($person3));
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject3));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertFalse ($hashMap->containsValue ($person3));
 
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject3));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertFalse ($hashMap->containsValue ($person3));
 
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
 	}
 
 
@@ -389,7 +389,7 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashMapOfDifferentTypeOfKeys() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		// Map::KEY_NUMERIC_TYPE vs Map::KEY_STRING_TYPE
 		$hashMap1 = new HashMap (Map::KEY_NUMERIC_TYPE);
@@ -398,8 +398,8 @@ final class HashMapTest extends TestCase {
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject->intProperty, $dummyObject);
-		$hashMap2->put ($dummyObject->stringProperty, $dummyObject);
+		$hashMap1->put ($person->age, $person);
+		$hashMap2->put ($person->name, $person);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
@@ -410,8 +410,8 @@ final class HashMapTest extends TestCase {
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject->intProperty, $dummyObject);
-		$hashMap2->put ($dummyObject->boolProperty, $dummyObject);
+		$hashMap1->put ($person->age, $person);
+		$hashMap2->put ($person->isMale, $person);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
@@ -422,8 +422,8 @@ final class HashMapTest extends TestCase {
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject->intProperty, $dummyObject);
-		$hashMap2->put ($dummyObject, $dummyObject);
+		$hashMap1->put ($person->age, $person);
+		$hashMap2->put ($person, $person);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
@@ -434,8 +434,8 @@ final class HashMapTest extends TestCase {
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject->stringProperty, $dummyObject);
-		$hashMap2->put ($dummyObject->boolProperty, $dummyObject);
+		$hashMap1->put ($person->name, $person);
+		$hashMap2->put ($person->isMale, $person);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
@@ -446,8 +446,8 @@ final class HashMapTest extends TestCase {
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject->stringProperty, $dummyObject);
-		$hashMap2->put ($dummyObject, $dummyObject);
+		$hashMap1->put ($person->name, $person);
+		$hashMap2->put ($person, $person);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
@@ -458,8 +458,8 @@ final class HashMapTest extends TestCase {
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject->boolProperty, $dummyObject);
-		$hashMap2->put ($dummyObject, $dummyObject);
+		$hashMap1->put ($person->isMale, $person);
+		$hashMap2->put ($person, $person);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 	}
@@ -470,9 +470,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashMapWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$hashMap2 = new HashMap (Map::KEY_NUMERIC_TYPE);
@@ -480,17 +480,17 @@ final class HashMapTest extends TestCase {
 		$this->assertTrue ($hashMap1->equals ($hashMap2));
 		$this->assertTrue ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap1->put ($person1->age, $person1);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap2->put ($dummyObject2->intProperty, $dummyObject2);
+		$hashMap2->put ($person2->age, $person2);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
 		// Both map have the same elements
-		$hashMap1->put ($dummyObject2->intProperty, $dummyObject2);
-		$hashMap2->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap1->put ($person2->age, $person2);
+		$hashMap2->put ($person1->age, $person1);
 		$this->assertEquals (2, $hashMap1->size());
 		$this->assertEquals (2, $hashMap2->size());
 
@@ -499,9 +499,9 @@ final class HashMapTest extends TestCase {
 
 		$this->checksEqualContentOfGivenHashMaps ($hashMap1, $hashMap2);
 
-		// Adds $dummyObject3 with different key
-		$hashMap1->put ($dummyObject3->intProperty + $dummyObject3->intProperty, $dummyObject3);
-		$hashMap2->put ($dummyObject3->intProperty, $dummyObject3);
+		// Adds $person3 with different key
+		$hashMap1->put ($person3->age + $person3->age, $person3);
+		$hashMap2->put ($person3->age, $person3);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 	}
@@ -512,9 +512,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashMapWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_STRING_TYPE);
 		$hashMap2 = new HashMap (Map::KEY_STRING_TYPE);
@@ -522,17 +522,17 @@ final class HashMapTest extends TestCase {
 		$this->assertTrue ($hashMap1->equals ($hashMap2));
 		$this->assertTrue ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject1->stringProperty, $dummyObject1);
+		$hashMap1->put ($person1->name, $person1);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap2->put ($dummyObject2->stringProperty, $dummyObject2);
+		$hashMap2->put ($person2->name, $person2);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
 		// Both map have the same elements
-		$hashMap1->put ($dummyObject2->stringProperty, $dummyObject2);
-		$hashMap2->put ($dummyObject1->stringProperty, $dummyObject1);
+		$hashMap1->put ($person2->name, $person2);
+		$hashMap2->put ($person1->name, $person1);
 		$this->assertEquals (2, $hashMap1->size());
 		$this->assertEquals (2, $hashMap2->size());
 
@@ -541,9 +541,9 @@ final class HashMapTest extends TestCase {
 
 		$this->checksEqualContentOfGivenHashMaps ($hashMap1, $hashMap2);
 
-		// Adds $dummyObject3 with different key
-		$hashMap1->put ($dummyObject3->stringProperty.$dummyObject3->stringProperty, $dummyObject3);
-		$hashMap2->put ($dummyObject3->stringProperty, $dummyObject3);
+		// Adds $person3 with different key
+		$hashMap1->put ($person3->name.$person3->name, $person3);
+		$hashMap2->put ($person3->name, $person3);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 	}
@@ -554,9 +554,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashMapWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_BOOLEAN_TYPE);
 		$hashMap2 = new HashMap (Map::KEY_BOOLEAN_TYPE);
@@ -564,17 +564,17 @@ final class HashMapTest extends TestCase {
 		$this->assertTrue ($hashMap1->equals ($hashMap2));
 		$this->assertTrue ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject1->boolProperty, $dummyObject1);
+		$hashMap1->put ($person1->isMale, $person1);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap2->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap2->put ($person2->isMale, $person2);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
 		// Both map have the same elements
-		$hashMap1->put ($dummyObject2->boolProperty, $dummyObject2);
-		$hashMap2->put ($dummyObject1->boolProperty, $dummyObject1);
+		$hashMap1->put ($person2->isMale, $person2);
+		$hashMap2->put ($person1->isMale, $person1);
 		$this->assertEquals (2, $hashMap1->size());
 		$this->assertEquals (2, $hashMap2->size());
 
@@ -583,9 +583,9 @@ final class HashMapTest extends TestCase {
 
 		$this->checksEqualContentOfGivenHashMaps ($hashMap1, $hashMap2);
 
-		// Adds $dummyObject3 with different key
-		$hashMap1->put ($dummyObject3->boolProperty, $dummyObject3);
-		$hashMap2->put (!$dummyObject3->boolProperty, $dummyObject3);
+		// Adds $person3 with different key
+		$hashMap1->put ($person3->isMale, $person3);
+		$hashMap2->put (!$person3->isMale, $person3);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 	}
@@ -596,9 +596,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashMapWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_OBJECT_TYPE);
 		$hashMap2 = new HashMap (Map::KEY_OBJECT_TYPE);
@@ -606,17 +606,17 @@ final class HashMapTest extends TestCase {
 		$this->assertTrue ($hashMap1->equals ($hashMap2));
 		$this->assertTrue ($hashMap2->equals ($hashMap1));
 
-		$hashMap1->put ($dummyObject1, $dummyObject1);
+		$hashMap1->put ($person1, $person1);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
-		$hashMap2->put ($dummyObject2, $dummyObject2);
+		$hashMap2->put ($person2, $person2);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 
 		// Both map have the same elements
-		$hashMap1->put ($dummyObject2, $dummyObject2);
-		$hashMap2->put ($dummyObject1, $dummyObject1);
+		$hashMap1->put ($person2, $person2);
+		$hashMap2->put ($person1, $person1);
 		$this->assertEquals (2, $hashMap1->size());
 		$this->assertEquals (2, $hashMap2->size());
 
@@ -625,9 +625,9 @@ final class HashMapTest extends TestCase {
 
 		$this->checksEqualContentOfGivenHashMaps ($hashMap1, $hashMap2);
 
-		// Adds $dummyObject3 with different key
-		$hashMap1->put ($dummyObject3, $dummyObject3);
-		$hashMap2->put ($dummyObject2, $dummyObject3);
+		// Adds $person3 with different key
+		$hashMap1->put ($person3, $person3);
+		$hashMap2->put ($person2, $person3);
 		$this->assertFalse ($hashMap1->equals ($hashMap2));
 		$this->assertFalse ($hashMap2->equals ($hashMap1));
 	}
@@ -640,12 +640,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithNumericKeysStoredAndGivenStringKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->put ($dummyObject->intProperty, $dummyObject);
+		$hashMap->put ($person->age, $person);
 
-		$hashMap->get ($dummyObject->stringProperty);
+		$hashMap->get ($person->name);
 	}
 
 
@@ -656,12 +656,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithNumericKeysStoredAndGivenBoolKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->put ($dummyObject->intProperty, $dummyObject);
+		$hashMap->put ($person->age, $person);
 
-		$hashMap->get ($dummyObject->boolProperty);
+		$hashMap->get ($person->isMale);
 	}
 
 
@@ -672,12 +672,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithNumericKeysStoredAndGivenObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->put ($dummyObject->intProperty, $dummyObject);
+		$hashMap->put ($person->age, $person);
 
-		$hashMap->get ($dummyObject);
+		$hashMap->get ($person);
 	}
 
 
@@ -688,12 +688,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithStringKeysStoredAndGivenBoolKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->put ($dummyObject->stringProperty, $dummyObject);
+		$hashMap->put ($person->name, $person);
 
-		$hashMap->get ($dummyObject->boolProperty);
+		$hashMap->get ($person->isMale);
 	}
 
 
@@ -704,12 +704,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithStringKeysStoredAndGivenObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->put ($dummyObject->stringProperty, $dummyObject);
+		$hashMap->put ($person->name, $person);
 
-		$hashMap->get ($dummyObject);
+		$hashMap->get ($person);
 	}
 
 
@@ -720,12 +720,12 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithBooleanKeysStoredAndGivenObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$hashMap->put ($dummyObject->boolProperty, $dummyObject);
+		$hashMap->put ($person->isMale, $person);
 
-		$hashMap->get ($dummyObject);
+		$hashMap->get ($person);
 	}
 
 
@@ -734,64 +734,64 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->get ($dummyObject1->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject2->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3->intProperty)->isPresent());
+		$this->assertFalse ($hashMap->get ($person1->age)->isPresent());
+		$this->assertFalse ($hashMap->get ($person2->age)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3->age)->isPresent());
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject2->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3->intProperty)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age)->get());
+		$this->assertFalse ($hashMap->get ($person2->age)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3->age)->isPresent());
 
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject3->intProperty)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age)->get());
+		$this->assertFalse ($hashMap->get ($person3->age)->isPresent());
 
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->intProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->age)->get());
 
 		// Checks keys with float keys
 		$floatConverter = 0.1;
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->get ($dummyObject1->intProperty * $floatConverter)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject2->intProperty * $floatConverter)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3->intProperty * $floatConverter)->isPresent());
+		$this->assertFalse ($hashMap->get ($person1->age * $floatConverter)->isPresent());
+		$this->assertFalse ($hashMap->get ($person2->age * $floatConverter)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3->age * $floatConverter)->isPresent());
 
-		$hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1);
+		$hashMap->put ($person1->age * $floatConverter, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject2->intProperty * $floatConverter)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3->intProperty * $floatConverter)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertFalse ($hashMap->get ($person2->age * $floatConverter)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3->age * $floatConverter)->isPresent());
 
-		$hashMap->put ($dummyObject2->intProperty * $floatConverter, $dummyObject2);
+		$hashMap->put ($person2->age * $floatConverter, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty * $floatConverter)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject3->intProperty * $floatConverter)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age * $floatConverter)->get());
+		$this->assertFalse ($hashMap->get ($person3->age * $floatConverter)->isPresent());
 
-		$hashMap->put ($dummyObject3->intProperty * $floatConverter, $dummyObject3);
+		$hashMap->put ($person3->age * $floatConverter, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->intProperty * $floatConverter)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age * $floatConverter)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->age * $floatConverter)->get());
 	}
 
 
@@ -800,35 +800,35 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertFalse ($hashMap->get ($dummyObject1->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject2->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3->stringProperty)->isPresent());
+		$this->assertFalse ($hashMap->get ($person1->name)->isPresent());
+		$this->assertFalse ($hashMap->get ($person2->name)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3->name)->isPresent());
 
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		$hashMap->put ($person1->name, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject2->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3->stringProperty)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->name)->get());
+		$this->assertFalse ($hashMap->get ($person2->name)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3->name)->isPresent());
 
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		$hashMap->put ($person2->name, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->stringProperty)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject3->stringProperty)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->name)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->name)->get());
+		$this->assertFalse ($hashMap->get ($person3->name)->isPresent());
 
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap->put ($person3->name, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->stringProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->stringProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->name)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->name)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->name)->get());
 	}
 
 
@@ -837,24 +837,24 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertFalse ($hashMap->get ($dummyObject1->boolProperty)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject2->boolProperty)->isPresent());
+		$this->assertFalse ($hashMap->get ($person1->isMale)->isPresent());
+		$this->assertFalse ($hashMap->get ($person2->isMale)->isPresent());
 
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->boolProperty)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject2->boolProperty)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1->isMale)->get());
+		$this->assertFalse ($hashMap->get ($person2->isMale)->isPresent());
 
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->boolProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->boolProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->isMale)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->isMale)->get());
 	}
 
 
@@ -863,35 +863,35 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertFalse ($hashMap->get ($dummyObject1)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject2)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3)->isPresent());
+		$this->assertFalse ($hashMap->get ($person1)->isPresent());
+		$this->assertFalse ($hashMap->get ($person2)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3)->isPresent());
 
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		$hashMap->put ($person1, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject2)->isPresent());
-		$this->assertFalse ($hashMap->get ($dummyObject3)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1)->get());
+		$this->assertFalse ($hashMap->get ($person2)->isPresent());
+		$this->assertFalse ($hashMap->get ($person3)->isPresent());
 
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		$hashMap->put ($person2, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2)->get());
-		$this->assertFalse ($hashMap->get ($dummyObject3)->isPresent());
+		$this->assertEquals ($person1, $hashMap->get ($person1)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2)->get());
+		$this->assertFalse ($hashMap->get ($person3)->isPresent());
 
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		$hashMap->put ($person3, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3)->get());
 	}
 
 
@@ -900,65 +900,65 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetKeysWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject1));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person1));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->age, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->age, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person2->age, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->age, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person2->age, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject3);
+		$arrayOfKeys = $hashMap->getKeys ($person3);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject3->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person3->age, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2 with different keys
-		$hashMap->put ($dummyObject2->intProperty*2, $dummyObject2);
-		$hashMap->put ($dummyObject2->intProperty*3, $dummyObject2);
+		// Adds $person2 with different keys
+		$hashMap->put ($person2->age*2, $person2);
+		$hashMap->put ($person2->age*3, $person2);
 		$this->assertEquals (5, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (3, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject2->intProperty, $dummyObject2->intProperty*2
-				                                            ,$dummyObject2->intProperty*3)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person2->age, $person2->age*2
+				                                            ,$person2->age*3)));
 	}
 
 
@@ -967,65 +967,65 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetKeysWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject1));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person1));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->name, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->name, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->name, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->name, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person2->name, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3->name, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->name, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person2->name, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject3);
+		$arrayOfKeys = $hashMap->getKeys ($person3);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject3->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person3->name, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2 with different keys
-		$hashMap->put ($dummyObject2->stringProperty."2", $dummyObject2);
-		$hashMap->put ($dummyObject2->stringProperty."3", $dummyObject2);
+		// Adds $person2 with different keys
+		$hashMap->put ($person2->name."2", $person2);
+		$hashMap->put ($person2->name."3", $person2);
 		$this->assertEquals (5, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (3, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject2->stringProperty, $dummyObject2->stringProperty."2"
-				                                            ,$dummyObject2->stringProperty."3")));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person2->name, $person2->name."2"
+				                                            ,$person2->name."3")));
 	}
 
 
@@ -1034,42 +1034,42 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetKeysWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject1));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
+		$this->assertEmpty ($hashMap->getKeys ($person1));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->boolProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->isMale, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->boolProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->isMale, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2->boolProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person2->isMale, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2 with FALSE key
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject2);
+		// Adds $person2 with FALSE key
+		$hashMap->put ($person1->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (2, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->boolProperty, $dummyObject2->boolProperty)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->isMale, $person2->isMale)));
 	}
 
 
@@ -1078,79 +1078,79 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testGetKeysWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (4, "d", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject1));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person1));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1, $arrayOfKeys[0]);
+		$this->assertEquals ($person1, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject2));
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person2));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1, $arrayOfKeys[0]);
+		$this->assertEquals ($person1, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2, $arrayOfKeys[0]);
+		$this->assertEquals ($person2, $arrayOfKeys[0]);
 
-		$this->assertEmpty ($hashMap->getKeys ($dummyObject3));
+		$this->assertEmpty ($hashMap->getKeys ($person3));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject1);
+		$arrayOfKeys = $hashMap->getKeys ($person1);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1, $arrayOfKeys[0]);
+		$this->assertEquals ($person1, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject2, $arrayOfKeys[0]);
+		$this->assertEquals ($person2, $arrayOfKeys[0]);
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject3);
+		$arrayOfKeys = $hashMap->getKeys ($person3);
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject3, $arrayOfKeys[0]);
+		$this->assertEquals ($person3, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2 with different keys
-		$hashMap->put ($dummyObject4, $dummyObject2);
+		// Adds $person2 with different keys
+		$hashMap->put ($person4, $person2);
 		$this->assertEquals (4, $hashMap->size());
 
-		$arrayOfKeys = $hashMap->getKeys ($dummyObject2);
+		$arrayOfKeys = $hashMap->getKeys ($person2);
 		$this->assertCount (2, $arrayOfKeys);
 
-		$isDummyObjectsInArray = array (2 => FALSE, 4 => FALSE);
+		$isPersonsInArray = array (2 => FALSE, 4 => FALSE);
 		foreach ($arrayOfKeys as $element) {
 
-			if ($element->equals ($dummyObject2))
-				$isDummyObjectsInArray[2] = TRUE;
+			if ($element->equals ($person2))
+				$isPersonsInArray[2] = TRUE;
 
-			elseif ($element->equals ($dummyObject4))
-				$isDummyObjectsInArray[4] = TRUE;
+			elseif ($element->equals ($person4))
+			$isPersonsInArray[4] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInArray[2]);
-		$this->assertTrue ($isDummyObjectsInArray[4]);
+		$this->assertTrue ($isPersonsInArray[2]);
+		$this->assertTrue ($isPersonsInArray[4]);
 	}
 
 
@@ -1178,24 +1178,24 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testHashCodeWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$entryMap1 = new EntryHashMap ($dummyObject1->intProperty, $dummyObject1);
-		$entryMap2 = new EntryHashMap ($dummyObject2->intProperty, $dummyObject2);
-		$entryMap3 = new EntryHashMap ($dummyObject3->intProperty, $dummyObject3);
+		$entryMap1 = new EntryHashMap ($person1->age, $person1);
+		$entryMap2 = new EntryHashMap ($person2->age, $person2);
+		$entryMap3 = new EntryHashMap ($person3->age, $person3);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertEquals (0, $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals ($entryMap1->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode() + $entryMap3->hashCode()
 				            ,$hashMap->hashCode());
 	}
@@ -1206,24 +1206,24 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testHashCodeWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$entryMap1 = new EntryHashMap ($dummyObject1->stringProperty, $dummyObject1);
-		$entryMap2 = new EntryHashMap ($dummyObject2->stringProperty, $dummyObject2);
-		$entryMap3 = new EntryHashMap ($dummyObject3->stringProperty, $dummyObject3);
+		$entryMap1 = new EntryHashMap ($person1->name, $person1);
+		$entryMap2 = new EntryHashMap ($person2->name, $person2);
+		$entryMap3 = new EntryHashMap ($person3->name, $person3);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
 		$this->assertEquals (0, $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		$hashMap->put ($person1->name, $person1);
 		$this->assertEquals ($entryMap1->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		$hashMap->put ($person2->name, $person2);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap->put ($person3->name, $person3);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode() + $entryMap3->hashCode()
 				            ,$hashMap->hashCode());
 	}
@@ -1234,19 +1234,19 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testHashCodeWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
-		$entryMap1 = new EntryHashMap ($dummyObject1->boolProperty, $dummyObject1);
-		$entryMap2 = new EntryHashMap ($dummyObject2->boolProperty, $dummyObject2);
+		$entryMap1 = new EntryHashMap ($person1->isMale, $person1);
+		$entryMap2 = new EntryHashMap ($person2->isMale, $person2);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
 		$this->assertEquals (0, $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertEquals ($entryMap1->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode(), $hashMap->hashCode());
 	}
 
@@ -1256,24 +1256,24 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testHashCodeWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$entryMap1 = new EntryHashMap ($dummyObject1, $dummyObject1);
-		$entryMap2 = new EntryHashMap ($dummyObject2, $dummyObject2);
-		$entryMap3 = new EntryHashMap ($dummyObject3, $dummyObject3);
+		$entryMap1 = new EntryHashMap ($person1, $person1);
+		$entryMap2 = new EntryHashMap ($person2, $person2);
+		$entryMap3 = new EntryHashMap ($person3, $person3);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
 		$this->assertEquals (0, $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		$hashMap->put ($person1, $person1);
 		$this->assertEquals ($entryMap1->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		$hashMap->put ($person2, $person2);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode(), $hashMap->hashCode());
 
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		$hashMap->put ($person3, $person3);
 		$this->assertEquals ($entryMap1->hashCode() + $entryMap2->hashCode() + $entryMap3->hashCode()
 				            ,$hashMap->hashCode());
 	}
@@ -1284,41 +1284,41 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIsEmptyWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertTrue ($hashMap->isEmpty());
     	$this->assertEquals (0, $hashMap->size());
 
-    	$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+    	$hashMap->put ($person1->age, $person1);
     	$this->assertFalse ($hashMap->isEmpty());
     	$this->assertEquals (1, $hashMap->size());
 
-    	$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+    	$hashMap->put ($person2->age, $person2);
     	$this->assertFalse ($hashMap->isEmpty());
     	$this->assertEquals (2, $hashMap->size());
 
-    	$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+    	$hashMap->put ($person3->age, $person3);
     	$this->assertFalse ($hashMap->isEmpty());
     	$this->assertEquals (3, $hashMap->size());
 
     	// Does not accept duplicate elements
-    	$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+    	$hashMap->put ($person3->age, $person3);
     	$this->assertFalse ($hashMap->isEmpty());
     	$this->assertEquals (3, $hashMap->size());
 
     	// Removes every element
-    	$hashMap->removeByKey ($dummyObject3->intProperty);
+    	$hashMap->removeByKey ($person3->age);
     	$this->assertFalse ($hashMap->isEmpty());
     	$this->assertEquals (2, $hashMap->size());
 
-    	$hashMap->removeByKey ($dummyObject2->intProperty);
+    	$hashMap->removeByKey ($person2->age);
     	$this->assertFalse ($hashMap->isEmpty());
     	$this->assertEquals (1, $hashMap->size());
 
-    	$hashMap->removeByKey ($dummyObject1->intProperty);
+    	$hashMap->removeByKey ($person1->age);
     	$this->assertTrue ($hashMap->isEmpty());
     	$this->assertEquals (0, $hashMap->size());
 	}
@@ -1329,41 +1329,41 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIsEmptyWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		$hashMap->put ($person1->name, $person1);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (1, $hashMap->size());
 
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		$hashMap->put ($person2->name, $person2);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (2, $hashMap->size());
 
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap->put ($person3->name, $person3);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Does not accept duplicate elements
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap->put ($person3->name, $person3);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Removes every element
-		$hashMap->removeByKey ($dummyObject3->stringProperty);
+		$hashMap->removeByKey ($person3->name);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (2, $hashMap->size());
 
-		$hashMap->removeByKey ($dummyObject2->stringProperty);
+		$hashMap->removeByKey ($person2->name);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (1, $hashMap->size());
 
-		$hashMap->removeByKey ($dummyObject1->stringProperty);
+		$hashMap->removeByKey ($person1->name);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 	}
@@ -1374,32 +1374,32 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIsEmptyWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (1, $hashMap->size());
 
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (2, $hashMap->size());
 
 		// Does not accept duplicate elements
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (2, $hashMap->size());
 
 		// Removes every element
-		$hashMap->removeByKey ($dummyObject2->boolProperty);
+		$hashMap->removeByKey ($person2->isMale);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (1, $hashMap->size());
 
-		$hashMap->removeByKey ($dummyObject1->boolProperty);
+		$hashMap->removeByKey ($person1->isMale);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 	}
@@ -1410,41 +1410,41 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIsEmptyWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		$hashMap->put ($person1, $person1);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (1, $hashMap->size());
 
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		$hashMap->put ($person2, $person2);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (2, $hashMap->size());
 
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		$hashMap->put ($person3, $person3);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Does not accept duplicate elements
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		$hashMap->put ($person3, $person3);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Removes every element
-		$hashMap->removeByKey ($dummyObject3);
+		$hashMap->removeByKey ($person3);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (2, $hashMap->size());
 
-		$hashMap->removeByKey ($dummyObject2);
+		$hashMap->removeByKey ($person2);
 		$this->assertFalse ($hashMap->isEmpty());
 		$this->assertEquals (1, $hashMap->size());
 
-		$hashMap->removeByKey ($dummyObject1);
+		$hashMap->removeByKey ($person1);
 		$this->assertTrue ($hashMap->isEmpty());
 		$this->assertEquals (0, $hashMap->size());
 	}
@@ -1455,9 +1455,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIteratorWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 
@@ -1467,40 +1467,40 @@ final class HashMapTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->intProperty, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->age, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Adds another dummy objects
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		// Adds another persons
+		$hashMap->put ($person2->age, $person2);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$isDummyObjectsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
+		$isPersonsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			if ($internalKey === $dummyObject1->intProperty && $internalValue->equals ($dummyObject1))
-				$isDummyObjectsInHashSet[1] = TRUE;
+			if ($internalKey === $person1->age && $internalValue->equals ($person1))
+				$isPersonsInHashSet[1] = TRUE;
 
-			elseif ($internalKey === $dummyObject2->intProperty && $internalValue->equals ($dummyObject2))
-				$isDummyObjectsInHashSet[2] = TRUE;
+			elseif ($internalKey === $person2->age && $internalValue->equals ($person2))
+				$isPersonsInHashSet[2] = TRUE;
 
-			elseif ($internalKey === $dummyObject3->intProperty && $internalValue->equals ($dummyObject3))
-				$isDummyObjectsInHashSet[3] = TRUE;
+			elseif ($internalKey === $person3->age && $internalValue->equals ($person3))
+				$isPersonsInHashSet[3] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInHashSet[1]);
-		$this->assertTrue ($isDummyObjectsInHashSet[2]);
-		$this->assertTrue ($isDummyObjectsInHashSet[3]);
+		$this->assertTrue ($isPersonsInHashSet[1]);
+		$this->assertTrue ($isPersonsInHashSet[2]);
+		$this->assertTrue ($isPersonsInHashSet[3]);
 
 		// Checks keys with float keys
 		$floatConverter = 0.1;
@@ -1512,43 +1512,43 @@ final class HashMapTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age * $floatConverter, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->intProperty * $floatConverter, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->age * $floatConverter, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Adds another dummy objects
-		$hashMap->put ($dummyObject2->intProperty * $floatConverter, $dummyObject2);
-		$hashMap->put ($dummyObject3->intProperty * $floatConverter, $dummyObject3);
+		// Adds another persons
+		$hashMap->put ($person2->age * $floatConverter, $person2);
+		$hashMap->put ($person3->age * $floatConverter, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$isDummyObjectsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
+		$isPersonsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			if ($internalKey === ($dummyObject1->intProperty * $floatConverter) &&
-					$internalValue->equals ($dummyObject1))
-				$isDummyObjectsInHashSet[1] = TRUE;
+			if ($internalKey === ($person1->age * $floatConverter) &&
+					$internalValue->equals ($person1))
+				$isPersonsInHashSet[1] = TRUE;
 
-			elseif ($internalKey === ($dummyObject2->intProperty * $floatConverter) &&
-					$internalValue->equals ($dummyObject2))
-				$isDummyObjectsInHashSet[2] = TRUE;
+			elseif ($internalKey === ($person2->age * $floatConverter) &&
+					$internalValue->equals ($person2))
+				$isPersonsInHashSet[2] = TRUE;
 
-			elseif ($internalKey === ($dummyObject3->intProperty * $floatConverter) &&
-					$internalValue->equals ($dummyObject3))
-				$isDummyObjectsInHashSet[3] = TRUE;
+			elseif ($internalKey === ($person3->age * $floatConverter) &&
+					$internalValue->equals ($person3))
+				$isPersonsInHashSet[3] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInHashSet[1]);
-		$this->assertTrue ($isDummyObjectsInHashSet[2]);
-		$this->assertTrue ($isDummyObjectsInHashSet[3]);
+		$this->assertTrue ($isPersonsInHashSet[1]);
+		$this->assertTrue ($isPersonsInHashSet[2]);
+		$this->assertTrue ($isPersonsInHashSet[3]);
 	}
 
 
@@ -1557,9 +1557,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIteratorWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
 
@@ -1569,40 +1569,40 @@ final class HashMapTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->name, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->stringProperty, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->name, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Adds another dummy objects
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		// Adds another persons
+		$hashMap->put ($person2->name, $person2);
+		$hashMap->put ($person3->name, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$isDummyObjectsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
+		$isPersonsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			if ($internalKey === $dummyObject1->stringProperty && $internalValue->equals ($dummyObject1))
-				$isDummyObjectsInHashSet[1] = TRUE;
+			if ($internalKey === $person1->name && $internalValue->equals ($person1))
+				$isPersonsInHashSet[1] = TRUE;
 
-			elseif ($internalKey === $dummyObject2->stringProperty && $internalValue->equals ($dummyObject2))
-				$isDummyObjectsInHashSet[2] = TRUE;
+			elseif ($internalKey === $person2->name && $internalValue->equals ($person2))
+				$isPersonsInHashSet[2] = TRUE;
 
-			elseif ($internalKey === $dummyObject3->stringProperty && $internalValue->equals ($dummyObject3))
-				$isDummyObjectsInHashSet[3] = TRUE;
+			elseif ($internalKey === $person3->name && $internalValue->equals ($person3))
+				$isPersonsInHashSet[3] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInHashSet[1]);
-		$this->assertTrue ($isDummyObjectsInHashSet[2]);
-		$this->assertTrue ($isDummyObjectsInHashSet[3]);
+		$this->assertTrue ($isPersonsInHashSet[1]);
+		$this->assertTrue ($isPersonsInHashSet[2]);
+		$this->assertTrue ($isPersonsInHashSet[3]);
 	}
 
 
@@ -1611,8 +1611,8 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIteratorWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
 
@@ -1622,35 +1622,35 @@ final class HashMapTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->boolProperty, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->isMale, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$isDummyObjectsInHashSet = array (1 => FALSE, 2 => FALSE);
+		$isPersonsInHashSet = array (1 => FALSE, 2 => FALSE);
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			if ($internalKey === $dummyObject1->boolProperty && $internalValue->equals ($dummyObject1))
-				$isDummyObjectsInHashSet[1] = TRUE;
+			if ($internalKey === $person1->isMale && $internalValue->equals ($person1))
+				$isPersonsInHashSet[1] = TRUE;
 
-			elseif ($internalKey === $dummyObject2->boolProperty && $internalValue->equals ($dummyObject2))
-				$isDummyObjectsInHashSet[2] = TRUE;
+			elseif ($internalKey === $person2->isMale && $internalValue->equals ($person2))
+				$isPersonsInHashSet[2] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInHashSet[1]);
-		$this->assertTrue ($isDummyObjectsInHashSet[2]);
+		$this->assertTrue ($isPersonsInHashSet[1]);
+		$this->assertTrue ($isPersonsInHashSet[2]);
 	}
 
 
@@ -1659,9 +1659,9 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testIteratorWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
 
@@ -1671,40 +1671,40 @@ final class HashMapTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Adds another dummy objects
-		$hashMap->put ($dummyObject2, $dummyObject2);
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		// Adds another persons
+		$hashMap->put ($person2, $person2);
+		$hashMap->put ($person3, $person3);
 		$this->assertEquals (3, $hashMap->size());
 
-		$isDummyObjectsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
+		$isPersonsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			if ($internalKey === $dummyObject1 && $internalValue->equals ($dummyObject1))
-				$isDummyObjectsInHashSet[1] = TRUE;
+			if ($internalKey === $person1 && $internalValue->equals ($person1))
+				$isPersonsInHashSet[1] = TRUE;
 
-			elseif ($internalKey === $dummyObject2 && $internalValue->equals ($dummyObject2))
-				$isDummyObjectsInHashSet[2] = TRUE;
+			elseif ($internalKey === $person2 && $internalValue->equals ($person2))
+				$isPersonsInHashSet[2] = TRUE;
 
-			elseif ($internalKey === $dummyObject3 && $internalValue->equals ($dummyObject3))
-				$isDummyObjectsInHashSet[3] = TRUE;
+			elseif ($internalKey === $person3 && $internalValue->equals ($person3))
+				$isPersonsInHashSet[3] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInHashSet[1]);
-		$this->assertTrue ($isDummyObjectsInHashSet[2]);
-		$this->assertTrue ($isDummyObjectsInHashSet[3]);
+		$this->assertTrue ($isPersonsInHashSet[1]);
+		$this->assertTrue ($isPersonsInHashSet[2]);
+		$this->assertTrue ($isPersonsInHashSet[3]);
 	}
 
 
@@ -1713,61 +1713,61 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testKeysWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age, $person1);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->intProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->age, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->age, $person2);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (2, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->intProperty, $dummyObject2->intProperty)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->age, $person2->age)));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3->age, $person3);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (3, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->intProperty, $dummyObject2->intProperty
-				                                            ,$dummyObject3->intProperty)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->age, $person2->age
+				                                            ,$person3->age)));
 		// Checks keys with float keys
 		$floatConverter = 0.1;
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age * $floatConverter, $person1);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->intProperty * $floatConverter, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->age * $floatConverter, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->intProperty * $floatConverter, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->age * $floatConverter, $person2);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (2, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->intProperty * $floatConverter
-				                                            ,$dummyObject2->intProperty * $floatConverter)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->age * $floatConverter
+				                                            ,$person2->age * $floatConverter)));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3->intProperty * $floatConverter, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3->age * $floatConverter, $person3);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (3, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->intProperty * $floatConverter
-				                                            ,$dummyObject2->intProperty * $floatConverter
-				                                            ,$dummyObject3->intProperty * $floatConverter)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->age * $floatConverter
+				                                            ,$person2->age * $floatConverter
+				                                            ,$person3->age * $floatConverter)));
 	}
 
 
@@ -1776,35 +1776,35 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testKeysWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->name, $person1);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->stringProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->name, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->name, $person2);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (2, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->stringProperty
-				                                            ,$dummyObject2->stringProperty)));
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->name
+				                                            ,$person2->name)));
+		// Adds $person3
+		$hashMap->put ($person3->name, $person3);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (3, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->stringProperty
-				                                            ,$dummyObject2->stringProperty
-				                                            ,$dummyObject3->stringProperty)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->name
+				                                            ,$person2->name
+				                                            ,$person3->name)));
 	}
 
 
@@ -1813,25 +1813,25 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testKeysWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->isMale, $person1);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1->boolProperty, $arrayOfKeys[0]);
+		$this->assertEquals ($person1->isMale, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->isMale, $person2);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (2, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1->boolProperty, $dummyObject2->boolProperty)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1->isMale, $person2->isMale)));
 	}
 
 
@@ -1840,33 +1840,33 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testKeysWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1, $person1);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (1, $arrayOfKeys);
-		$this->assertEquals ($dummyObject1, $arrayOfKeys[0]);
+		$this->assertEquals ($person1, $arrayOfKeys[0]);
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2, $person2);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (2, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1, $dummyObject2)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1, $person2)));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3, $person3);
 
 		$arrayOfKeys = $hashMap->keys();
 		$this->assertCount (3, $arrayOfKeys);
-		$this->assertEmpty (array_diff ($arrayOfKeys, array ($dummyObject1, $dummyObject2, $dummyObject3)));
+		$this->assertEmpty (array_diff ($arrayOfKeys, array ($person1, $person2, $person3)));
 	}
 
 
@@ -1875,78 +1875,78 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (4, "d", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$this->assertFalse ($hashMap->put ($dummyObject1->intProperty, $dummyObject1)->isPresent());
+		// Adds $person1
+		$this->assertFalse ($hashMap->put ($person1->age, $person1)->isPresent());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->intProperty, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->age, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Overwrites $dummyObject1->intProperty with $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->put ($dummyObject1->intProperty, $dummyObject2)->get());
+		// Overwrites $person1->age with $person2
+		$this->assertEquals ($person1, $hashMap->put ($person1->age, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->intProperty, $internalKey);
-			$this->assertEquals ($dummyObject2, $internalValue);
+			$this->assertEquals ($person1->age, $internalKey);
+			$this->assertEquals ($person2, $internalValue);
 		}
 
-		// Adds $dummyObject3 and $dummyObject4
-		$this->assertFalse ($hashMap->put ($dummyObject3->intProperty, $dummyObject3)->isPresent());
-		$this->assertFalse ($hashMap->put ($dummyObject4->intProperty, $dummyObject4)->isPresent());
+		// Adds $person3 and $person4
+		$this->assertFalse ($hashMap->put ($person3->age, $person3)->isPresent());
+		$this->assertFalse ($hashMap->put ($person4->age, $person4)->isPresent());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Checks the content of the map
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->intProperty)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->get ($dummyObject4->intProperty)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->age)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->age)->get());
+		$this->assertEquals ($person4, $hashMap->get ($person4->age)->get());
 
 		// Checks keys with float keys
 		$floatConverter = 0.1;
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 
-		// Adds $dummyObject1
-		$this->assertFalse ($hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1)->isPresent());
+		// Adds $person1
+		$this->assertFalse ($hashMap->put ($person1->age * $floatConverter, $person1)->isPresent());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->intProperty * $floatConverter, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->age * $floatConverter, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Overwrites $dummyObject1->intProperty with $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject2)->get());
+		// Overwrites $person1->age with $person2
+		$this->assertEquals ($person1, $hashMap->put ($person1->age * $floatConverter, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->intProperty * $floatConverter, $internalKey);
-			$this->assertEquals ($dummyObject2, $internalValue);
+			$this->assertEquals ($person1->age * $floatConverter, $internalKey);
+			$this->assertEquals ($person2, $internalValue);
 		}
 
-		// Adds $dummyObject3 and $dummyObject4
-		$this->assertFalse ($hashMap->put ($dummyObject3->intProperty * $floatConverter, $dummyObject3)->isPresent());
-		$this->assertFalse ($hashMap->put ($dummyObject4->intProperty * $floatConverter, $dummyObject4)->isPresent());
+		// Adds $person3 and $person4
+		$this->assertFalse ($hashMap->put ($person3->age * $floatConverter, $person3)->isPresent());
+		$this->assertFalse ($hashMap->put ($person4->age * $floatConverter, $person4)->isPresent());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Checks the content of the map
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->get ($dummyObject4->intProperty * $floatConverter)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->age * $floatConverter)->get());
+		$this->assertEquals ($person4, $hashMap->get ($person4->age * $floatConverter)->get());
 	}
 
 
@@ -1955,43 +1955,43 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (4, "d", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$this->assertFalse ($hashMap->put ($dummyObject1->stringProperty, $dummyObject1)->isPresent());
+		// Adds $person1
+		$this->assertFalse ($hashMap->put ($person1->name, $person1)->isPresent());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->stringProperty, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->name, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Overwrites $dummyObject1->stringProperty with $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->put ($dummyObject1->stringProperty, $dummyObject2)->get());
+		// Overwrites $person1->name with $person2
+		$this->assertEquals ($person1, $hashMap->put ($person1->name, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->stringProperty, $internalKey);
-			$this->assertEquals ($dummyObject2, $internalValue);
+			$this->assertEquals ($person1->name, $internalKey);
+			$this->assertEquals ($person2, $internalValue);
 		}
 
-		// Adds $dummyObject3 and $dummyObject4
-		$this->assertFalse ($hashMap->put ($dummyObject3->stringProperty, $dummyObject3)->isPresent());
-		$this->assertFalse ($hashMap->put ($dummyObject4->stringProperty, $dummyObject4)->isPresent());
+		// Adds $person3 and $person4
+		$this->assertFalse ($hashMap->put ($person3->name, $person3)->isPresent());
+		$this->assertFalse ($hashMap->put ($person4->name, $person4)->isPresent());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Checks the content of the map
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->stringProperty)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->get ($dummyObject4->stringProperty)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->name)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->name)->get());
+		$this->assertEquals ($person4, $hashMap->get ($person4->name)->get());
 	}
 
 
@@ -2000,40 +2000,40 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$this->assertFalse ($hashMap->put ($dummyObject1->boolProperty, $dummyObject1)->isPresent());
+		// Adds $person1
+		$this->assertFalse ($hashMap->put ($person1->isMale, $person1)->isPresent());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->boolProperty, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1->isMale, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Overwrites $dummyObject1->boolProperty with $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->put ($dummyObject1->boolProperty, $dummyObject2)->get());
+		// Overwrites $person1->isMale with $person2
+		$this->assertEquals ($person1, $hashMap->put ($person1->isMale, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1->boolProperty, $internalKey);
-			$this->assertEquals ($dummyObject2, $internalValue);
+			$this->assertEquals ($person1->isMale, $internalKey);
+			$this->assertEquals ($person2, $internalValue);
 		}
 
-		// Adds $dummyObject3
-		$this->assertFalse ($hashMap->put ($dummyObject3->boolProperty, $dummyObject3)->isPresent());
+		// Adds $person3
+		$this->assertFalse ($hashMap->put ($person3->isMale, $person3)->isPresent());
 		$this->assertEquals (2, $hashMap->size());
 
 		// Checks the content of the map
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->boolProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3->boolProperty)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->isMale)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3->isMale)->get());
 	}
 
 
@@ -2042,43 +2042,43 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (4, "d", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
 		$this->assertEmpty ($hashMap->keys());
 
-		// Adds $dummyObject1
-		$this->assertFalse ($hashMap->put ($dummyObject1, $dummyObject1)->isPresent());
+		// Adds $person1
+		$this->assertFalse ($hashMap->put ($person1, $person1)->isPresent());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1, $internalKey);
-			$this->assertEquals ($dummyObject1, $internalValue);
+			$this->assertEquals ($person1, $internalKey);
+			$this->assertEquals ($person1, $internalValue);
 		}
 
-		// Overwrites $dummyObject1 with $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->put ($dummyObject1, $dummyObject2)->get());
+		// Overwrites $person1 with $person2
+		$this->assertEquals ($person1, $hashMap->put ($person1, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
 		foreach ($hashMap->iterator() as $internalKey => $internalValue) {
 
-			$this->assertEquals ($dummyObject1, $internalKey);
-			$this->assertEquals ($dummyObject2, $internalValue);
+			$this->assertEquals ($person1, $internalKey);
+			$this->assertEquals ($person2, $internalValue);
 		}
 
-		// Adds $dummyObject3 and $dummyObject4
-		$this->assertFalse ($hashMap->put ($dummyObject3, $dummyObject3)->isPresent());
-		$this->assertFalse ($hashMap->put ($dummyObject4, $dummyObject4)->isPresent());
+		// Adds $person3 and $person4
+		$this->assertFalse ($hashMap->put ($person3, $person3)->isPresent());
+		$this->assertFalse ($hashMap->put ($person4, $person4)->isPresent());
 		$this->assertEquals (3, $hashMap->size());
 
 		// Checks the content of the map
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject3)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->get ($dummyObject4)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person3)->get());
+		$this->assertEquals ($person4, $hashMap->get ($person4)->get());
 	}
 
 
@@ -2170,17 +2170,17 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutAllWithNumericKeysAndHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertTrue ($hashMap1->isEmpty());
 
 		$hashMap2 = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap2->put ($dummyObject1->intProperty, $dummyObject1);
-		$hashMap2->put ($dummyObject2->intProperty, $dummyObject2);
-		$hashMap2->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap2->put ($person1->age, $person1);
+		$hashMap2->put ($person2->age, $person2);
+		$hashMap2->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap2->size());
 
 		// Adds elements of $hashMap2 inside $hashMap1
@@ -2203,9 +2203,9 @@ final class HashMapTest extends TestCase {
 		$this->assertTrue ($hashMap1->isEmpty());
 
 		$hashMap2 = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap2->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1);
-		$hashMap2->put ($dummyObject2->intProperty * $floatConverter, $dummyObject2);
-		$hashMap2->put ($dummyObject3->intProperty * $floatConverter, $dummyObject3);
+		$hashMap2->put ($person1->age * $floatConverter, $person1);
+		$hashMap2->put ($person2->age * $floatConverter, $person2);
+		$hashMap2->put ($person3->age * $floatConverter, $person3);
 		$this->assertEquals (3, $hashMap2->size());
 
 		// Adds elements of $hashMap2 inside $hashMap1
@@ -2228,17 +2228,17 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutAllWithStringKeysAndHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_STRING_TYPE);
 		$this->assertTrue ($hashMap1->isEmpty());
 
 		$hashMap2 = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap2->put ($dummyObject1->stringProperty, $dummyObject1);
-		$hashMap2->put ($dummyObject2->stringProperty, $dummyObject2);
-		$hashMap2->put ($dummyObject3->stringProperty, $dummyObject3);
+		$hashMap2->put ($person1->name, $person1);
+		$hashMap2->put ($person2->name, $person2);
+		$hashMap2->put ($person3->name, $person3);
 		$this->assertEquals (3, $hashMap2->size());
 
 		// Adds elements of $hashMap2 inside $hashMap1
@@ -2261,15 +2261,15 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutAllWithBooleanKeysAndHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_BOOLEAN_TYPE);
 		$this->assertTrue ($hashMap1->isEmpty());
 
 		$hashMap2 = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$hashMap2->put ($dummyObject1->boolProperty, $dummyObject1);
-		$hashMap2->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap2->put ($person1->isMale, $person1);
+		$hashMap2->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap2->size());
 
 		// Adds elements of $hashMap2 inside $hashMap1
@@ -2292,17 +2292,17 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testPutAllWithObjectKeysAndHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap1 = new HashMap (Map::KEY_OBJECT_TYPE);
 		$this->assertTrue ($hashMap1->isEmpty());
 
 		$hashMap2 = new HashMap (Map::KEY_OBJECT_TYPE);
-		$hashMap2->put ($dummyObject1, $dummyObject1);
-		$hashMap2->put ($dummyObject2, $dummyObject2);
-		$hashMap2->put ($dummyObject3, $dummyObject3);
+		$hashMap2->put ($person1, $person1);
+		$hashMap2->put ($person2, $person2);
+		$hashMap2->put ($person3, $person3);
 		$this->assertEquals (3, $hashMap2->size());
 
 		// Adds elements of $hashMap2 inside $hashMap1
@@ -2325,91 +2325,91 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->remove ($dummyObject1->intProperty, $dummyObject1));
-		$this->assertFalse ($hashMap->remove ($dummyObject2->intProperty, $dummyObject2));
-		$this->assertFalse ($hashMap->remove ($dummyObject3->intProperty, $dummyObject3));
-		$this->assertFalse ($hashMap->remove ($dummyObject4->intProperty, $dummyObject4));
-		$this->assertFalse ($hashMap->remove ($dummyObject5->intProperty, $dummyObject5));
+		$this->assertFalse ($hashMap->remove ($person1->age, $person1));
+		$this->assertFalse ($hashMap->remove ($person2->age, $person2));
+		$this->assertFalse ($hashMap->remove ($person3->age, $person3));
+		$this->assertFalse ($hashMap->remove ($person4->age, $person4));
+		$this->assertFalse ($hashMap->remove ($person5->age, $person5));
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
-		$hashMap->put ($dummyObject4->intProperty, $dummyObject4);
-		$hashMap->put ($dummyObject5->intProperty, $dummyObject5);
+		$hashMap->put ($person1->age, $person1);
+		$hashMap->put ($person2->age, $person2);
+		$hashMap->put ($person3->age, $person3);
+		$hashMap->put ($person4->age, $person4);
+		$hashMap->put ($person5->age, $person5);
 		$this->assertEquals (5, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertTrue ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertTrue ($hashMap->containsKey ($person5->age));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject1
-		$this->assertTrue ($hashMap->remove ($dummyObject1->intProperty, $dummyObject1));
+		// Removes $person1
+		$this->assertTrue ($hashMap->remove ($person1->age, $person1));
 		$this->assertEquals (4, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertTrue ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertTrue ($hashMap->containsKey ($person5->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject2 and $dummyObject5
-		$this->assertTrue ($hashMap->remove ($dummyObject2->intProperty, $dummyObject2));
-		$this->assertTrue ($hashMap->remove ($dummyObject5->intProperty, $dummyObject5));
+		// Removes $person2 and $person5
+		$this->assertTrue ($hashMap->remove ($person2->age, $person2));
+		$this->assertTrue ($hashMap->remove ($person5->age, $person5));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertFalse ($hashMap->containsKey ($person5->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Tries to remove $dummyObject2 again and an incorrect pair key-value
-		$this->assertFalse ($hashMap->remove ($dummyObject2->intProperty, $dummyObject2));
-		$this->assertFalse ($hashMap->remove ($dummyObject3->intProperty, $dummyObject4));
+		// Tries to remove $person2 again and an incorrect pair key-value
+		$this->assertFalse ($hashMap->remove ($person2->age, $person2));
+		$this->assertFalse ($hashMap->remove ($person3->age, $person4));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertFalse ($hashMap->containsKey ($person5->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject3 and $dummyObject4
-		$this->assertTrue ($hashMap->remove ($dummyObject3->intProperty, $dummyObject3));
-		$this->assertTrue ($hashMap->remove ($dummyObject4->intProperty, $dummyObject4));
+		// Removes $person3 and $person4
+		$this->assertTrue ($hashMap->remove ($person3->age, $person3));
+		$this->assertTrue ($hashMap->remove ($person4->age, $person4));
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2419,91 +2419,91 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertFalse ($hashMap->remove ($dummyObject1->stringProperty, $dummyObject1));
-		$this->assertFalse ($hashMap->remove ($dummyObject2->stringProperty, $dummyObject2));
-		$this->assertFalse ($hashMap->remove ($dummyObject3->stringProperty, $dummyObject3));
-		$this->assertFalse ($hashMap->remove ($dummyObject4->stringProperty, $dummyObject4));
-		$this->assertFalse ($hashMap->remove ($dummyObject5->stringProperty, $dummyObject5));
+		$this->assertFalse ($hashMap->remove ($person1->name, $person1));
+		$this->assertFalse ($hashMap->remove ($person2->name, $person2));
+		$this->assertFalse ($hashMap->remove ($person3->name, $person3));
+		$this->assertFalse ($hashMap->remove ($person4->name, $person4));
+		$this->assertFalse ($hashMap->remove ($person5->name, $person5));
 
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
-		$hashMap->put ($dummyObject4->stringProperty, $dummyObject4);
-		$hashMap->put ($dummyObject5->stringProperty, $dummyObject5);
+		$hashMap->put ($person1->name, $person1);
+		$hashMap->put ($person2->name, $person2);
+		$hashMap->put ($person3->name, $person3);
+		$hashMap->put ($person4->name, $person4);
+		$hashMap->put ($person5->name, $person5);
 		$this->assertEquals (5, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertTrue ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertTrue ($hashMap->containsKey ($person5->name));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject1
-		$this->assertTrue ($hashMap->remove ($dummyObject1->stringProperty, $dummyObject1));
+		// Removes $person1
+		$this->assertTrue ($hashMap->remove ($person1->name, $person1));
 		$this->assertEquals (4, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertTrue ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertTrue ($hashMap->containsKey ($person5->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject2 and $dummyObject5
-		$this->assertTrue ($hashMap->remove ($dummyObject2->stringProperty, $dummyObject2));
-		$this->assertTrue ($hashMap->remove ($dummyObject5->stringProperty, $dummyObject5));
+		// Removes $person2 and $person5
+		$this->assertTrue ($hashMap->remove ($person2->name, $person2));
+		$this->assertTrue ($hashMap->remove ($person5->name, $person5));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertFalse ($hashMap->containsKey ($person5->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Tries to remove $dummyObject2 again and an incorrect pair key-value
-		$this->assertFalse ($hashMap->remove ($dummyObject2->stringProperty, $dummyObject2));
-		$this->assertFalse ($hashMap->remove ($dummyObject3->stringProperty, $dummyObject4));
+		// Tries to remove $person2 again and an incorrect pair key-value
+		$this->assertFalse ($hashMap->remove ($person2->name, $person2));
+		$this->assertFalse ($hashMap->remove ($person3->name, $person4));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertFalse ($hashMap->containsKey ($person5->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject3 and $dummyObject4
-		$this->assertTrue ($hashMap->remove ($dummyObject3->stringProperty, $dummyObject3));
-		$this->assertTrue ($hashMap->remove ($dummyObject4->stringProperty, $dummyObject4));
+		// Removes $person3 and $person4
+		$this->assertTrue ($hashMap->remove ($person3->name, $person3));
+		$this->assertTrue ($hashMap->remove ($person4->name, $person4));
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2513,46 +2513,46 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertFalse ($hashMap->remove ($dummyObject1->boolProperty, $dummyObject1));
-		$this->assertFalse ($hashMap->remove ($dummyObject2->boolProperty, $dummyObject2));
+		$this->assertFalse ($hashMap->remove ($person1->isMale, $person1));
+		$this->assertFalse ($hashMap->remove ($person2->isMale, $person2));
 
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person1->isMale, $person1);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Removes $dummyObject1
-		$this->assertTrue ($hashMap->remove ($dummyObject1->boolProperty, $dummyObject1));
+		// Removes $person1
+		$this->assertTrue ($hashMap->remove ($person1->isMale, $person1));
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Tries to remove $dummyObject1 again and an incorrect pair key-value
-		$this->assertFalse ($hashMap->remove ($dummyObject1->boolProperty, $dummyObject1));
-		$this->assertFalse ($hashMap->remove ($dummyObject2->boolProperty, $dummyObject1));
+		// Tries to remove $person1 again and an incorrect pair key-value
+		$this->assertFalse ($hashMap->remove ($person1->isMale, $person1));
+		$this->assertFalse ($hashMap->remove ($person2->isMale, $person1));
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Removes $dummyObject2
-		$this->assertTrue ($hashMap->remove ($dummyObject2->boolProperty, $dummyObject2));
+		// Removes $person2
+		$this->assertTrue ($hashMap->remove ($person2->isMale, $person2));
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2562,91 +2562,91 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertFalse ($hashMap->remove ($dummyObject1, $dummyObject1));
-		$this->assertFalse ($hashMap->remove ($dummyObject2, $dummyObject2));
-		$this->assertFalse ($hashMap->remove ($dummyObject3, $dummyObject3));
-		$this->assertFalse ($hashMap->remove ($dummyObject4, $dummyObject4));
-		$this->assertFalse ($hashMap->remove ($dummyObject5, $dummyObject5));
+		$this->assertFalse ($hashMap->remove ($person1, $person1));
+		$this->assertFalse ($hashMap->remove ($person2, $person2));
+		$this->assertFalse ($hashMap->remove ($person3, $person3));
+		$this->assertFalse ($hashMap->remove ($person4, $person4));
+		$this->assertFalse ($hashMap->remove ($person5, $person5));
 
-		$hashMap->put ($dummyObject1, $dummyObject1);
-		$hashMap->put ($dummyObject2, $dummyObject2);
-		$hashMap->put ($dummyObject3, $dummyObject3);
-		$hashMap->put ($dummyObject4, $dummyObject4);
-		$hashMap->put ($dummyObject5, $dummyObject5);
+		$hashMap->put ($person1, $person1);
+		$hashMap->put ($person2, $person2);
+		$hashMap->put ($person3, $person3);
+		$hashMap->put ($person4, $person4);
+		$hashMap->put ($person5, $person5);
 		$this->assertEquals (5, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertTrue ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertTrue ($hashMap->containsKey ($person5));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject1
-		$this->assertTrue ($hashMap->remove ($dummyObject1, $dummyObject1));
+		// Removes $person1
+		$this->assertTrue ($hashMap->remove ($person1, $person1));
 		$this->assertEquals (4, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertTrue ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertTrue ($hashMap->containsKey ($person5));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject2 and $dummyObject5
-		$this->assertTrue ($hashMap->remove ($dummyObject2, $dummyObject2));
-		$this->assertTrue ($hashMap->remove ($dummyObject5, $dummyObject5));
+		// Removes $person2 and $person5
+		$this->assertTrue ($hashMap->remove ($person2, $person2));
+		$this->assertTrue ($hashMap->remove ($person5, $person5));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertFalse ($hashMap->containsKey ($person5));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Tries to remove $dummyObject2 again and an incorrect pair key-value
-		$this->assertFalse ($hashMap->remove ($dummyObject2, $dummyObject2));
-		$this->assertFalse ($hashMap->remove ($dummyObject3, $dummyObject4));
+		// Tries to remove $person2 again and an incorrect pair key-value
+		$this->assertFalse ($hashMap->remove ($person2, $person2));
+		$this->assertFalse ($hashMap->remove ($person3, $person4));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertFalse ($hashMap->containsKey ($person5));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject3 and $dummyObject4
-		$this->assertTrue ($hashMap->remove ($dummyObject3, $dummyObject3));
-		$this->assertTrue ($hashMap->remove ($dummyObject4, $dummyObject4));
+		// Removes $person3 and $person4
+		$this->assertTrue ($hashMap->remove ($person3, $person3));
+		$this->assertTrue ($hashMap->remove ($person4, $person4));
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2656,90 +2656,90 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveByKeyWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject1->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject3->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject4->intProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject5->intProperty)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person1->age)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person2->age)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person3->age)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person4->age)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person5->age)->isPresent());
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
-		$hashMap->put ($dummyObject4->intProperty, $dummyObject4);
-		$hashMap->put ($dummyObject5->intProperty, $dummyObject5);
+		$hashMap->put ($person1->age, $person1);
+		$hashMap->put ($person2->age, $person2);
+		$hashMap->put ($person3->age, $person3);
+		$hashMap->put ($person4->age, $person4);
+		$hashMap->put ($person5->age, $person5);
 		$this->assertEquals (5, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertTrue ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertTrue ($hashMap->containsKey ($person5->age));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject1
-		$this->assertEquals ($dummyObject1, $hashMap->removeByKey ($dummyObject1->intProperty)->get());
+		// Removes $person1
+		$this->assertEquals ($person1, $hashMap->removeByKey ($person1->age)->get());
 		$this->assertEquals (4, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertTrue ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertTrue ($hashMap->containsKey ($person5->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject2 and $dummyObject5
-		$this->assertEquals ($dummyObject2, $hashMap->removeByKey ($dummyObject2->intProperty)->get());
-		$this->assertEquals ($dummyObject5, $hashMap->removeByKey ($dummyObject5->intProperty)->get());
+		// Removes $person2 and $person5
+		$this->assertEquals ($person2, $hashMap->removeByKey ($person2->age)->get());
+		$this->assertEquals ($person5, $hashMap->removeByKey ($person5->age)->get());
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertFalse ($hashMap->containsKey ($person5->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Tries to remove $dummyObject2 again
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2->intProperty)->isPresent());
+		// Tries to remove $person2 again
+		$this->assertFalse ($hashMap->removeByKey ($person2->age)->isPresent());
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->intProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->intProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertTrue ($hashMap->containsKey ($person3->age));
+		$this->assertTrue ($hashMap->containsKey ($person4->age));
+		$this->assertFalse ($hashMap->containsKey ($person5->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject3 and $dummyObject4
-		$this->assertEquals ($dummyObject3, $hashMap->removeByKey ($dummyObject3->intProperty)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->removeByKey ($dummyObject4->intProperty)->get());
+		// Removes $person3 and $person4
+		$this->assertEquals ($person3, $hashMap->removeByKey ($person3->age)->get());
+		$this->assertEquals ($person4, $hashMap->removeByKey ($person4->age)->get());
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2749,90 +2749,90 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveByKeyWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject1->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject3->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject4->stringProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject5->stringProperty)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person1->name)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person2->name)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person3->name)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person4->name)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person5->name)->isPresent());
 
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
-		$hashMap->put ($dummyObject3->stringProperty, $dummyObject3);
-		$hashMap->put ($dummyObject4->stringProperty, $dummyObject4);
-		$hashMap->put ($dummyObject5->stringProperty, $dummyObject5);
+		$hashMap->put ($person1->name, $person1);
+		$hashMap->put ($person2->name, $person2);
+		$hashMap->put ($person3->name, $person3);
+		$hashMap->put ($person4->name, $person4);
+		$hashMap->put ($person5->name, $person5);
 		$this->assertEquals (5, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertTrue ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertTrue ($hashMap->containsKey ($person5->name));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject1
-		$this->assertEquals ($dummyObject1, $hashMap->removeByKey ($dummyObject1->stringProperty)->get());
+		// Removes $person1
+		$this->assertEquals ($person1, $hashMap->removeByKey ($person1->name)->get());
 		$this->assertEquals (4, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertTrue ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertTrue ($hashMap->containsKey ($person5->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject2 and $dummyObject5
-		$this->assertEquals ($dummyObject2, $hashMap->removeByKey ($dummyObject2->stringProperty)->get());
-		$this->assertEquals ($dummyObject5, $hashMap->removeByKey ($dummyObject5->stringProperty)->get());
+		// Removes $person2 and $person5
+		$this->assertEquals ($person2, $hashMap->removeByKey ($person2->name)->get());
+		$this->assertEquals ($person5, $hashMap->removeByKey ($person5->name)->get());
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertFalse ($hashMap->containsKey ($person5->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Tries to remove $dummyObject2 again
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2->stringProperty)->isPresent());
+		// Tries to remove $person2 again
+		$this->assertFalse ($hashMap->removeByKey ($person2->name)->isPresent());
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3->stringProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5->stringProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertTrue ($hashMap->containsKey ($person3->name));
+		$this->assertTrue ($hashMap->containsKey ($person4->name));
+		$this->assertFalse ($hashMap->containsKey ($person5->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject3 and $dummyObject4
-		$this->assertEquals ($dummyObject3, $hashMap->removeByKey ($dummyObject3->stringProperty)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->removeByKey ($dummyObject4->stringProperty)->get());
+		// Removes $person3 and $person4
+		$this->assertEquals ($person3, $hashMap->removeByKey ($person3->name)->get());
+		$this->assertEquals ($person4, $hashMap->removeByKey ($person4->name)->get());
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2842,45 +2842,45 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveByKeyWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject1->boolProperty)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2->boolProperty)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person1->isMale)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person2->isMale)->isPresent());
 
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		$hashMap->put ($person1->isMale, $person1);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Removes $dummyObject1
-		$this->assertEquals ($dummyObject1, $hashMap->removeByKey ($dummyObject1->boolProperty)->get());
+		// Removes $person1
+		$this->assertEquals ($person1, $hashMap->removeByKey ($person1->isMale)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Tries to remove $dummyObject1 again
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject1->boolProperty)->isPresent());
+		// Tries to remove $person1 again
+		$this->assertFalse ($hashMap->removeByKey ($person1->isMale)->isPresent());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertFalse ($hashMap->containsKey ($person1->isMale));
+		$this->assertTrue ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Removes $dummyObject2
-		$this->assertEquals ($dummyObject2, $hashMap->removeByKey ($dummyObject2->boolProperty)->get());
+		// Removes $person2
+		$this->assertEquals ($person2, $hashMap->removeByKey ($person2->isMale)->get());
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2890,90 +2890,90 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testRemoveByKeyWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject1)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject3)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject4)->isPresent());
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject5)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person1)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person2)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person3)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person4)->isPresent());
+		$this->assertFalse ($hashMap->removeByKey ($person5)->isPresent());
 
-		$hashMap->put ($dummyObject1, $dummyObject1);
-		$hashMap->put ($dummyObject2, $dummyObject2);
-		$hashMap->put ($dummyObject3, $dummyObject3);
-		$hashMap->put ($dummyObject4, $dummyObject4);
-		$hashMap->put ($dummyObject5, $dummyObject5);
+		$hashMap->put ($person1, $person1);
+		$hashMap->put ($person2, $person2);
+		$hashMap->put ($person3, $person3);
+		$hashMap->put ($person4, $person4);
+		$hashMap->put ($person5, $person5);
 		$this->assertEquals (5, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertTrue ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertTrue ($hashMap->containsKey ($person5));
 
-		$this->assertTrue ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertTrue ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject1
-		$this->assertEquals ($dummyObject1, $hashMap->removeByKey ($dummyObject1)->get());
+		// Removes $person1
+		$this->assertEquals ($person1, $hashMap->removeByKey ($person1)->get());
 		$this->assertEquals (4, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject5));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertTrue ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertTrue ($hashMap->containsKey ($person5));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertTrue ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject2 and $dummyObject5
-		$this->assertEquals ($dummyObject2, $hashMap->removeByKey ($dummyObject2)->get());
-		$this->assertEquals ($dummyObject5, $hashMap->removeByKey ($dummyObject5)->get());
+		// Removes $person2 and $person5
+		$this->assertEquals ($person2, $hashMap->removeByKey ($person2)->get());
+		$this->assertEquals ($person5, $hashMap->removeByKey ($person5)->get());
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertFalse ($hashMap->containsKey ($person5));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Tries to remove $dummyObject2 again
-		$this->assertFalse ($hashMap->removeByKey ($dummyObject2)->isPresent());
+		// Tries to remove $person2 again
+		$this->assertFalse ($hashMap->removeByKey ($person2)->isPresent());
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertFalse ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject3));
-		$this->assertTrue ($hashMap->containsKey ($dummyObject4));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject5));
+		$this->assertFalse ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertTrue ($hashMap->containsKey ($person3));
+		$this->assertTrue ($hashMap->containsKey ($person4));
+		$this->assertFalse ($hashMap->containsKey ($person5));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject4));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject5));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
+		$this->assertTrue ($hashMap->containsValue ($person4));
+		$this->assertFalse ($hashMap->containsValue ($person5));
 
-		// Removes $dummyObject3 and $dummyObject4
-		$this->assertEquals ($dummyObject3, $hashMap->removeByKey ($dummyObject3)->get());
-		$this->assertEquals ($dummyObject4, $hashMap->removeByKey ($dummyObject4)->get());
+		// Removes $person3 and $person4
+		$this->assertEquals ($person3, $hashMap->removeByKey ($person3)->get());
+		$this->assertEquals ($person4, $hashMap->removeByKey ($person4)->get());
 		$this->assertEquals (0, $hashMap->size());
 	}
 
@@ -2985,10 +2985,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNumericKeysStoredAndGivenMapWithStringKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->replace ($dummyObject->stringProperty, $dummyObject);
+		$hashMap->replace ($person->name, $person);
 	}
 
 
@@ -2999,10 +2999,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNumericKeysStoredAndGivenMapWithBooleanKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->replace ($dummyObject->boolProperty, $dummyObject);
+		$hashMap->replace ($person->isMale, $person);
 	}
 
 
@@ -3013,10 +3013,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNumericKeysStoredAndGivenMapWithObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->replace ($dummyObject, $dummyObject);
+		$hashMap->replace ($person, $person);
 	}
 
 
@@ -3027,10 +3027,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithStringKeysStoredAndGivenMapWithBooleanKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->replace ($dummyObject->boolProperty, $dummyObject);
+		$hashMap->replace ($person->isMale, $person);
 	}
 
 
@@ -3041,10 +3041,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithStringKeysStoredAndGivenMapWithObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->replace ($dummyObject, $dummyObject);
+		$hashMap->replace ($person, $person);
 	}
 
 
@@ -3055,10 +3055,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithBooleanKeysStoredAndGivenMapWithObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$hashMap->replace ($dummyObject, $dummyObject);
+		$hashMap->replace ($person, $person);
 	}
 
 
@@ -3067,40 +3067,40 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->replace ($dummyObject1->intProperty, $dummyObject1)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject2->intProperty, $dummyObject2)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject3->intProperty, $dummyObject3)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person1->age, $person1)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person2->age, $person2)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person3->age, $person3)->isPresent());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		// Replaces $dummyObject1 by $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->replace ($dummyObject1->intProperty, $dummyObject2)->get());
+		// Replaces $person1 by $person2
+		$this->assertEquals ($person1, $hashMap->replace ($person1->age, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Replaces $dummyObject2 by $dummyObject3
-		$this->assertEquals ($dummyObject2, $hashMap->replace ($dummyObject1->intProperty, $dummyObject3)->get());
+		// Replaces $person2 by $person3
+		$this->assertEquals ($person2, $hashMap->replace ($person1->age, $person3)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->intProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->intProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->age));
+		$this->assertFalse ($hashMap->containsKey ($person2->age));
+		$this->assertFalse ($hashMap->containsKey ($person3->age));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
 	}
 
 
@@ -3109,40 +3109,40 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertFalse ($hashMap->replace ($dummyObject1->stringProperty, $dummyObject1)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject2->stringProperty, $dummyObject2)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject3->stringProperty, $dummyObject3)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person1->name, $person1)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person2->name, $person2)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person3->name, $person3)->isPresent());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->name, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		// Replaces $dummyObject1 by $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->replace ($dummyObject1->stringProperty, $dummyObject2)->get());
+		// Replaces $person1 by $person2
+		$this->assertEquals ($person1, $hashMap->replace ($person1->name, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Replaces $dummyObject2 by $dummyObject3
-		$this->assertEquals ($dummyObject2, $hashMap->replace ($dummyObject1->stringProperty, $dummyObject3)->get());
+		// Replaces $person2 by $person3
+		$this->assertEquals ($person2, $hashMap->replace ($person1->name, $person3)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->stringProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3->stringProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->name));
+		$this->assertFalse ($hashMap->containsKey ($person2->name));
+		$this->assertFalse ($hashMap->containsKey ($person3->name));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
 	}
 
 
@@ -3151,26 +3151,26 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertFalse ($hashMap->replace ($dummyObject1->boolProperty, $dummyObject1)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject2->boolProperty, $dummyObject2)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person1->isMale, $person1)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person2->isMale, $person2)->isPresent());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->isMale, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		// Replaces $dummyObject1 by $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->replace ($dummyObject1->boolProperty, $dummyObject2)->get());
+		// Replaces $person1 by $person2
+		$this->assertEquals ($person1, $hashMap->replace ($person1->isMale, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1->boolProperty));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2->boolProperty));
+		$this->assertTrue ($hashMap->containsKey ($person1->isMale));
+		$this->assertFalse ($hashMap->containsKey ($person2->isMale));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 	}
 
 
@@ -3179,40 +3179,40 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertFalse ($hashMap->replace ($dummyObject1, $dummyObject1)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject2, $dummyObject2)->isPresent());
-		$this->assertFalse ($hashMap->replace ($dummyObject3, $dummyObject3)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person1, $person1)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person2, $person2)->isPresent());
+		$this->assertFalse ($hashMap->replace ($person3, $person3)->isPresent());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1, $person1);
 		$this->assertEquals (1, $hashMap->size());
 
-		// Replaces $dummyObject1 by $dummyObject2
-		$this->assertEquals ($dummyObject1, $hashMap->replace ($dummyObject1, $dummyObject2)->get());
+		// Replaces $person1 by $person2
+		$this->assertEquals ($person1, $hashMap->replace ($person1, $person2)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject2));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertTrue ($hashMap->containsValue ($person2));
 
-		// Replaces $dummyObject2 by $dummyObject3
-		$this->assertEquals ($dummyObject2, $hashMap->replace ($dummyObject1, $dummyObject3)->get());
+		// Replaces $person2 by $person3
+		$this->assertEquals ($person2, $hashMap->replace ($person1, $person3)->get());
 		$this->assertEquals (1, $hashMap->size());
 
-		$this->assertTrue ($hashMap->containsKey ($dummyObject1));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject2));
-		$this->assertFalse ($hashMap->containsKey ($dummyObject3));
+		$this->assertTrue ($hashMap->containsKey ($person1));
+		$this->assertFalse ($hashMap->containsKey ($person2));
+		$this->assertFalse ($hashMap->containsKey ($person3));
 
-		$this->assertFalse ($hashMap->containsValue ($dummyObject1));
-		$this->assertFalse ($hashMap->containsValue ($dummyObject2));
-		$this->assertTrue ($hashMap->containsValue ($dummyObject3));
+		$this->assertFalse ($hashMap->containsValue ($person1));
+		$this->assertFalse ($hashMap->containsValue ($person2));
+		$this->assertTrue ($hashMap->containsValue ($person3));
 	}
 
 
@@ -3223,10 +3223,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithNumericKeysStoredAndGivenMapWithStringKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->replaceWithNewValue ($dummyObject->stringProperty, $dummyObject, $dummyObject);
+		$hashMap->replaceWithNewValue ($person->name, $person, $person);
 	}
 
 
@@ -3237,10 +3237,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithNumericKeysStoredAndGivenMapWithBooleanKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->replaceWithNewValue ($dummyObject->boolProperty, $dummyObject, $dummyObject);
+		$hashMap->replaceWithNewValue ($person->isMale, $person, $person);
 	}
 
 
@@ -3251,10 +3251,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithNumericKeysStoredAndGivenMapWithObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$hashMap->replaceWithNewValue ($dummyObject, $dummyObject, $dummyObject);
+		$hashMap->replaceWithNewValue ($person, $person, $person);
 	}
 
 
@@ -3265,10 +3265,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithStringKeysStoredAndGivenMapWithBooleanKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->replaceWithNewValue ($dummyObject->boolProperty, $dummyObject, $dummyObject);
+		$hashMap->replaceWithNewValue ($person->isMale, $person, $person);
 	}
 
 
@@ -3279,10 +3279,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithStringKeysStoredAndGivenMapWithObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$hashMap->replaceWithNewValue ($dummyObject, $dummyObject, $dummyObject);
+		$hashMap->replaceWithNewValue ($person, $person, $person);
 	}
 
 
@@ -3293,10 +3293,10 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithBooleanKeysStoredAndGivenMapWithObjectKey() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$hashMap->replaceWithNewValue ($dummyObject, $dummyObject, $dummyObject);
+		$hashMap->replaceWithNewValue ($person, $person, $person);
 	}
 
 
@@ -3305,66 +3305,66 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithNumericKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->intProperty, $dummyObject1, $dummyObject2));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject2->intProperty, $dummyObject2, $dummyObject3));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject3->intProperty, $dummyObject3, $dummyObject1));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->age, $person1, $person2));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person2->age, $person2, $person3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person3->age, $person3, $person1));
 
-		// Adds $dummyObject1 and $dummyObject2
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		// Adds $person1 and $person2
+		$hashMap->put ($person1->age, $person1);
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age)->get());
 
 		// Tries to replace a non existing pair
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->intProperty, $dummyObject2, $dummyObject3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->age, $person2, $person3));
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age)->get());
 
-		// Replaces $dummyObject1 by $dummyObject2 and $dummyObject2 by $dummyObject3
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject1->intProperty, $dummyObject1, $dummyObject2));
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject2->intProperty, $dummyObject2, $dummyObject3));
+		// Replaces $person1 by $person2 and $person2 by $person3
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person1->age, $person1, $person2));
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person2->age, $person2, $person3));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->intProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject2->intProperty)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->age)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person2->age)->get());
 
 		// Checks keys with float keys
 		$floatConverter = 0.1;
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->intProperty * $floatConverter, $dummyObject1, $dummyObject2));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject2->intProperty * $floatConverter, $dummyObject2, $dummyObject3));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject3->intProperty * $floatConverter, $dummyObject3, $dummyObject1));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->age * $floatConverter, $person1, $person2));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person2->age * $floatConverter, $person2, $person3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person3->age * $floatConverter, $person3, $person1));
 
-		// Adds $dummyObject1 and $dummyObject2
-		$hashMap->put ($dummyObject1->intProperty * $floatConverter, $dummyObject1);
-		$hashMap->put ($dummyObject2->intProperty * $floatConverter, $dummyObject2);
+		// Adds $person1 and $person2
+		$hashMap->put ($person1->age * $floatConverter, $person1);
+		$hashMap->put ($person2->age * $floatConverter, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty * $floatConverter)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age * $floatConverter)->get());
 
 		// Tries to replace a non existing pair
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->intProperty * $floatConverter, $dummyObject2, $dummyObject3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->age * $floatConverter, $person2, $person3));
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->intProperty * $floatConverter)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->age * $floatConverter)->get());
 
-		// Replaces $dummyObject1 by $dummyObject2 and $dummyObject2 by $dummyObject3
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject1->intProperty * $floatConverter, $dummyObject1, $dummyObject2));
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject2->intProperty * $floatConverter, $dummyObject2, $dummyObject3));
+		// Replaces $person1 by $person2 and $person2 by $person3
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person1->age * $floatConverter, $person1, $person2));
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person2->age * $floatConverter, $person2, $person3));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->intProperty * $floatConverter)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject2->intProperty * $floatConverter)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->age * $floatConverter)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person2->age * $floatConverter)->get());
 	}
 
 
@@ -3373,36 +3373,36 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithStringKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->stringProperty, $dummyObject1, $dummyObject2));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject2->stringProperty, $dummyObject2, $dummyObject3));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject3->stringProperty, $dummyObject3, $dummyObject1));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->name, $person1, $person2));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person2->name, $person2, $person3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person3->name, $person3, $person1));
 
-		// Adds $dummyObject1 and $dummyObject2
-		$hashMap->put ($dummyObject1->stringProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->stringProperty, $dummyObject2);
+		// Adds $person1 and $person2
+		$hashMap->put ($person1->name, $person1);
+		$hashMap->put ($person2->name, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->stringProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->name)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->name)->get());
 
 		// Tries to replace a non existing pair
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->stringProperty, $dummyObject2, $dummyObject3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->name, $person2, $person3));
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->stringProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->name)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->name)->get());
 
-		// Replaces $dummyObject1 by $dummyObject2 and $dummyObject2 by $dummyObject3
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject1->stringProperty, $dummyObject1, $dummyObject2));
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject2->stringProperty, $dummyObject2, $dummyObject3));
+		// Replaces $person1 by $person2 and $person2 by $person3
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person1->name, $person1, $person2));
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person2->name, $person2, $person3));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->stringProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject2->stringProperty)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->name)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person2->name)->get());
 	}
 
 
@@ -3411,36 +3411,36 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithBooleanKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", TRUE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_BOOLEAN_TYPE);
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->boolProperty, $dummyObject1, $dummyObject2));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject2->boolProperty, $dummyObject2, $dummyObject3));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject3->boolProperty, $dummyObject3, $dummyObject1));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->isMale, $person1, $person2));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person2->isMale, $person2, $person3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person3->isMale, $person3, $person1));
 
-		// Adds $dummyObject1 and $dummyObject2
-		$hashMap->put ($dummyObject1->boolProperty, $dummyObject1);
-		$hashMap->put ($dummyObject2->boolProperty, $dummyObject2);
+		// Adds $person1 and $person2
+		$hashMap->put ($person1->isMale, $person1);
+		$hashMap->put ($person2->isMale, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->boolProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->boolProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->isMale)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->isMale)->get());
 
 		// Tries to replace a non existing pair
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1->boolProperty, $dummyObject2, $dummyObject3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1->isMale, $person2, $person3));
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1->boolProperty)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2->boolProperty)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1->isMale)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2->isMale)->get());
 
-		// Replaces $dummyObject1 by $dummyObject2 and $dummyObject2 by $dummyObject3
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject1->boolProperty, $dummyObject1, $dummyObject2));
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject2->boolProperty, $dummyObject2, $dummyObject3));
+		// Replaces $person1 by $person2 and $person2 by $person3
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person1->isMale, $person1, $person2));
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person2->isMale, $person2, $person3));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1->boolProperty)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject2->boolProperty)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1->isMale)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person2->isMale)->get());
 	}
 
 
@@ -3449,36 +3449,36 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testReplaceWithNewValueWithObjectKeys() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_OBJECT_TYPE);
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1, $dummyObject1, $dummyObject2));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject2, $dummyObject2, $dummyObject3));
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject3, $dummyObject3, $dummyObject1));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1, $person1, $person2));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person2, $person2, $person3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person3, $person3, $person1));
 
-		// Adds $dummyObject1 and $dummyObject2
-		$hashMap->put ($dummyObject1, $dummyObject1);
-		$hashMap->put ($dummyObject2, $dummyObject2);
+		// Adds $person1 and $person2
+		$hashMap->put ($person1, $person1);
+		$hashMap->put ($person2, $person2);
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2)->get());
 
 		// Tries to replace a non existing pair
-		$this->assertFalse ($hashMap->replaceWithNewValue ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->assertFalse ($hashMap->replaceWithNewValue ($person1, $person2, $person3));
 
-		$this->assertEquals ($dummyObject1, $hashMap->get ($dummyObject1)->get());
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject2)->get());
+		$this->assertEquals ($person1, $hashMap->get ($person1)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person2)->get());
 
-		// Replaces $dummyObject1 by $dummyObject2 and $dummyObject2 by $dummyObject3
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject1, $dummyObject1, $dummyObject2));
-		$this->assertTrue ($hashMap->replaceWithNewValue ($dummyObject2, $dummyObject2, $dummyObject3));
+		// Replaces $person1 by $person2 and $person2 by $person3
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person1, $person1, $person2));
+		$this->assertTrue ($hashMap->replaceWithNewValue ($person2, $person2, $person3));
 		$this->assertEquals (2, $hashMap->size());
 
-		$this->assertEquals ($dummyObject2, $hashMap->get ($dummyObject1)->get());
-		$this->assertEquals ($dummyObject3, $hashMap->get ($dummyObject2)->get());
+		$this->assertEquals ($person2, $hashMap->get ($person1)->get());
+		$this->assertEquals ($person3, $hashMap->get ($person2)->get());
 	}
 
 
@@ -3487,41 +3487,41 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testSizeOfHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertEquals (0, $hashMap->size());
 		$this->assertTrue ($hashMap->isEmpty());
 
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		$hashMap->put ($person1->age, $person1);
 		$this->assertEquals (1, $hashMap->size());
 		$this->assertFalse ($hashMap->isEmpty());
 
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		$hashMap->put ($person2->age, $person2);
 		$this->assertEquals (2, $hashMap->size());
 		$this->assertFalse ($hashMap->isEmpty());
 
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 		$this->assertFalse ($hashMap->isEmpty());
 
 		// Does not permits duplicates
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		$hashMap->put ($person3->age, $person3);
 		$this->assertEquals (3, $hashMap->size());
 		$this->assertFalse ($hashMap->isEmpty());
 
 		// Removes every element
-		$hashMap->removeByKey ($dummyObject3->intProperty);
+		$hashMap->removeByKey ($person3->age);
 		$this->assertEquals (2, $hashMap->size());
 		$this->assertFalse ($hashMap->isEmpty());
 
-		$hashMap->removeByKey ($dummyObject2->intProperty);
+		$hashMap->removeByKey ($person2->age);
 		$this->assertEquals (1, $hashMap->size());
 		$this->assertFalse ($hashMap->isEmpty());
 
-		$hashMap->removeByKey ($dummyObject1->intProperty);
+		$hashMap->removeByKey ($person1->age);
 		$this->assertEquals (0, $hashMap->size());
 		$this->assertTrue ($hashMap->isEmpty());
 	}
@@ -3532,33 +3532,33 @@ final class HashMapTest extends TestCase {
 	 */
 	public function testValuesOfHashMap() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
 		$this->assertEmpty ($hashMap->values());
 
-		// Adds $dummyObject1
-		$hashMap->put ($dummyObject1->intProperty, $dummyObject1);
+		// Adds $person1
+		$hashMap->put ($person1->age, $person1);
 
 		$arrayOfValues = $hashMap->values();
 		$this->assertCount (1, $arrayOfValues);
-		$this->assertEquals ($dummyObject1, $arrayOfValues[0]);
+		$this->assertEquals ($person1, $arrayOfValues[0]);
 
-		// Adds $dummyObject2
-		$hashMap->put ($dummyObject2->intProperty, $dummyObject2);
+		// Adds $person2
+		$hashMap->put ($person2->age, $person2);
 
 		$arrayOfValues = $hashMap->values();
 		$this->assertCount (2, $arrayOfValues);
-		$this->assertEmpty (array_diff ($arrayOfValues, array ($dummyObject1, $dummyObject2)));
+		$this->assertEmpty (array_diff ($arrayOfValues, array ($person1, $person2)));
 
-		// Adds $dummyObject3
-		$hashMap->put ($dummyObject3->intProperty, $dummyObject3);
+		// Adds $person3
+		$hashMap->put ($person3->age, $person3);
 
 		$arrayOfValues = $hashMap->values();
 		$this->assertCount (3, $arrayOfValues);
-		$this->assertEmpty (array_diff ($arrayOfValues, array ($dummyObject1, $dummyObject2, $dummyObject3)));
+		$this->assertEmpty (array_diff ($arrayOfValues, array ($person1, $person2, $person3)));
 	}
 
 

@@ -10,8 +10,8 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
-use FunctionalPHP\test\DummyObject;
-use FunctionalPHP\test\DummyObjectComparator;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\PersonComparator;
 
 /**
  * Class used to test FunctionalPHP\collection\set\SortedSet
@@ -35,22 +35,22 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCreateNotEmptySortedSetWithoutComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
-		$sortedSet1->add ($dummyObject3);
-		$sortedSet1->add ($dummyObject1);
-		$sortedSet1->add ($dummyObject2);
+		$sortedSet1->add ($person3);
+		$sortedSet1->add ($person1);
+		$sortedSet1->add ($person2);
 
 		$sortedSet2 = new SortedSet ($sortedSet1);
 		$this->assertFalse ($sortedSet2->isEmpty());
 		$this->assertEquals ($sortedSet1->size(), $sortedSet2->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($sortedSet2, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($sortedSet2, array ($person1, $person2, $person3));
 	}
 
 
@@ -59,17 +59,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCreateNotEmptySortedSetWithComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
-		$sortedSet1->add ($dummyObject3);
-		$sortedSet1->add ($dummyObject1);
-		$sortedSet1->add ($dummyObject2);
+		$sortedSet1->add ($person3);
+		$sortedSet1->add ($person1);
+		$sortedSet1->add ($person2);
 
 		// Uses a comparator that ordering in reverse order
-		$sortedSet2 = new SortedSet ($sortedSet1, new DummyObjectComparator());
+		$sortedSet2 = new SortedSet ($sortedSet1, new PersonComparator());
 		$this->assertFalse ($sortedSet2->isEmpty());
 		$this->assertEquals ($sortedSet1->size(), $sortedSet2->size());
 
@@ -77,8 +77,8 @@ final class SortedSetTest extends TestCase {
 			$this->assertTrue ($sortedSet2->contains ($element));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($sortedSet2, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($sortedSet2, array ($person3, $person2, $person1));
 	}
 
 
@@ -87,47 +87,47 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testAddElements() {
 
-		$dummyObject1      = new DummyObject (1, "a", FALSE);
-		$dummyObject1Clone = new DummyObject (1, "a", TRUE);
-		$dummyObject2      = new DummyObject (2, "b", FALSE);
-		$dummyObject3      = new DummyObject (3, "c", FALSE);
+		$person1      = new Person ("John", 18, TRUE);
+		$person1Clone = new Person ("John", 18, FALSE);
+		$person2      = new Person ("Mary", 20, FALSE);
+		$person3      = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($sortedSet->isEmpty());
 
-		$this->assertTrue ($sortedSet->add ($dummyObject1));
+		$this->assertTrue ($sortedSet->add ($person1));
 
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject1));
+		$this->assertTrue ($sortedSet->contains ($person1));
 
 		foreach ($sortedSet->iterator() as $element) {
 
-			$this->assertEquals ($dummyObject1->intProperty, $element->intProperty);
-			$this->assertEquals ($dummyObject1->stringProperty, $element->stringProperty);
-			$this->assertEquals ($dummyObject1->boolProperty, $element->boolProperty);
+			$this->assertEquals ($person1->age, $element->age);
+			$this->assertEquals ($person1->name, $element->name);
+			$this->assertEquals ($person1->isMale, $element->isMale);
 		}
 
 		// Adds an "equal object"
-		$this->assertFalse ($sortedSet->add ($dummyObject1Clone));
+		$this->assertFalse ($sortedSet->add ($person1Clone));
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject1));
-		$this->assertTrue ($sortedSet->contains ($dummyObject1Clone));
+		$this->assertTrue ($sortedSet->contains ($person1));
+		$this->assertTrue ($sortedSet->contains ($person1Clone));
 
-		// Checks that dummyObject1 was not replaced by dummyObject1Clone
+		// Checks that $person1 was not replaced by $person1Clone
 		foreach ($sortedSet->iterator() as $element) {
 
-			$this->assertEquals ($dummyObject1Clone->intProperty, $element->intProperty);
-			$this->assertEquals ($dummyObject1Clone->stringProperty, $element->stringProperty);
-			$this->assertNotEquals ($dummyObject1Clone->boolProperty, $element->boolProperty);
+			$this->assertEquals ($person1Clone->age, $element->age);
+			$this->assertEquals ($person1Clone->name, $element->name);
+			$this->assertNotEquals ($person1Clone->isMale, $element->isMale);
 		}
 
-		// Adds the "rest of dummy objects"
-		$this->assertTrue ($sortedSet->add ($dummyObject3));
-		$this->assertTrue ($sortedSet->add ($dummyObject2));
+		// Adds the "rest of persons"
+		$this->assertTrue ($sortedSet->add ($person3));
+		$this->assertTrue ($sortedSet->add ($person2));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2, $person3));
 	}
 
 
@@ -147,17 +147,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
 		$this->assertTrue ($sortedSet1->isEmpty());
 
 		$sortedSet2 = new SortedSet();
-		$sortedSet2->add ($dummyObject2);
-		$sortedSet2->add ($dummyObject1);
-		$sortedSet2->add ($dummyObject3);
+		$sortedSet2->add ($person2);
+		$sortedSet2->add ($person1);
+		$sortedSet2->add ($person3);
 		$this->assertEquals (3, $sortedSet2->size());
 
 		// Adds elements of $sortedSet2 inside $sortedSet1
@@ -176,8 +176,8 @@ final class SortedSetTest extends TestCase {
 			$this->assertTrue ($sortedSet1->contains ($element));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($sortedSet2, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($sortedSet2, array ($person1, $person2, $person3));
 	}
 
 
@@ -186,17 +186,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($sortedSet->isEmpty());
 
 		$arrayList = new ArrayList();
-		$arrayList->add ($dummyObject2);
-		$arrayList->add ($dummyObject3);
-		$arrayList->add ($dummyObject1);
+		$arrayList->add ($person2);
+		$arrayList->add ($person3);
+		$arrayList->add ($person1);
 		$this->assertEquals (3, $arrayList->size());
 
 		// Adds elements of $arrayList inside $sortedSet
@@ -212,7 +212,7 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals ($arrayList->size(), $sortedSet->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2, $person3));
 	}
 
 
@@ -221,17 +221,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$sortedSet = new SortedSet (new HashSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new HashSet(), new PersonComparator());
 		$this->assertTrue ($sortedSet->isEmpty());
 
 		$hashSet = new HashSet();
-		$hashSet->add ($dummyObject3);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person3);
+		$hashSet->add ($person2);
+		$hashSet->add ($person1);
 		$this->assertEquals (3, $hashSet->size());
 
 		// Adds elements of $hashSet inside $sortedSet
@@ -247,7 +247,7 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals ($hashSet->size(), $sortedSet->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($sortedSet, array ($person3, $person2, $person1));
 	}
 
 
@@ -256,17 +256,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$sortedSet = new SortedSet (new HashSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new HashSet(), new PersonComparator());
 		$this->assertTrue ($sortedSet->isEmpty());
 
 		$priorityQueue = new PriorityQueue();
-		$priorityQueue->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
 		$this->assertEquals (3, $priorityQueue->size());
 
 		// Adds elements of $priorityQueue inside $sortedSet
@@ -282,7 +282,7 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals ($priorityQueue->size(), $sortedSet->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($sortedSet, array ($person3, $person2, $person1));
 	}
 
 
@@ -291,17 +291,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testClearSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($sortedSet->isEmpty());
 		$this->assertEquals (0, $sortedSet->size());
 
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (3, $sortedSet->size());
 
@@ -316,29 +316,29 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
-		$this->assertFalse ($sortedSet->contains ($dummyObject1));
-		$this->assertFalse ($sortedSet->contains ($dummyObject2));
-		$this->assertFalse ($sortedSet->contains ($dummyObject3));
+		$this->assertFalse ($sortedSet->contains ($person1));
+		$this->assertFalse ($sortedSet->contains ($person2));
+		$this->assertFalse ($sortedSet->contains ($person3));
 
-		$sortedSet->add ($dummyObject1);
-		$this->assertTrue ($sortedSet->contains ($dummyObject1));
-		$this->assertFalse ($sortedSet->contains ($dummyObject2));
-		$this->assertFalse ($sortedSet->contains ($dummyObject3));
+		$sortedSet->add ($person1);
+		$this->assertTrue ($sortedSet->contains ($person1));
+		$this->assertFalse ($sortedSet->contains ($person2));
+		$this->assertFalse ($sortedSet->contains ($person3));
 
-		$sortedSet->add ($dummyObject2);
-		$this->assertTrue ($sortedSet->contains ($dummyObject1));
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
-		$this->assertFalse ($sortedSet->contains ($dummyObject3));
+		$sortedSet->add ($person2);
+		$this->assertTrue ($sortedSet->contains ($person1));
+		$this->assertTrue ($sortedSet->contains ($person2));
+		$this->assertFalse ($sortedSet->contains ($person3));
 
-		$sortedSet->add ($dummyObject3);
-		$this->assertTrue ($sortedSet->contains ($dummyObject1));
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
-		$this->assertTrue ($sortedSet->contains ($dummyObject3));
+		$sortedSet->add ($person3);
+		$this->assertTrue ($sortedSet->contains ($person1));
+		$this->assertTrue ($sortedSet->contains ($person2));
+		$this->assertTrue ($sortedSet->contains ($person3));
 	}
 
 
@@ -347,24 +347,24 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
 		$sortedSet2 = new SortedSet();
 		$this->assertTrue ($sortedSet1->containsAll ($sortedSet2));
 
-		$sortedSet1->add ($dummyObject1);
-		$sortedSet2->add ($dummyObject1);
+		$sortedSet1->add ($person1);
+		$sortedSet2->add ($person1);
 		$this->assertTrue ($sortedSet1->containsAll ($sortedSet2));
 		$this->assertTrue ($sortedSet2->containsAll ($sortedSet1));
 
-		$sortedSet1->add ($dummyObject2);
+		$sortedSet1->add ($person2);
 		$this->assertTrue ($sortedSet1->containsAll ($sortedSet2));
 		$this->assertFalse ($sortedSet2->containsAll ($sortedSet1));
 
-		$sortedSet2->add ($dummyObject3);
+		$sortedSet2->add ($person3);
 		$this->assertFalse ($sortedSet1->containsAll ($sortedSet2));
 		$this->assertFalse ($sortedSet2->containsAll ($sortedSet1));
 	}
@@ -375,22 +375,22 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$arrayList = new ArrayList();
 		$this->assertTrue ($sortedSet->containsAll ($arrayList));
 
-		$sortedSet->add ($dummyObject1);
-		$arrayList->add ($dummyObject2);
+		$sortedSet->add ($person1);
+		$arrayList->add ($person2);
 		$this->assertFalse ($sortedSet->containsAll ($arrayList));
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertTrue ($sortedSet->containsAll ($arrayList));
 
-		$arrayList->add ($dummyObject3);
+		$arrayList->add ($person3);
 		$this->assertFalse ($sortedSet->containsAll ($arrayList));
 	}
 
@@ -400,22 +400,22 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$hashSet = new HashSet();
 		$this->assertTrue ($sortedSet->containsAll ($hashSet));
 
-		$sortedSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
+		$sortedSet->add ($person1);
+		$hashSet->add ($person2);
 		$this->assertFalse ($sortedSet->containsAll ($hashSet));
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertTrue ($sortedSet->containsAll ($hashSet));
 
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person3);
 		$this->assertFalse ($sortedSet->containsAll ($hashSet));
 	}
 
@@ -425,22 +425,22 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($sortedSet->containsAll ($priorityQueue));
 
-		$sortedSet->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
+		$sortedSet->add ($person1);
+		$priorityQueue->add ($person2);
 		$this->assertFalse ($sortedSet->containsAll ($priorityQueue));
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertTrue ($sortedSet->containsAll ($priorityQueue));
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$this->assertFalse ($sortedSet->containsAll ($priorityQueue));
 	}
 
@@ -450,9 +450,9 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
 		$sortedSet2 = new SortedSet();
@@ -460,19 +460,19 @@ final class SortedSetTest extends TestCase {
 		$this->assertTrue ($sortedSet1->equals ($sortedSet2));
 		$this->assertTrue ($sortedSet2->equals ($sortedSet1));
 
-		$sortedSet1->add ($dummyObject1);
+		$sortedSet1->add ($person1);
 		$this->assertFalse ($sortedSet1->equals ($sortedSet2));
 		$this->assertFalse ($sortedSet2->equals ($sortedSet1));
 
-		$sortedSet2->add ($dummyObject2);
+		$sortedSet2->add ($person2);
 		$this->assertFalse ($sortedSet1->equals ($sortedSet2));
 		$this->assertFalse ($sortedSet2->equals ($sortedSet1));
 
 		// The set have the same elements but added in different order
-		$sortedSet1->add ($dummyObject3);
-		$sortedSet1->add ($dummyObject2);
-		$sortedSet2->add ($dummyObject1);
-		$sortedSet2->add ($dummyObject3);
+		$sortedSet1->add ($person3);
+		$sortedSet1->add ($person2);
+		$sortedSet2->add ($person1);
+		$sortedSet2->add ($person3);
 		$this->assertEquals (3, $sortedSet1->size());
 		$this->assertEquals (3, $sortedSet2->size());
 
@@ -480,8 +480,8 @@ final class SortedSetTest extends TestCase {
 		$this->assertTrue ($sortedSet2->equals ($sortedSet1));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($sortedSet2, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($sortedSet2, array ($person1, $person2, $person3));
 	}
 
 
@@ -490,16 +490,16 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithArrayList() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$sortedSet = new SortedSet();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($sortedSet->equals ($arrayList));
 
-		$sortedSet->add ($dummyObject);
+		$sortedSet->add ($person);
 		$this->assertFalse ($sortedSet->equals ($arrayList));
 
-		$arrayList->add ($dummyObject);
+		$arrayList->add ($person);
 		$this->assertFalse ($sortedSet->equals ($arrayList));
 	}
 
@@ -509,20 +509,20 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$hashSet = new HashSet();
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertFalse ($sortedSet->equals ($hashSet));
 		$this->assertFalse ($hashSet->equals ($sortedSet));
 
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person1);
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 
@@ -532,21 +532,21 @@ final class SortedSetTest extends TestCase {
 		foreach ($hashSet->iterator() as $element)
 			$this->assertTrue ($sortedSet->contains ($element));
 
-		// Adds $dummyObject2
-		$sortedSet->add ($dummyObject2);
+		// Adds $person2
+		$sortedSet->add ($person2);
 		$this->assertFalse ($sortedSet->equals ($hashSet));
 		$this->assertFalse ($hashSet->equals ($sortedSet));
 
-		$hashSet->add ($dummyObject2);
+		$hashSet->add ($person2);
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 
-		// Adds $dummyObject3
-		$sortedSet->add ($dummyObject3);
+		// Adds $person3
+		$sortedSet->add ($person3);
 		$this->assertFalse ($sortedSet->equals ($hashSet));
 		$this->assertFalse ($hashSet->equals ($sortedSet));
 
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person3);
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 
@@ -563,16 +563,16 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithPriorityQueue() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$sortedSet = new SortedSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($sortedSet->equals ($priorityQueue));
 
-		$sortedSet->add ($dummyObject);
+		$sortedSet->add ($person);
 		$this->assertFalse ($sortedSet->equals ($priorityQueue));
 
-		$priorityQueue->add ($dummyObject);
+		$priorityQueue->add ($person);
 		$this->assertFalse ($sortedSet->equals ($priorityQueue));
 	}
 
@@ -582,39 +582,39 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testFirstElementOfSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($sortedSet->first()->isPresent());
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertEquals ($dummyObject3, $sortedSet->first()->get());
+		$this->assertEquals ($person3, $sortedSet->first()->get());
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertEquals (2, $sortedSet->size());
-		$this->assertEquals ($dummyObject1, $sortedSet->first()->get());
+		$this->assertEquals ($person1, $sortedSet->first()->get());
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertEquals (3, $sortedSet->size());
-		$this->assertEquals ($dummyObject1, $sortedSet->first()->get());
+		$this->assertEquals ($person1, $sortedSet->first()->get());
 
 		// Checks reverse ordination
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertEquals ($dummyObject1, $sortedSet->first()->get());
+		$this->assertEquals ($person1, $sortedSet->first()->get());
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertEquals (2, $sortedSet->size());
-		$this->assertEquals ($dummyObject3, $sortedSet->first()->get());
+		$this->assertEquals ($person3, $sortedSet->first()->get());
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertEquals (3, $sortedSet->size());
-		$this->assertEquals ($dummyObject3, $sortedSet->first()->get());
+		$this->assertEquals ($person3, $sortedSet->first()->get());
 	}
 
 
@@ -623,22 +623,22 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testHashCodeOfSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertEquals (0, $sortedSet->hashCode());
 
-		$sortedSet->add ($dummyObject1);
-		$this->assertEquals ($dummyObject1->hashCode(), $sortedSet->hashCode());
+		$sortedSet->add ($person1);
+		$this->assertEquals ($person1->hashCode(), $sortedSet->hashCode());
 
-		$sortedSet->add ($dummyObject2);
-		$this->assertEquals ($dummyObject1->hashCode() + $dummyObject2->hashCode()
+		$sortedSet->add ($person2);
+		$this->assertEquals ($person1->hashCode() + $person2->hashCode()
 				            ,$sortedSet->hashCode());
 
-		$sortedSet->add ($dummyObject3);
-		$this->assertEquals ($dummyObject1->hashCode() + $dummyObject2->hashCode() + $dummyObject3->hashCode()
+		$sortedSet->add ($person3);
+		$this->assertEquals ($person1->hashCode() + $person2->hashCode() + $person3->hashCode()
 				            ,$sortedSet->hashCode());
 	}
 
@@ -648,80 +648,80 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testHeadSetUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1);
+		$headSortedSet = $sortedSet->headSet ($person1);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person1, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2);
+		$headSortedSet = $sortedSet->headSet ($person2);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person2, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3);
+		$headSortedSet = $sortedSet->headSet ($person3);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person3, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		// Adds $dummyObject2 in the "origin set"
-		$sortedSet->add ($dummyObject2);
+		// Adds $person2 in the "origin set"
+		$sortedSet->add ($person2);
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1);
+		$headSortedSet = $sortedSet->headSet ($person1);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person1, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2);
+		$headSortedSet = $sortedSet->headSet ($person2);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person2, TRUE);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($headSortedSet->contains ($person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3);
+		$headSortedSet = $sortedSet->headSet ($person3);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($headSortedSet->contains ($person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person3, TRUE);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($headSortedSet->contains ($person2));
 
-		// Adds "the rest" of dummy objects
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		// Adds "the rest" of persons
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1);
+		$headSortedSet = $sortedSet->headSet ($person1);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person1, TRUE);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject1));
+		$this->assertTrue ($headSortedSet->contains ($person1));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2);
+		$headSortedSet = $sortedSet->headSet ($person2);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject1));
+		$this->assertTrue ($headSortedSet->contains ($person1));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person2, TRUE);
 		$this->assertEquals (2, $headSortedSet->size());
-		$this->checksOrdination ($headSortedSet, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($headSortedSet, array ($person1, $person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3);
+		$headSortedSet = $sortedSet->headSet ($person3);
 		$this->assertEquals (2, $headSortedSet->size());
-		$this->checksOrdination ($headSortedSet, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($headSortedSet, array ($person1, $person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person3, TRUE);
 		$this->assertEquals (3, $headSortedSet->size());
-		$this->checksOrdination ($headSortedSet, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($headSortedSet, array ($person1, $person2, $person3));
 	}
 
 
@@ -730,80 +730,80 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testHeadSetUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1);
+		$headSortedSet = $sortedSet->headSet ($person1);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person1, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2);
+		$headSortedSet = $sortedSet->headSet ($person2);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person2, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3);
+		$headSortedSet = $sortedSet->headSet ($person3);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person3, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		// Adds $dummyObject2 in the "origin set"
-		$sortedSet->add ($dummyObject2);
+		// Adds $person2 in the "origin set"
+		$sortedSet->add ($person2);
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1);
+		$headSortedSet = $sortedSet->headSet ($person1);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($headSortedSet->contains ($person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person1, TRUE);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($headSortedSet->contains ($person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2);
+		$headSortedSet = $sortedSet->headSet ($person2);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person2, TRUE);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($headSortedSet->contains ($person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3);
+		$headSortedSet = $sortedSet->headSet ($person3);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person3, TRUE);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		// Adds "the rest" of dummy objects
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		// Adds "the rest" of persons
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1);
+		$headSortedSet = $sortedSet->headSet ($person1);
 		$this->assertEquals (2, $headSortedSet->size());
-		$this->checksOrdination ($headSortedSet, array ($dummyObject3, $dummyObject2));
+		$this->checksOrdination ($headSortedSet, array ($person3, $person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject1, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person1, TRUE);
 		$this->assertEquals (3, $headSortedSet->size());
-		$this->checksOrdination ($headSortedSet, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($headSortedSet, array ($person3, $person2, $person1));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2);
+		$headSortedSet = $sortedSet->headSet ($person2);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject3));
+		$this->assertTrue ($headSortedSet->contains ($person3));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject2, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person2, TRUE);
 		$this->assertEquals (2, $headSortedSet->size());
-		$this->checksOrdination ($headSortedSet, array ($dummyObject3, $dummyObject2));
+		$this->checksOrdination ($headSortedSet, array ($person3, $person2));
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3);
+		$headSortedSet = $sortedSet->headSet ($person3);
 		$this->assertTrue ($headSortedSet->isEmpty());
 
-		$headSortedSet = $sortedSet->headSet ($dummyObject3, TRUE);
+		$headSortedSet = $sortedSet->headSet ($person3, TRUE);
 		$this->assertEquals (1, $headSortedSet->size());
-		$this->assertTrue ($headSortedSet->contains ($dummyObject3));
+		$this->assertTrue ($headSortedSet->contains ($person3));
 	}
 
 
@@ -812,41 +812,41 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testEmptySortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($sortedSet->isEmpty());
 		$this->assertEquals (0, $sortedSet->size());
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (1, $sortedSet->size());
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (2, $sortedSet->size());
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (3, $sortedSet->size());
 
 		// Does not permit duplicate elements
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (3, $sortedSet->size());
 
 		// Removes every element
-		$sortedSet->remove ($dummyObject3);
+		$sortedSet->remove ($person3);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (2, $sortedSet->size());
 
-		$sortedSet->remove ($dummyObject2);
+		$sortedSet->remove ($person2);
 		$this->assertFalse ($sortedSet->isEmpty());
 		$this->assertEquals (1, $sortedSet->size());
 
-		$sortedSet->remove ($dummyObject1);
+		$sortedSet->remove ($person1);
 		$this->assertTrue ($sortedSet->isEmpty());
 		$this->assertEquals (0, $sortedSet->size());
 	}
@@ -857,9 +857,9 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testIterateOverSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($sortedSet->isEmpty());
@@ -870,28 +870,28 @@ final class SortedSetTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$sortedSet->add ($dummyObject1);
+		// Adds $person1
+		$sortedSet->add ($person1);
 		$this->assertEquals (1, $sortedSet->size());
 
 		foreach ($sortedSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
-		// Adds another dummy objects
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject3);
+		// Adds another person
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
 		$this->assertEquals (3, $sortedSet->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2, $person3));
 
 		// Checks reverse comparator
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
-		$this->checksOrdination ($sortedSet, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($sortedSet, array ($person3, $person2, $person1));
 	}
 
 
@@ -900,39 +900,39 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testLastElementOfSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($sortedSet->last()->isPresent());
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertEquals ($dummyObject1, $sortedSet->last()->get());
+		$this->assertEquals ($person1, $sortedSet->last()->get());
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertEquals (2, $sortedSet->size());
-		$this->assertEquals ($dummyObject3, $sortedSet->last()->get());
+		$this->assertEquals ($person3, $sortedSet->last()->get());
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertEquals (3, $sortedSet->size());
-		$this->assertEquals ($dummyObject3, $sortedSet->last()->get());
+		$this->assertEquals ($person3, $sortedSet->last()->get());
 
 		// Checks reverse ordination
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertEquals ($dummyObject2, $sortedSet->last()->get());
+		$this->assertEquals ($person2, $sortedSet->last()->get());
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertEquals (2, $sortedSet->size());
-		$this->assertEquals ($dummyObject2, $sortedSet->last()->get());
+		$this->assertEquals ($person2, $sortedSet->last()->get());
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertEquals (3, $sortedSet->size());
-		$this->assertEquals ($dummyObject1, $sortedSet->last()->get());
+		$this->assertEquals ($person1, $sortedSet->last()->get());
 	}
 
 
@@ -941,30 +941,30 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRemoveElements() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
-		$this->assertFalse ($sortedSet->remove ($dummyObject1));
-		$this->assertFalse ($sortedSet->remove ($dummyObject2));
-		$this->assertFalse ($sortedSet->remove ($dummyObject3));
+		$this->assertFalse ($sortedSet->remove ($person1));
+		$this->assertFalse ($sortedSet->remove ($person2));
+		$this->assertFalse ($sortedSet->remove ($person3));
 
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
 		$this->assertEquals (3, $sortedSet->size());
 
-		$this->assertTrue ($sortedSet->remove ($dummyObject1));
+		$this->assertTrue ($sortedSet->remove ($person1));
 		$this->assertEquals (2, $sortedSet->size());
-		$this->checksOrdination ($sortedSet, array ($dummyObject2, $dummyObject3));
+		$this->checksOrdination ($sortedSet, array ($person2, $person3));
 
-		$this->assertTrue ($sortedSet->remove ($dummyObject2));
+		$this->assertTrue ($sortedSet->remove ($person2));
 		$this->assertEquals (1, $sortedSet->size());
 
-		$this->assertFalse ($sortedSet->remove ($dummyObject1));
-		$this->assertFalse ($sortedSet->remove ($dummyObject2));
-		$this->assertTrue ($sortedSet->remove ($dummyObject3));
+		$this->assertFalse ($sortedSet->remove ($person1));
+		$this->assertFalse ($sortedSet->remove ($person2));
+		$this->assertTrue ($sortedSet->remove ($person3));
 		$this->assertEquals (0, $sortedSet->size());
 	}
 
@@ -974,17 +974,17 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
 		$sortedSet2 = new SortedSet();
 		$this->assertFalse ($sortedSet1->removeAll ($sortedSet2));
 
-		$sortedSet1->add ($dummyObject1);
-		$sortedSet1->add ($dummyObject3);
-		$sortedSet2->add ($dummyObject2);
+		$sortedSet1->add ($person1);
+		$sortedSet1->add ($person3);
+		$sortedSet2->add ($person2);
 
 		$this->assertFalse ($sortedSet1->removeAll ($sortedSet2));
 		$this->assertEquals (2, $sortedSet1->size());
@@ -992,18 +992,18 @@ final class SortedSetTest extends TestCase {
 		$this->assertFalse ($sortedSet2->removeAll ($sortedSet1));
 		$this->assertEquals (1, $sortedSet2->size());
 
-		// Adds $dummyObject1 twice
-		$sortedSet1->add ($dummyObject1);
-		$sortedSet2->add ($dummyObject1);
+		// Adds $person1 twice
+		$sortedSet1->add ($person1);
+		$sortedSet2->add ($person1);
 
 		$this->assertEquals (2, $sortedSet1->size());
 		$this->assertEquals (2, $sortedSet2->size());
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject3));
-		$this->checksOrdination ($sortedSet2, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person3));
+		$this->checksOrdination ($sortedSet2, array ($person1, $person2));
 
 		$this->assertTrue ($sortedSet1->removeAll ($sortedSet2));
 		$this->assertEquals (1, $sortedSet1->size());
-		$this->assertTrue ($sortedSet1->contains ($dummyObject3));
+		$this->assertTrue ($sortedSet1->contains ($person3));
 
 		$this->assertEquals (2, $sortedSet2->size());
 	}
@@ -1014,28 +1014,28 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($sortedSet->removeAll ($arrayList));
 
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
-		$arrayList->add ($dummyObject2);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
+		$arrayList->add ($person2);
 
 		$this->assertFalse ($sortedSet->removeAll ($arrayList));
 		$this->assertEquals (2, $sortedSet->size());
 
-		// $sortedSet $dummyObject1 twice
-    	$sortedSet->add ($dummyObject1);
-    	$arrayList->add ($dummyObject1);
+		// $sortedSet $person1 twice
+    	$sortedSet->add ($person1);
+    	$arrayList->add ($person1);
 
 		$this->assertTrue ($sortedSet->removeAll ($arrayList));
 		$this->assertEquals (1, $sortedSet->size());
-    	$this->assertTrue ($sortedSet->contains ($dummyObject3));
+    	$this->assertTrue ($sortedSet->contains ($person3));
 	}
 
 
@@ -1044,28 +1044,28 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$hashSet = new HashSet();
 		$this->assertFalse ($sortedSet->removeAll ($hashSet));
 
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
-		$hashSet->add ($dummyObject2);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
+		$hashSet->add ($person2);
 
 		$this->assertFalse ($sortedSet->removeAll ($hashSet));
 		$this->assertEquals (2, $sortedSet->size());
 
-		// $sortedSet $dummyObject1 twice
-		$sortedSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject1);
+		// $sortedSet $person1 twice
+		$sortedSet->add ($person1);
+		$hashSet->add ($person1);
 
 		$this->assertTrue ($sortedSet->removeAll ($hashSet));
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject3));
+		$this->assertTrue ($sortedSet->contains ($person3));
 	}
 
 
@@ -1074,28 +1074,28 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($sortedSet->removeAll ($priorityQueue));
 
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject2);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
+		$priorityQueue->add ($person2);
 
 		$this->assertFalse ($sortedSet->removeAll ($priorityQueue));
 		$this->assertEquals (2, $sortedSet->size());
 
-		// $sortedSet $dummyObject1 twice
-		$sortedSet->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject1);
+		// $sortedSet $person1 twice
+		$sortedSet->add ($person1);
+		$priorityQueue->add ($person1);
 
 		$this->assertTrue ($sortedSet->removeAll ($priorityQueue));
 		$this->assertEquals (1, $sortedSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject3));
+		$this->assertTrue ($sortedSet->contains ($person3));
 	}
 
 
@@ -1104,23 +1104,23 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet1 = new SortedSet();
 		$sortedSet2 = new SortedSet();
 		$this->assertFalse ($sortedSet1->retainAll ($sortedSet2));
 
 		// Retains all elements of an empty set
-		$sortedSet1->add ($dummyObject1);
+		$sortedSet1->add ($person1);
 		$this->assertTrue ($sortedSet1->retainAll ($sortedSet2));
 		$this->assertTrue ($sortedSet1->isEmpty());
 
-		// Both sets shared dummyObject1
-		$sortedSet1->add ($dummyObject1);
-		$sortedSet1->add ($dummyObject2);
-		$sortedSet2->add ($dummyObject1);
+		// Both sets shared $person1
+		$sortedSet1->add ($person1);
+		$sortedSet1->add ($person2);
+		$sortedSet2->add ($person1);
 
 		$this->assertEquals (2, $sortedSet1->size());
 		$this->assertEquals (1, $sortedSet2->size());
@@ -1129,11 +1129,11 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (1, $sortedSet1->size());
 
 		foreach ($sortedSet1->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both sets have the same elements
-		$sortedSet1->add ($dummyObject2);
-		$sortedSet2->add ($dummyObject2);
+		$sortedSet1->add ($person2);
+		$sortedSet2->add ($person2);
 
 		$this->assertEquals (2, $sortedSet1->size());
 		$this->assertEquals (2, $sortedSet2->size());
@@ -1143,15 +1143,15 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (2, $sortedSet2->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject2));
-		$this->checksOrdination ($sortedSet2, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person2));
+		$this->checksOrdination ($sortedSet2, array ($person1, $person2));
 
-		// Adds $dummyObject3
-		$sortedSet1->add ($dummyObject3);
+		// Adds $person3
+		$sortedSet1->add ($person3);
 		$this->assertTrue ($sortedSet1->retainAll ($sortedSet2));
 
 		$this->assertEquals (2, $sortedSet1->size());
-		$this->checksOrdination ($sortedSet1, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($sortedSet1, array ($person1, $person2));
 	}
 
 
@@ -1160,23 +1160,23 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($sortedSet->retainAll ($arrayList));
 
 		// Retains all elements of an empty list
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertTrue ($sortedSet->retainAll ($arrayList));
 		$this->assertTrue ($sortedSet->isEmpty());
 
-		// Both collections shared $dummyObject1
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$arrayList->add ($dummyObject1);
+		// Both collections shared $person1
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$arrayList->add ($person1);
 
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (1, $arrayList->size());
@@ -1185,11 +1185,11 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (1, $sortedSet->size());
 
 		foreach ($sortedSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both collections have the same elements
-		$sortedSet->add ($dummyObject2);
-		$arrayList->add ($dummyObject2);
+		$sortedSet->add ($person2);
+		$arrayList->add ($person2);
 
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (2, $arrayList->size());
@@ -1198,16 +1198,16 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (2, $arrayList->size());
 
-		$this->assertEquals ($dummyObject1, $arrayList->get(0));
-		$this->assertEquals ($dummyObject2, $arrayList->get(1));
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2));
+		$this->assertEquals ($person1, $arrayList->get(0));
+		$this->assertEquals ($person2, $arrayList->get(1));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2));
 
-		// Adds $dummyObject3
-		$sortedSet->add ($dummyObject3);
+		// Adds $person3
+		$sortedSet->add ($person3);
 		$this->assertTrue ($sortedSet->retainAll ($arrayList));
 
 		$this->assertEquals (2, $sortedSet->size());
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2));
 	}
 
 
@@ -1216,23 +1216,23 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$hashSet = new HashSet();
 		$this->assertFalse ($sortedSet->retainAll ($hashSet));
 
 		// Retains all elements of an empty list
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertTrue ($sortedSet->retainAll ($hashSet));
 		$this->assertTrue ($sortedSet->isEmpty());
 
-		// Both collections shared $dummyObject1
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject1);
+		// Both collections shared $person1
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$hashSet->add ($person1);
 
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (1, $hashSet->size());
@@ -1241,11 +1241,11 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (1, $sortedSet->size());
 
 		foreach ($sortedSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both collections have the same elements
-		$sortedSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
+		$hashSet->add ($person2);
 
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (2, $hashSet->size());
@@ -1254,16 +1254,16 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (2, $hashSet->size());
 
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2));
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2));
 
-		// Adds $dummyObject3
-		$sortedSet->add ($dummyObject3);
+		// Adds $person3
+		$sortedSet->add ($person3);
 		$this->assertTrue ($sortedSet->retainAll ($hashSet));
 
 		$this->assertEquals (2, $sortedSet->size());
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2));
 	}
 
 
@@ -1272,23 +1272,23 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($sortedSet->retainAll ($priorityQueue));
 
 		// Retains all elements of an empty list
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertTrue ($sortedSet->retainAll ($priorityQueue));
 		$this->assertTrue ($sortedSet->isEmpty());
 
-		// Both collections shared $dummyObject1
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
+		// Both collections shared $person1
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$priorityQueue->add ($person1);
 
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (1, $priorityQueue->size());
@@ -1297,11 +1297,11 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (1, $sortedSet->size());
 
 		foreach ($sortedSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both collections have the same elements
-		$sortedSet->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject2);
+		$sortedSet->add ($person2);
+		$priorityQueue->add ($person2);
 
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (2, $priorityQueue->size());
@@ -1310,16 +1310,16 @@ final class SortedSetTest extends TestCase {
 		$this->assertEquals (2, $sortedSet->size());
 		$this->assertEquals (2, $priorityQueue->size());
 
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
-		$this->assertTrue ($priorityQueue->contains ($dummyObject2));
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2));
+		$this->assertTrue ($priorityQueue->contains ($person1));
+		$this->assertTrue ($priorityQueue->contains ($person2));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2));
 
-		// Adds $dummyObject3
-		$sortedSet->add ($dummyObject3);
+		// Adds $person3
+		$sortedSet->add ($person3);
 		$this->assertTrue ($sortedSet->retainAll ($priorityQueue));
 
 		$this->assertEquals (2, $sortedSet->size());
-		$this->checksOrdination ($sortedSet, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($sortedSet, array ($person1, $person2));
 	}
 
 
@@ -1328,41 +1328,41 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testSizeOfSortedSet() {
 
-    	$dummyObject1 = new DummyObject (1, "a", FALSE);
-    	$dummyObject2 = new DummyObject (2, "b", FALSE);
-    	$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
     	$sortedSet = new SortedSet();
     	$this->assertEquals (0, $sortedSet->size());
     	$this->assertTrue ($sortedSet->isEmpty());
 
-    	$sortedSet->add ($dummyObject1);
+    	$sortedSet->add ($person1);
     	$this->assertEquals (1, $sortedSet->size());
     	$this->assertFalse ($sortedSet->isEmpty());
 
-    	$sortedSet->add ($dummyObject2);
+    	$sortedSet->add ($person2);
     	$this->assertEquals (2, $sortedSet->size());
     	$this->assertFalse ($sortedSet->isEmpty());
 
-    	$sortedSet->add ($dummyObject3);
+    	$sortedSet->add ($person3);
     	$this->assertEquals (3, $sortedSet->size());
     	$this->assertFalse ($sortedSet->isEmpty());
 
     	// Does not permit duplicate elements
-    	$sortedSet->add ($dummyObject2);
+    	$sortedSet->add ($person2);
     	$this->assertEquals (3, $sortedSet->size());
     	$this->assertFalse ($sortedSet->isEmpty());
 
     	// Removes every element
-    	$sortedSet->remove ($dummyObject2);
+    	$sortedSet->remove ($person2);
     	$this->assertEquals (2, $sortedSet->size());
     	$this->assertFalse ($sortedSet->isEmpty());
 
-    	$sortedSet->remove ($dummyObject1);
+    	$sortedSet->remove ($person1);
     	$this->assertEquals (1, $sortedSet->size());
     	$this->assertFalse ($sortedSet->isEmpty());
 
-    	$sortedSet->remove ($dummyObject3);
+    	$sortedSet->remove ($person3);
     	$this->assertEquals (0, $sortedSet->size());
     	$this->assertTrue ($sortedSet->isEmpty());
 	}
@@ -1382,14 +1382,14 @@ final class SortedSetTest extends TestCase {
 		$this->assertEmpty ($stream->toArray());
 
 		// Not empty SortedSet
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sorted = new SortedSet();
-		$sorted->add ($dummyObject1);
-		$sorted->add ($dummyObject2);
-		$sorted->add ($dummyObject3);
+		$sorted->add ($person1);
+		$sorted->add ($person2);
+		$sorted->add ($person3);
 
 		$stream = $sorted->stream();
 
@@ -1404,7 +1404,6 @@ final class SortedSetTest extends TestCase {
 	}
 
 
-
 	/**
 	 * @covers FunctionalPHP\collection\set\SortedSet::subSet
 	 *
@@ -1412,11 +1411,11 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testSubSetWithFromElementGreaterThanToElementUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
 		$sortedSet = new SortedSet();
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject1);
+		$subSet = $sortedSet->subSet ($person2, $person1);
 	}
 
 
@@ -1427,11 +1426,11 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testSubSetWithFromElementGreaterThanToElementUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
 
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject2);
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
+		$subSet = $sortedSet->subSet ($person1, $person2);
 	}
 
 
@@ -1440,103 +1439,103 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testSubSetUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (4, "d", FALSE);
-		$dummyObject5 = new DummyObject (5, "e", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
 		$sortedSet = new SortedSet();
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertEquals (1, $sortedSet->size());
 
 		// The given range is not contained in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject4);
+		$subSet = $sortedSet->subSet ($person3, $person4);
 		$this->assertTrue ($subSet->isEmpty());
 
 		// By default, $fromElement is not included in the range
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3);
+		$subSet = $sortedSet->subSet ($person2, $person3);
 		$this->assertTrue ($subSet->isEmpty());
 
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3, TRUE);
+		$subSet = $sortedSet->subSet ($person2, $person3, TRUE);
 		$this->assertFalse ($subSet->isEmpty());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
 		// Same result if we included the $toElement
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person2, $person3, TRUE, TRUE);
 		$this->assertFalse ($subSet->isEmpty());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
 		// Adds several more elements
-		$sortedSet->add ($dummyObject3);
-		$sortedSet->add ($dummyObject4);
+		$sortedSet->add ($person3);
+		$sortedSet->add ($person4);
 
 		// Uses a $fromElement not stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject3);
+		$subSet = $sortedSet->subSet ($person1, $person3);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
+		$this->assertTrue ($sortedSet->contains ($person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject3, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person1, $person3, TRUE, FALSE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
+		$this->assertTrue ($sortedSet->contains ($person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject3, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person1, $person3, FALSE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject2, $dummyObject3));
+		$this->checksOrdination ($subSet, array ($person2, $person3));
 
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject3, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person1, $person3, TRUE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject2, $dummyObject3));
+		$this->checksOrdination ($subSet, array ($person2, $person3));
 
 		// Uses a $toElement not stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject5);
+		$subSet = $sortedSet->subSet ($person3, $person5);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject4));
+		$this->assertTrue ($sortedSet->contains ($person4));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject5, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person3, $person5, TRUE, FALSE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject3, $dummyObject4));
+		$this->checksOrdination ($subSet, array ($person3, $person4));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject5, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person3, $person5, FALSE, TRUE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject4));
+		$this->assertTrue ($sortedSet->contains ($person4));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject5, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person3, $person5, TRUE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject3, $dummyObject4));
+		$this->checksOrdination ($subSet, array ($person3, $person4));
 
 		// Uses a $toElement and $toElement not stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject5);
+		$subSet = $sortedSet->subSet ($person1, $person5);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject5, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person1, $person5, TRUE, FALSE);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject5, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person1, $person5, FALSE, TRUE);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
-		$subSet = $sortedSet->subSet ($dummyObject1, $dummyObject5, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person1, $person5, TRUE, TRUE);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
 		// Uses a $toElement and $toElement stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3);
+		$subSet = $sortedSet->subSet ($person2, $person3);
 		$this->assertTrue ($subSet->isEmpty());
 
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person2, $person3, TRUE, FALSE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
+		$this->assertTrue ($sortedSet->contains ($person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person2, $person3, FALSE, TRUE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject3));
+		$this->assertTrue ($sortedSet->contains ($person3));
 
-		$subSet = $sortedSet->subSet ($dummyObject2, $dummyObject3, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person2, $person3, TRUE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject2, $dummyObject3));
+		$this->checksOrdination ($subSet, array ($person2, $person3));
 	}
 
 
@@ -1545,103 +1544,103 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testSubSetUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (4, "d", FALSE);
-		$dummyObject5 = new DummyObject (5, "e", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Will", 30, TRUE);
+		$person5 = new Person ("Zach", 19, TRUE);
 
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
-		$sortedSet->add ($dummyObject4);
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
+		$sortedSet->add ($person4);
 		$this->assertEquals (1, $sortedSet->size());
 
 		// The given range is not contained in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject2);
+		$subSet = $sortedSet->subSet ($person3, $person2);
 		$this->assertTrue ($subSet->isEmpty());
 
 		// By default, $fromElement is not included in the range
-		$subSet = $sortedSet->subSet ($dummyObject4, $dummyObject3);
+		$subSet = $sortedSet->subSet ($person4, $person3);
 		$this->assertTrue ($subSet->isEmpty());
 
-		$subSet = $sortedSet->subSet ($dummyObject4, $dummyObject3, TRUE);
+		$subSet = $sortedSet->subSet ($person4, $person3, TRUE);
 		$this->assertFalse ($subSet->isEmpty());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
 		// Same result if we included the $toElement
-		$subSet = $sortedSet->subSet ($dummyObject4, $dummyObject3, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person4, $person3, TRUE, TRUE);
 		$this->assertFalse ($subSet->isEmpty());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
 		// Adds several more elements
-		$sortedSet->add ($dummyObject3);
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person3);
+		$sortedSet->add ($person2);
 
 		// Uses a $fromElement not stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject3);
+		$subSet = $sortedSet->subSet ($person5, $person3);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject4));
+		$this->assertTrue ($sortedSet->contains ($person4));
 
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject3, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person5, $person3, TRUE, FALSE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject4));
+		$this->assertTrue ($sortedSet->contains ($person4));
 
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject3, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person5, $person3, FALSE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject4, $dummyObject3));
+		$this->checksOrdination ($subSet, array ($person4, $person3));
 
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject3, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person5, $person3, TRUE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject4, $dummyObject3));
+		$this->checksOrdination ($subSet, array ($person4, $person3));
 
 		// Uses a $toElement not stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject1);
+		$subSet = $sortedSet->subSet ($person3, $person1);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
+		$this->assertTrue ($sortedSet->contains ($person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject1, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person3, $person1, TRUE, FALSE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject3, $dummyObject2));
+		$this->checksOrdination ($subSet, array ($person3, $person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject1, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person3, $person1, FALSE, TRUE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
+		$this->assertTrue ($sortedSet->contains ($person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject1, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person3, $person1, TRUE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject3, $dummyObject2));
+		$this->checksOrdination ($subSet, array ($person3, $person2));
 
 		// Uses a $toElement and $toElement not stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject1);
+		$subSet = $sortedSet->subSet ($person5, $person1);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject1, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person5, $person1, TRUE, FALSE);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject1, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person5, $person1, FALSE, TRUE);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
-		$subSet = $sortedSet->subSet ($dummyObject5, $dummyObject1, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person5, $person1, TRUE, TRUE);
 		$this->assertEquals (3, $subSet->size());
 		$this->assertTrue ($sortedSet->equals ($subSet));
 
 		// Uses a $toElement and $toElement stored in $sortedSet
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject2);
+		$subSet = $sortedSet->subSet ($person3, $person2);
 		$this->assertTrue ($subSet->isEmpty());
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject2, TRUE, FALSE);
+		$subSet = $sortedSet->subSet ($person3, $person2, TRUE, FALSE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject3));
+		$this->assertTrue ($sortedSet->contains ($person3));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject2, FALSE, TRUE);
+		$subSet = $sortedSet->subSet ($person3, $person2, FALSE, TRUE);
 		$this->assertEquals (1, $subSet->size());
-		$this->assertTrue ($sortedSet->contains ($dummyObject2));
+		$this->assertTrue ($sortedSet->contains ($person2));
 
-		$subSet = $sortedSet->subSet ($dummyObject3, $dummyObject2, TRUE, TRUE);
+		$subSet = $sortedSet->subSet ($person3, $person2, TRUE, TRUE);
 		$this->assertEquals (2, $subSet->size());
-		$this->checksOrdination ($subSet, array ($dummyObject3, $dummyObject2));
+		$this->checksOrdination ($subSet, array ($person3, $person2));
 	}
 
 
@@ -1650,80 +1649,80 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testTailSetUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1);
+		$tailSortedSet = $sortedSet->tailSet ($person1);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person1, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2);
+		$tailSortedSet = $sortedSet->tailSet ($person2);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person2, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3);
+		$tailSortedSet = $sortedSet->tailSet ($person3);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person3, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		// Adds $dummyObject2 in the "origin set"
-		$sortedSet->add ($dummyObject2);
+		// Adds $person2 in the "origin set"
+		$sortedSet->add ($person2);
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1);
+		$tailSortedSet = $sortedSet->tailSet ($person1);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($tailSortedSet->contains ($person2));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person1, TRUE);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($tailSortedSet->contains ($person2));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2);
+		$tailSortedSet = $sortedSet->tailSet ($person2);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person2, TRUE);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($tailSortedSet->contains ($person2));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3);
+		$tailSortedSet = $sortedSet->tailSet ($person3);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person3, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		// Adds "the rest" of dummy objects
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		// Adds "the rest" of persons
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1);
+		$tailSortedSet = $sortedSet->tailSet ($person1);
 		$this->assertEquals (2, $tailSortedSet->size());
-		$this->checksOrdination ($tailSortedSet, array ($dummyObject2, $dummyObject3));
+		$this->checksOrdination ($tailSortedSet, array ($person2, $person3));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person1, TRUE);
 		$this->assertEquals (3, $tailSortedSet->size());
-		$this->checksOrdination ($tailSortedSet, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($tailSortedSet, array ($person1, $person2, $person3));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2);
+		$tailSortedSet = $sortedSet->tailSet ($person2);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject3));
+		$this->assertTrue ($tailSortedSet->contains ($person3));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person2, TRUE);
 		$this->assertEquals (2, $tailSortedSet->size());
-		$this->checksOrdination ($tailSortedSet, array ($dummyObject2, $dummyObject3));
+		$this->checksOrdination ($tailSortedSet, array ($person2, $person3));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3);
+		$tailSortedSet = $sortedSet->tailSet ($person3);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person3, TRUE);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject3));
+		$this->assertTrue ($tailSortedSet->contains ($person3));
 	}
 
 
@@ -1732,80 +1731,80 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testTailSetUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1);
+		$tailSortedSet = $sortedSet->tailSet ($person1);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person1, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2);
+		$tailSortedSet = $sortedSet->tailSet ($person2);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person2, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3);
+		$tailSortedSet = $sortedSet->tailSet ($person3);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person3, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		// Adds $dummyObject2 in the "origin set"
-		$sortedSet->add ($dummyObject2);
+		// Adds $person2 in the "origin set"
+		$sortedSet->add ($person2);
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1);
+		$tailSortedSet = $sortedSet->tailSet ($person1);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person1, TRUE);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2);
+		$tailSortedSet = $sortedSet->tailSet ($person2);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person2, TRUE);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($tailSortedSet->contains ($person2));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3);
+		$tailSortedSet = $sortedSet->tailSet ($person3);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($tailSortedSet->contains ($person2));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person3, TRUE);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject2));
+		$this->assertTrue ($tailSortedSet->contains ($person2));
 
-		// Adds "the rest" of dummy objects
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		// Adds "the rest" of persons
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1);
+		$tailSortedSet = $sortedSet->tailSet ($person1);
 		$this->assertTrue ($tailSortedSet->isEmpty());
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject1, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person1, TRUE);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject1));
+		$this->assertTrue ($tailSortedSet->contains ($person1));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2);
+		$tailSortedSet = $sortedSet->tailSet ($person2);
 		$this->assertEquals (1, $tailSortedSet->size());
-		$this->assertTrue ($tailSortedSet->contains ($dummyObject1));
+		$this->assertTrue ($tailSortedSet->contains ($person1));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject2, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person2, TRUE);
 		$this->assertEquals (2, $tailSortedSet->size());
-		$this->checksOrdination ($tailSortedSet, array ($dummyObject2, $dummyObject1));
+		$this->checksOrdination ($tailSortedSet, array ($person2, $person1));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3);
+		$tailSortedSet = $sortedSet->tailSet ($person3);
 		$this->assertEquals (2, $tailSortedSet->size());
-		$this->checksOrdination ($tailSortedSet, array ($dummyObject2, $dummyObject1));
+		$this->checksOrdination ($tailSortedSet, array ($person2, $person1));
 
-		$tailSortedSet = $sortedSet->tailSet ($dummyObject3, TRUE);
+		$tailSortedSet = $sortedSet->tailSet ($person3, TRUE);
 		$this->assertEquals (3, $tailSortedSet->size());
-		$this->checksOrdination ($tailSortedSet, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($tailSortedSet, array ($person3, $person2, $person1));
 	}
 
 
@@ -1814,9 +1813,9 @@ final class SortedSetTest extends TestCase {
 	 */
 	public function testToArrayOfSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$sortedSet = new SortedSet();
 
@@ -1824,32 +1823,32 @@ final class SortedSetTest extends TestCase {
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (0, count ($array));
 
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
 		$array = $sortedSet->toArray();
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (3, count ($array));
 
-		$this->assertEquals ($dummyObject1, $array[0]);
-		$this->assertEquals ($dummyObject2, $array[1]);
-		$this->assertEquals ($dummyObject3, $array[2]);
+		$this->assertEquals ($person1, $array[0]);
+		$this->assertEquals ($person2, $array[1]);
+		$this->assertEquals ($person3, $array[2]);
 
 		// Checks reverse ordination
-		$sortedSet = new SortedSet (new SortedSet(), new DummyObjectComparator());
+		$sortedSet = new SortedSet (new SortedSet(), new PersonComparator());
 
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person3);
 
 		$array = $sortedSet->toArray();
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (3, count ($array));
 
-		$this->assertEquals ($dummyObject3, $array[0]);
-		$this->assertEquals ($dummyObject2, $array[1]);
-		$this->assertEquals ($dummyObject1, $array[2]);
+		$this->assertEquals ($person3, $array[0]);
+		$this->assertEquals ($person2, $array[1]);
+		$this->assertEquals ($person1, $array[2]);
 	}
 
 

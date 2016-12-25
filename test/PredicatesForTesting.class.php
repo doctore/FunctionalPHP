@@ -4,11 +4,11 @@ namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\functional\Predicate;
 use FunctionalPHP\exception\IllegalArgumentException;
-use FunctionalPHP\test\DummyObject;
+use FunctionalPHP\test\Person;
 
 
 /**
- * Uses to test if the given arguments are integer values
+ * Uses to test if the given arguments are integer values (used only for testing purpose).
  */
 final class IsIntPredicate implements Predicate {
 
@@ -32,7 +32,31 @@ final class IsIntPredicate implements Predicate {
 
 
 /**
- * Uses to test if the given arguments are float values
+ * Uses to test if the given arguments are integer values (used only for testing purpose).
+ */
+final class IsIntAndPairPredicate implements Predicate {
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Predicate::test()
+	 */
+	public function test (...$args) : bool {
+
+		if (count ($args) == 0)
+			return FALSE;
+
+			foreach ($args as $a) {
+
+				if (is_int ($a) === FALSE || ($a % 2 != 0))
+					return FALSE;
+			}
+			return TRUE;
+	}
+}
+
+
+/**
+ * Uses to test if the given arguments are float values (used only for testing purpose).
  */
 final class IsFloatPredicate implements Predicate {
 
@@ -56,7 +80,7 @@ final class IsFloatPredicate implements Predicate {
 
 
 /**
- * Uses to test if the given arguments are numeric values
+ * Uses to test if the given arguments are numeric values (used only for testing purpose).
  */
 final class IsNumericPredicate implements Predicate {
 
@@ -80,7 +104,7 @@ final class IsNumericPredicate implements Predicate {
 
 
 /**
- * Uses to test if the given integer is a prime number
+ * Uses to test if the given integer is a prime number (used only for testing purpose).
  */
 final class IsPrimePredicate implements Predicate {
 
@@ -122,63 +146,9 @@ final class IsPrimePredicate implements Predicate {
 
 
 /**
- * Uses to test if the intProperty of the given DummyObject is odd or not
+ * Uses to test if the name of the given Person has more than one word (used only for testing purpose).
  */
-final class HasDummyObjectOddIntPropertyPredicate implements Predicate {
-
-	/**
-	 * {@inheritDoc}
-	 * @see \FunctionalPHP\common\functional\Predicate::test()
-	 */
-	public function test (...$args) : bool {
-
-		if (count ($args) != 1)
-			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The method has received more than one argument: "
-					                               .var_export($args));
-		$dummyObject = $args[0];
-		if ($dummyObject instanceof \DummyObject)
-			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of ".DummyObject::class
-					                               ." Its type is: ".gettype ($dummyObject));
-
-		return ($dummyObject->intProperty % 2 != 0);
-	}
-
-}
-
-
-/**
- * Uses to test if the stringProperty of the given DummyObject has two characters
- */
-final class HasDummyObjectStringPropertyOfTwoCharactersPredicate implements Predicate {
-
-	/**
-	 * {@inheritDoc}
-	 * @see \FunctionalPHP\common\functional\Predicate::test()
-	 */
-	public function test (...$args) : bool {
-
-		if (count ($args) != 1)
-			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The method has received more than one argument: "
-					                               .var_export($args));
-		$dummyObject = $args[0];
-		if ($dummyObject instanceof \DummyObject)
-			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of ".DummyObject::class
-					                               ." Its type is: ".gettype ($dummyObject));
-
-		return (strlen ($dummyObject->stringProperty)  == 2);
-	}
-
-}
-
-
-/**
- * Uses to test if the intProperty of the given DummyObject is an integer value
- */
-final class IsIntTheIntPropertyOfDummyObjectPredicate implements Predicate {
+final class HasPersonMoreThanOneWordAsNamePredicate implements Predicate {
 
 	/**
 	 * {@inheritDoc}
@@ -190,22 +160,21 @@ final class IsIntTheIntPropertyOfDummyObjectPredicate implements Predicate {
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The method has received more than one argument: "
 					                               .var_export ($args));
-		$dummyObject = $args[0];
-		if ($dummyObject instanceof \DummyObject)
+		$person = $args[0];
+		if ($person instanceof \Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of ".DummyObject::class
-					                               ." Its type is: ".gettype ($dummyObject));
+					                           ,"The given parameter is not an instance of ".Person::class
+					                               ." Its type is: ".gettype ($person));
 
-		return is_int ($dummyObject->intProperty);
+		return (str_word_count ($person->name) > 1);
 	}
-
 }
 
 
 /**
- * Uses to test if the intProperty of the given DummyObject is a float value
+ * Uses to test if the name of the given Person is not null and not empty (used only for testing purpose).
  */
-final class IsFloatTheIntPropertyOfDummyObjectPredicate implements Predicate {
+final class HasPersonNameWithValuePredicate implements Predicate {
 
 	/**
 	 * {@inheritDoc}
@@ -215,17 +184,68 @@ final class IsFloatTheIntPropertyOfDummyObjectPredicate implements Predicate {
 
 		if (count ($args) != 1)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                          ,"The method has received more than one argument: "
-					                              .var_export ($args));
-		$dummyObject = $args[0];
-		if ($dummyObject instanceof \DummyObject)
+					                           ,"The method has received more than one argument: "
+					                               .var_export ($args));
+		$person = $args[0];
+		if ($person instanceof \Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of ".DummyObject::class
-					                               ." Its type is: ".gettype ($dummyObject));
+					                           ,"The given parameter is not an instance of ".Person::class
+					                               ." Its type is: ".gettype ($person));
 
-		return is_float ($dummyObject->intProperty);
+		return (!is_null ($person->name) && !empty ($person->name));
 	}
+}
 
+
+/**
+ * Uses to test if the given Person has no age value (used only for testing purpose).
+ */
+final class HasPersonNoAgeValuePredicate implements Predicate {
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Predicate::test()
+	 */
+	public function test (...$args) : bool {
+
+		if (count ($args) != 1)
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The method has received more than one argument: "
+					                               .var_export ($args));
+
+		$person = $args[0];
+		if ($person instanceof \Person)
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+						                       ,"The given parameter is not an instance of ".Person::class
+						                           ." Its type is: ".gettype ($person));
+		return (is_null ($person->age));
+	}
+}
+
+
+/**
+ * Uses to test if the age of the given Person is odd or not (used only for testing purpose).
+ */
+final class HasPersonOddAgePredicate implements Predicate {
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Predicate::test()
+	 */
+	public function test (...$args) : bool {
+
+		if (count ($args) != 1)
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The method has received more than one argument: "
+					                               .var_export ($args));
+		$person = $args[0];
+		if ($person instanceof \Person)
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The given parameter is not an instance of ".Person::class
+					                               ." Its type is: ".gettype ($person));
+
+		return ($person->age % 2 != 0);
+	}
 }
 
 ?>

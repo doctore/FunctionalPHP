@@ -44,8 +44,8 @@ require_once __DIR__."/../iterable/collection/set/SortedSet.class.php";
 /**
  * FunctionalPHP/test
  */
-require_once __DIR__."/DummyObject.class.php";
-require_once __DIR__."/DummyObjectComparator.class.php";
-require_once __DIR__."/DummyPredicates.class.php";
+require_once __DIR__."/ObjectsForTesting.class.php";
+require_once __DIR__."/ComparatorsForTesting.class.php";
+require_once __DIR__."/PredicatesForTesting.class.php";
 
 ?>

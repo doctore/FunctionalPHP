@@ -86,6 +86,7 @@ interface Stream {
 	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter is equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 	 *
 	 * @example
@@ -112,11 +113,36 @@ interface Stream {
 	public function findFirst() : Optional;
 
 	/**
+	 *    Returns a stream consisting of the results of replacing each element of this stream with
+	 * the contents of a mapped stream produced by applying the provided mapping function to each
+	 * element. The given function must satisfies the following rules:
+	 *
+	 *   1. Only has one parameter.
+	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
+	 *   3. The returned type must be an instance of Stream.
+	 *
+	 * @example
+	 *   $basicStream->flatMap (function (MyObject $myObject) : Stream {
+	 *	                           return $myObject->collectionProperty->stream();
+	 *	                        });
+	 *
+	 * @param \Closure $functionToApply
+	 *    Function to apply to each element which produces a Stream of new values.
+	 *
+	 * @return the new Stream
+	 *
+	 * @throws UnsupportedOperationException if the given function is not valid
+	 */
+	public function flatMap (\Closure $funtionUsedToFlat) : Stream;
+
+	/**
 	 *    Applies the given function to the elements of this stream. The given function must satisfies
 	 * the following rules:
 	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
 	 *
 	 * @example
@@ -130,6 +156,13 @@ interface Stream {
 	 * @throws UnsupportedOperationException if the given function is not valid
 	 */
 	public function forEach (\Closure $functionToApply);
+
+	/**
+	 * Returns the type of the stored elements in this Stream.
+	 *
+	 * @return the type of the stored elements in this Stream
+	 */
+	public function getCurrentTypeStoredByStream() : string;
 
 	/**
 	 *    Returns a stream consisting of the elements of this stream, truncated to be no longer
@@ -162,6 +195,7 @@ interface Stream {
 	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is not null and valid, that is:
 	 *        3.1 Equal to the type of Stream's elements
 	 *        3.2 One of Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP
@@ -232,6 +266,7 @@ interface Stream {
 	 *
 	 *   1. Only has two parameters.
 	 *   2. The type of the given parameters must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_SORTEDBYLAMBDA)
 	 *
 	 * @example

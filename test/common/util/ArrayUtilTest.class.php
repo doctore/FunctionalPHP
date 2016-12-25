@@ -7,8 +7,8 @@ require_once '../../LoadRequiredFiles.php';
 use PHPUnit\Framework\TestCase;
 
 use FunctionalPHP\common\util\ArrayUtil;
-use FunctionalPHP\test\DummyObject;
-use FunctionalPHP\test\DummyObjectComparator;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\PersonComparator;
 
 /**
  * Class used to test FunctionalPHP\common\util\ArrayTest
@@ -20,9 +20,9 @@ final class ArrayUtilTest extends TestCase {
 	 */
 	public function testBinaryObjectSearchInEmptyArray() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch (array(), $dummyObject);
+		$binarySearchResult = ArrayUtil::binaryObjectSearch (array(), $person);
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertFalse ($binarySearchResult->isElementFound);
 		$this->assertEquals (0, $binarySearchResult->position);
@@ -34,37 +34,37 @@ final class ArrayUtilTest extends TestCase {
 	 */
 	public function testBinaryObjectSearchWithNotFoundElement() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "b", FALSE);
-		$dummyObject4 = new DummyObject (4, "b", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary", 20, FALSE);
+		$person4 = new Person ("Mark", 15, TRUE);
 
 		// Adds elements to the array used to search
-		$arrayOfObjects = array ($dummyObject1, $dummyObject3);
+		$arrayOfObjects = array ($person1, $person3);
 
-		// Using DummyObject->compareTo (natural DummyObject->intProperty ordination)
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject2);
-		$this->assertNotNull ($binarySearchResult);
-		$this->assertFalse ($binarySearchResult->isElementFound);
-		$this->assertEquals (1, $binarySearchResult->position);
-
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject4);
+		// Using Person->compareTo (natural Person->name ordination)
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person2);
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertFalse ($binarySearchResult->isElementFound);
 		$this->assertEquals (2, $binarySearchResult->position);
 
-		// Using DummyObjectComparator (reverse DummyObject->intProperty ordination)
-		$arrayOfObjects = array ($dummyObject3, $dummyObject1);
-
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject2, new DummyObjectComparator());
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person4);
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertFalse ($binarySearchResult->isElementFound);
 		$this->assertEquals (1, $binarySearchResult->position);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject4, new DummyObjectComparator());
+		// Using PersonComparator (reverse Person->name ordination)
+		$arrayOfObjects = array ($person3, $person1);
+
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person2, new PersonComparator());
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertFalse ($binarySearchResult->isElementFound);
 		$this->assertEquals (0, $binarySearchResult->position);
+
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person4, new PersonComparator());
+		$this->assertNotNull ($binarySearchResult);
+		$this->assertFalse ($binarySearchResult->isElementFound);
+		$this->assertEquals (1, $binarySearchResult->position);
 	}
 
 
@@ -73,43 +73,43 @@ final class ArrayUtilTest extends TestCase {
 	 */
 	public function testBinaryObjectSearchWithFoundElement() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "b", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 25, FALSE);
+		$person3 = new Person ("Sara", 20, FALSE);
 
 		// Adds elements to the array used to search
-		$arrayOfObjects = array ($dummyObject1, $dummyObject2, $dummyObject3);
+		$arrayOfObjects = array ($person1, $person2, $person3);
 
-		// Using DummyObject->compareTo (natural DummyObject->intProperty ordination)
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject1);
+		// Using Person->compareTo (natural Person->name ordination)
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person1);
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertTrue ($binarySearchResult->isElementFound);
 		$this->assertEquals (0, $binarySearchResult->position);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject2);
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person2);
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertTrue ($binarySearchResult->isElementFound);
 		$this->assertEquals (1, $binarySearchResult->position);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject3);
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person3);
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertTrue ($binarySearchResult->isElementFound);
 		$this->assertEquals (2, $binarySearchResult->position);
 
-		// Using DummyObjectComparator (reverse DummyObject->intProperty ordination)
-		$arrayOfObjects = array ($dummyObject3, $dummyObject2, $dummyObject1);
+		// Using PersonComparator (reverse Person->name ordination)
+		$arrayOfObjects = array ($person3, $person2, $person1);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject1, new DummyObjectComparator());
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person1, new PersonComparator());
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertTrue ($binarySearchResult->isElementFound);
 		$this->assertEquals (2, $binarySearchResult->position);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject2, new DummyObjectComparator());
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person2, new PersonComparator());
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertTrue ($binarySearchResult->isElementFound);
 		$this->assertEquals (1, $binarySearchResult->position);
 
-		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $dummyObject3, new DummyObjectComparator());
+		$binarySearchResult = ArrayUtil::binaryObjectSearch ($arrayOfObjects, $person3, new PersonComparator());
 		$this->assertNotNull ($binarySearchResult);
 		$this->assertTrue ($binarySearchResult->isElementFound);
 		$this->assertEquals (0, $binarySearchResult->position);

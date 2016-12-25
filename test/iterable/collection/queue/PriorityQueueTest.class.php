@@ -10,8 +10,8 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
-use FunctionalPHP\test\DummyObject;
-use FunctionalPHP\test\DummyObjectComparator;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\PersonComparator;
 
 /**
  * Class used to test FunctionalPHP\collection\queue\PriorityQueue
@@ -34,22 +34,22 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCreateNotEmptySortedSetWithoutComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
-		$priorityQueue1->add ($dummyObject3);
-		$priorityQueue1->add ($dummyObject1);
-		$priorityQueue1->add ($dummyObject2);
+		$priorityQueue1->add ($person3);
+		$priorityQueue1->add ($person1);
+		$priorityQueue1->add ($person2);
 
 		$priorityQueue2 = new PriorityQueue ($priorityQueue1);
 		$this->assertFalse ($priorityQueue2->isEmpty());
 		$this->assertEquals ($priorityQueue1->size(), $priorityQueue2->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($priorityQueue2, array ($person1, $person2, $person3));
 	}
 
 
@@ -58,23 +58,23 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCreateNotEmptySortedSetWithComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
-		$priorityQueue1->add ($dummyObject3);
-		$priorityQueue1->add ($dummyObject1);
-		$priorityQueue1->add ($dummyObject2);
+		$priorityQueue1->add ($person3);
+		$priorityQueue1->add ($person1);
+		$priorityQueue1->add ($person2);
 
 		// Uses a comparator that ordering in reverse order
-		$priorityQueue2 = new PriorityQueue ($priorityQueue1, new DummyObjectComparator());
+		$priorityQueue2 = new PriorityQueue ($priorityQueue1, new PersonComparator());
 		$this->assertFalse ($priorityQueue2->isEmpty());
 		$this->assertEquals ($priorityQueue1->size(), $priorityQueue2->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject3, $dummyObject2, $dummyObject1));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($priorityQueue2, array ($person3, $person2, $person1));
 	}
 
 
@@ -83,34 +83,34 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testAddElements() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($priorityQueue->isEmpty());
 
-		$this->assertTrue ($priorityQueue->add ($dummyObject1));
+		$this->assertTrue ($priorityQueue->add ($person1));
 
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
+		$this->assertTrue ($priorityQueue->contains ($person1));
 
-		// Adds the "rest of dummy objects"
-		$this->assertTrue ($priorityQueue->add ($dummyObject3));
-		$this->assertTrue ($priorityQueue->add ($dummyObject2));
+		// Adds the "rest of persons"
+		$this->assertTrue ($priorityQueue->add ($person3));
+		$this->assertTrue ($priorityQueue->add ($person2));
 		$this->assertEquals (3, $priorityQueue->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person3));
 
 		// Permits duplicate elements
-		$this->assertTrue ($priorityQueue->add ($dummyObject1));
-		$this->assertTrue ($priorityQueue->add ($dummyObject3));
+		$this->assertTrue ($priorityQueue->add ($person1));
+		$this->assertTrue ($priorityQueue->add ($person3));
 		$this->assertEquals (5, $priorityQueue->size());
 
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject1, $dummyObject2
-				                                       ,$dummyObject3, $dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person1, $person2
+				                                       ,$person3, $person3));
 	}
 
 
@@ -130,17 +130,17 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testAddAllElementsWithPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
 		$this->assertTrue ($priorityQueue1->isEmpty());
 
 		$priorityQueue2 = new PriorityQueue();
-		$priorityQueue2->add ($dummyObject2);
-		$priorityQueue2->add ($dummyObject1);
-		$priorityQueue2->add ($dummyObject3);
+		$priorityQueue2->add ($person2);
+		$priorityQueue2->add ($person1);
+		$priorityQueue2->add ($person3);
 		$this->assertEquals (3, $priorityQueue2->size());
 
 		// Adds elements of $priorityQueue2 inside $priorityQueue1
@@ -159,9 +159,9 @@ final class PriorityQueueTest extends TestCase {
 			$this->assertTrue ($priorityQueue1->contains ($element));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject1, $dummyObject2
-				                                        ,$dummyObject2, $dummyObject3, $dummyObject3));
+		$this->checksOrdination ($priorityQueue2, array ($person1, $person2, $person3));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person1, $person2
+				                                        ,$person2, $person3, $person3));
 	}
 
 
@@ -170,17 +170,17 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testAddAllElementsWithArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($priorityQueue->isEmpty());
 
 		$arrayList = new ArrayList();
-		$arrayList->add ($dummyObject2);
-		$arrayList->add ($dummyObject3);
-		$arrayList->add ($dummyObject1);
+		$arrayList->add ($person2);
+		$arrayList->add ($person3);
+		$arrayList->add ($person1);
 		$this->assertEquals (3, $arrayList->size());
 
 		// Adds elements of $arrayList inside $priorityQueue
@@ -196,8 +196,8 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertEquals ($arrayList->size() * 2, $priorityQueue->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject1, $dummyObject2
-				                                       ,$dummyObject2, $dummyObject3, $dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person1, $person2
+				                                       ,$person2, $person3, $person3));
 	}
 
 
@@ -206,17 +206,17 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testAddAllElementsWithHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$priorityQueue = new PriorityQueue (new PriorityQueue(), new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue (new PriorityQueue(), new PersonComparator());
 		$this->assertTrue ($priorityQueue->isEmpty());
 
 		$hashSet = new HashSet();
-		$hashSet->add ($dummyObject3);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person3);
+		$hashSet->add ($person2);
+		$hashSet->add ($person1);
 		$this->assertEquals (3, $hashSet->size());
 
 		// Adds elements of $hashSet inside $priorityQueue
@@ -232,8 +232,8 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertEquals ($hashSet->size() * 2, $priorityQueue->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue, array ($dummyObject3, $dummyObject3, $dummyObject2
-				                                       ,$dummyObject2, $dummyObject1, $dummyObject1));
+		$this->checksOrdination ($priorityQueue, array ($person3, $person3, $person2
+				                                       ,$person2, $person1, $person1));
 	}
 
 
@@ -242,17 +242,17 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testAddAllElementsWithSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($priorityQueue->isEmpty());
 
 		$sortedSet = new SortedSet();
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
 		$this->assertEquals (3, $sortedSet->size());
 
 		// Adds elements of $sortedSet inside $priorityQueue
@@ -268,8 +268,8 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertEquals ($sortedSet->size() * 2, $priorityQueue->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject1, $dummyObject2
-				                                       ,$dummyObject2, $dummyObject3, $dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person1, $person2
+				                                       ,$person2, $person3, $person3));
 	}
 
 
@@ -278,17 +278,17 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testClearPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($priorityQueue->isEmpty());
 		$this->assertEquals (0, $priorityQueue->size());
 
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person2);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (3, $priorityQueue->size());
 
@@ -303,29 +303,29 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
-		$this->assertFalse ($priorityQueue->contains ($dummyObject1));
-		$this->assertFalse ($priorityQueue->contains ($dummyObject2));
-		$this->assertFalse ($priorityQueue->contains ($dummyObject3));
+		$this->assertFalse ($priorityQueue->contains ($person1));
+		$this->assertFalse ($priorityQueue->contains ($person2));
+		$this->assertFalse ($priorityQueue->contains ($person3));
 
-		$priorityQueue->add ($dummyObject1);
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
-		$this->assertFalse ($priorityQueue->contains ($dummyObject2));
-		$this->assertFalse ($priorityQueue->contains ($dummyObject3));
+		$priorityQueue->add ($person1);
+		$this->assertTrue ($priorityQueue->contains ($person1));
+		$this->assertFalse ($priorityQueue->contains ($person2));
+		$this->assertFalse ($priorityQueue->contains ($person3));
 
-		$priorityQueue->add ($dummyObject2);
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
-		$this->assertTrue ($priorityQueue->contains ($dummyObject2));
-		$this->assertFalse ($priorityQueue->contains ($dummyObject3));
+		$priorityQueue->add ($person2);
+		$this->assertTrue ($priorityQueue->contains ($person1));
+		$this->assertTrue ($priorityQueue->contains ($person2));
+		$this->assertFalse ($priorityQueue->contains ($person3));
 
-		$priorityQueue->add ($dummyObject3);
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
-		$this->assertTrue ($priorityQueue->contains ($dummyObject2));
-		$this->assertTrue ($priorityQueue->contains ($dummyObject3));
+		$priorityQueue->add ($person3);
+		$this->assertTrue ($priorityQueue->contains ($person1));
+		$this->assertTrue ($priorityQueue->contains ($person2));
+		$this->assertTrue ($priorityQueue->contains ($person3));
 	}
 
 
@@ -334,24 +334,24 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
 		$priorityQueue2 = new PriorityQueue();
 		$this->assertTrue ($priorityQueue1->containsAll ($priorityQueue2));
 
-		$priorityQueue1->add ($dummyObject1);
-		$priorityQueue2->add ($dummyObject1);
+		$priorityQueue1->add ($person1);
+		$priorityQueue2->add ($person1);
 		$this->assertTrue ($priorityQueue1->containsAll ($priorityQueue2));
 		$this->assertTrue ($priorityQueue2->containsAll ($priorityQueue1));
 
-		$priorityQueue1->add ($dummyObject2);
+		$priorityQueue1->add ($person2);
 		$this->assertTrue ($priorityQueue1->containsAll ($priorityQueue2));
 		$this->assertFalse ($priorityQueue2->containsAll ($priorityQueue1));
 
-		$priorityQueue2->add ($dummyObject3);
+		$priorityQueue2->add ($person3);
 		$this->assertFalse ($priorityQueue1->containsAll ($priorityQueue2));
 		$this->assertFalse ($priorityQueue2->containsAll ($priorityQueue1));
 	}
@@ -362,22 +362,22 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$arrayList = new ArrayList();
 		$this->assertTrue ($priorityQueue->containsAll ($arrayList));
 
-		$priorityQueue->add ($dummyObject1);
-		$arrayList->add ($dummyObject2);
+		$priorityQueue->add ($person1);
+		$arrayList->add ($person2);
 		$this->assertFalse ($priorityQueue->containsAll ($arrayList));
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertTrue ($priorityQueue->containsAll ($arrayList));
 
-		$arrayList->add ($dummyObject3);
+		$arrayList->add ($person3);
 		$this->assertFalse ($priorityQueue->containsAll ($arrayList));
 	}
 
@@ -387,22 +387,22 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$hashSet = new HashSet();
 		$this->assertTrue ($priorityQueue->containsAll ($hashSet));
 
-		$priorityQueue->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
+		$priorityQueue->add ($person1);
+		$hashSet->add ($person2);
 		$this->assertFalse ($priorityQueue->containsAll ($hashSet));
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertTrue ($priorityQueue->containsAll ($hashSet));
 
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person3);
 		$this->assertFalse ($priorityQueue->containsAll ($hashSet));
 	}
 
@@ -412,22 +412,22 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($priorityQueue->containsAll ($sortedSet));
 
-		$priorityQueue->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
+		$priorityQueue->add ($person1);
+		$sortedSet->add ($person2);
 		$this->assertFalse ($priorityQueue->containsAll ($sortedSet));
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertTrue ($priorityQueue->containsAll ($sortedSet));
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertFalse ($priorityQueue->containsAll ($sortedSet));
 	}
 
@@ -437,9 +437,9 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckEqualityWithPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
 		$priorityQueue2 = new PriorityQueue();
@@ -447,19 +447,19 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertTrue ($priorityQueue1->equals ($priorityQueue2));
 		$this->assertTrue ($priorityQueue2->equals ($priorityQueue1));
 
-		$priorityQueue1->add ($dummyObject1);
+		$priorityQueue1->add ($person1);
 		$this->assertFalse ($priorityQueue1->equals ($priorityQueue2));
 		$this->assertFalse ($priorityQueue2->equals ($priorityQueue1));
 
-		$priorityQueue2->add ($dummyObject2);
+		$priorityQueue2->add ($person2);
 		$this->assertFalse ($priorityQueue1->equals ($priorityQueue2));
 		$this->assertFalse ($priorityQueue2->equals ($priorityQueue1));
 
 		// The set have the same elements but added in different order
-		$priorityQueue1->add ($dummyObject3);
-		$priorityQueue1->add ($dummyObject2);
-		$priorityQueue2->add ($dummyObject1);
-		$priorityQueue2->add ($dummyObject3);
+		$priorityQueue1->add ($person3);
+		$priorityQueue1->add ($person2);
+		$priorityQueue2->add ($person1);
+		$priorityQueue2->add ($person3);
 		$this->assertEquals (3, $priorityQueue1->size());
 		$this->assertEquals (3, $priorityQueue2->size());
 
@@ -467,8 +467,8 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertTrue ($priorityQueue2->equals ($priorityQueue1));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2, $dummyObject3));
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2, $dummyObject3));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2, $person3));
+		$this->checksOrdination ($priorityQueue2, array ($person1, $person2, $person3));
 	}
 
 
@@ -477,16 +477,16 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckEqualityWithArrayList() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$priorityQueue = new PriorityQueue();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($priorityQueue->equals ($arrayList));
 
-		$priorityQueue->add ($dummyObject);
+		$priorityQueue->add ($person);
 		$this->assertFalse ($priorityQueue->equals ($arrayList));
 
-		$arrayList->add ($dummyObject);
+		$arrayList->add ($person);
 		$this->assertFalse ($priorityQueue->equals ($arrayList));
 	}
 
@@ -496,16 +496,16 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashSet() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$priorityQueue = new PriorityQueue();
 		$hashSet = new HashSet();
 		$this->assertFalse ($priorityQueue->equals ($hashSet));
 
-		$priorityQueue->add ($dummyObject);
+		$priorityQueue->add ($person);
 		$this->assertFalse ($priorityQueue->equals ($hashSet));
 
-		$hashSet->add ($dummyObject);
+		$hashSet->add ($person);
 		$this->assertFalse ($priorityQueue->equals ($hashSet));
 	}
 
@@ -515,16 +515,16 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testCheckEqualityWithSortedSet() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$priorityQueue = new PriorityQueue();
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($priorityQueue->equals ($sortedSet));
 
-		$priorityQueue->add ($dummyObject);
+		$priorityQueue->add ($person);
 		$this->assertFalse ($priorityQueue->equals ($sortedSet));
 
-		$sortedSet->add ($dummyObject);
+		$sortedSet->add ($person);
 		$this->assertFalse ($priorityQueue->equals ($sortedSet));
 	}
 
@@ -534,22 +534,22 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testHashCodeOfPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertEquals (0, $priorityQueue->hashCode());
 
-		$priorityQueue->add ($dummyObject1);
-		$this->assertEquals ($dummyObject1->hashCode(), $priorityQueue->hashCode());
+		$priorityQueue->add ($person1);
+		$this->assertEquals ($person1->hashCode(), $priorityQueue->hashCode());
 
-		$priorityQueue->add ($dummyObject2);
-		$this->assertEquals ($dummyObject1->hashCode() + $dummyObject2->hashCode()
+		$priorityQueue->add ($person2);
+		$this->assertEquals ($person1->hashCode() + $person2->hashCode()
 				            ,$priorityQueue->hashCode());
 
-		$priorityQueue->add ($dummyObject3);
-		$this->assertEquals ($dummyObject1->hashCode() + $dummyObject2->hashCode() + $dummyObject3->hashCode()
+		$priorityQueue->add ($person3);
+		$this->assertEquals ($person1->hashCode() + $person2->hashCode() + $person3->hashCode()
 				            ,$priorityQueue->hashCode());
 	}
 
@@ -559,45 +559,45 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testEmptyPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($priorityQueue->isEmpty());
 		$this->assertEquals (0, $priorityQueue->size());
 
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (1, $priorityQueue->size());
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (2, $priorityQueue->size());
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (3, $priorityQueue->size());
 
 		// Permits duplicate elements
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (4, $priorityQueue->size());
 
 		// Removes every element
-		$priorityQueue->remove ($dummyObject3);
+		$priorityQueue->remove ($person3);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (3, $priorityQueue->size());
 
-		$priorityQueue->remove ($dummyObject2);
+		$priorityQueue->remove ($person2);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (2, $priorityQueue->size());
 
-		$priorityQueue->remove ($dummyObject1);
+		$priorityQueue->remove ($person1);
 		$this->assertFalse ($priorityQueue->isEmpty());
 		$this->assertEquals (1, $priorityQueue->size());
 
-		$priorityQueue->remove ($dummyObject2);
+		$priorityQueue->remove ($person2);
 		$this->assertTrue ($priorityQueue->isEmpty());
 		$this->assertEquals (0, $priorityQueue->size());
 	}
@@ -608,9 +608,9 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testIterateOverPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($priorityQueue->isEmpty());
@@ -621,32 +621,32 @@ final class PriorityQueueTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$priorityQueue->add ($dummyObject1);
+		// Adds $person1
+		$priorityQueue->add ($person1);
 		$this->assertEquals (1, $priorityQueue->size());
 
 		foreach ($priorityQueue->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
-		// Adds another dummy objects
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject2);
+		// Adds another persons
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person2);
 		$this->assertEquals (4, $priorityQueue->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 		// Checks reverse comparator
-		$priorityQueue = new PriorityQueue (new PriorityQueue(), new DummyObjectComparator());
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue = new PriorityQueue (new PriorityQueue(), new PersonComparator());
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person1);
 		$this->assertEquals (4, $priorityQueue->size());
 
-		$this->checksOrdination ($priorityQueue, array ($dummyObject3, $dummyObject2, $dummyObject1
-				                                       ,$dummyObject1));
+		$this->checksOrdination ($priorityQueue, array ($person3, $person2, $person1
+				                                       ,$person1));
 	}
 
 
@@ -655,32 +655,32 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testPeekUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (2, "b", FALSE);
-		$dummyObject2 = new DummyObject (3, "c", FALSE);
-		$dummyObject3 = new DummyObject (1, "a", FALSE);
+		$person1 = new Person ("Mary", 20, FALSE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("John", 18, TRUE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($priorityQueue->peek()->isPresent());
 
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($person1, $headElement);
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertEquals (2, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($person1, $headElement);
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$this->assertEquals (3, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 
 		// Permits duplicate elements
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertEquals (4, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 	}
 
 
@@ -689,32 +689,32 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testPeekUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (2, "b", FALSE);
-		$dummyObject2 = new DummyObject (3, "c", FALSE);
-		$dummyObject3 = new DummyObject (1, "a", FALSE);
+		$person1 = new Person ("Mary", 20, FALSE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("John", 18, TRUE);
 
-		$priorityQueue = new PriorityQueue (new PriorityQueue(), new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue (new PriorityQueue(), new PersonComparator());
 		$this->assertFalse ($priorityQueue->peek()->isPresent());
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertEquals (2, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($person2, $headElement);
 
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertEquals (3, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($person2, $headElement);
 
 		// Permits duplicate elements
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertEquals (4, $priorityQueue->size());
 		$headElement = $priorityQueue->peek()->get();
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($person2, $headElement);
 	}
 
 
@@ -723,41 +723,41 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testPollUsingCompareToOfStoredObjects() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$headElement = $priorityQueue->poll()->get();
 
 		$this->assertTrue ($priorityQueue->isEmpty());
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person3);
 		$this->assertEquals (4, $priorityQueue->size());
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (3, $priorityQueue->size());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($person1, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (2, $priorityQueue->size());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($person1, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($person2, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertTrue ($priorityQueue->isEmpty());
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 	}
@@ -768,41 +768,41 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testPollUsingGivenComparator() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$priorityQueue = new PriorityQueue (new PriorityQueue(), new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue (new PriorityQueue(), new PersonComparator());
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$headElement = $priorityQueue->poll()->get();
 
 		$this->assertTrue ($priorityQueue->isEmpty());
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person3);
 		$this->assertEquals (4, $priorityQueue->size());
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (3, $priorityQueue->size());
-		$this->assertEquals ($dummyObject3, $headElement);
+		$this->assertEquals ($person3, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (2, $priorityQueue->size());
-		$this->assertEquals ($dummyObject2, $headElement);
+		$this->assertEquals ($person2, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($person1, $headElement);
 
 		$headElement = $priorityQueue->poll()->get();
 		$this->assertTrue ($priorityQueue->isEmpty());
-		$this->assertEquals ($dummyObject1, $headElement);
+		$this->assertEquals ($person1, $headElement);
 
 		$this->assertFalse ($priorityQueue->poll()->isPresent());
 	}
@@ -813,43 +813,43 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRemoveElements() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
-		$this->assertFalse ($priorityQueue->remove ($dummyObject1));
-		$this->assertFalse ($priorityQueue->remove ($dummyObject2));
+		$this->assertFalse ($priorityQueue->remove ($person1));
+		$this->assertFalse ($priorityQueue->remove ($person2));
 
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
 		$this->assertEquals (3, $priorityQueue->size());
 
-		$this->assertTrue ($priorityQueue->remove ($dummyObject1));
+		$this->assertTrue ($priorityQueue->remove ($person1));
 		$this->assertEquals (2, $priorityQueue->size());
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2));
 
-		$this->assertTrue ($priorityQueue->remove ($dummyObject2));
+		$this->assertTrue ($priorityQueue->remove ($person2));
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
+		$this->assertTrue ($priorityQueue->contains ($person1));
 
-		$this->assertTrue ($priorityQueue->remove ($dummyObject1));
+		$this->assertTrue ($priorityQueue->remove ($person1));
 		$this->assertTrue ($priorityQueue->isEmpty());
 
-		$priorityQueue->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject3);
-		$this->checksOrdination ($priorityQueue, array ($dummyObject3, $dummyObject3));
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person3);
+		$this->checksOrdination ($priorityQueue, array ($person3, $person3));
 
-		$this->assertFalse ($priorityQueue->remove ($dummyObject1));
-		$this->assertFalse ($priorityQueue->remove ($dummyObject2));
-		$this->assertTrue ($priorityQueue->remove ($dummyObject3));
+		$this->assertFalse ($priorityQueue->remove ($person1));
+		$this->assertFalse ($priorityQueue->remove ($person2));
+		$this->assertTrue ($priorityQueue->remove ($person3));
 		$this->assertEquals (1, $priorityQueue->size());
 
-		// Removes the last occurence of $dummyObject3
-		$this->assertTrue ($priorityQueue->remove ($dummyObject3));
+		// Removes the last occurence of $person3
+		$this->assertTrue ($priorityQueue->remove ($person3));
 		$this->assertEquals (0, $priorityQueue->size());
 	}
 
@@ -859,17 +859,17 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
 		$priorityQueue2 = new PriorityQueue();
 		$this->assertFalse ($priorityQueue1->removeAll ($priorityQueue2));
 
-		$priorityQueue1->add ($dummyObject1);
-		$priorityQueue1->add ($dummyObject3);
-		$priorityQueue2->add ($dummyObject2);
+		$priorityQueue1->add ($person1);
+		$priorityQueue1->add ($person3);
+		$priorityQueue2->add ($person2);
 
 		$this->assertFalse ($priorityQueue1->removeAll ($priorityQueue2));
 		$this->assertEquals (2, $priorityQueue1->size());
@@ -877,20 +877,20 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertFalse ($priorityQueue2->removeAll ($priorityQueue1));
 		$this->assertEquals (1, $priorityQueue2->size());
 
-		// Adds $dummyObject1 twice
-		$priorityQueue1->add ($dummyObject1);
-		$priorityQueue2->add ($dummyObject1);
+		// Adds $person1 twice
+		$priorityQueue1->add ($person1);
+		$priorityQueue2->add ($person1);
 
 		$this->assertEquals (3, $priorityQueue1->size());
 		$this->assertEquals (2, $priorityQueue2->size());
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject1, $dummyObject3));
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person1, $person3));
+		$this->checksOrdination ($priorityQueue2, array ($person1, $person2));
 
 		$this->assertTrue ($priorityQueue1->removeAll ($priorityQueue2));
 
 		$this->assertEquals (1, $priorityQueue1->size());
 		$this->assertEquals (2, $priorityQueue2->size());
-		$this->assertEquals ($dummyObject3, $priorityQueue1->peek()->get());
+		$this->assertEquals ($person3, $priorityQueue1->peek()->get());
 	}
 
 
@@ -899,32 +899,32 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenArrayList() {
 
-    	$dummyObject1 = new DummyObject (1, "a", FALSE);
-    	$dummyObject2 = new DummyObject (2, "b", FALSE);
-    	$dummyObject3 = new DummyObject (3, "c", FALSE);
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person2 = new Person ("Mary", 20, FALSE);
+    	$person3 = new Person ("Sara", 25, FALSE);
 
     	$priorityQueue = new PriorityQueue();
     	$arrayList = new ArrayList();
     	$this->assertFalse ($priorityQueue->removeAll ($arrayList));
 
-    	$priorityQueue->add ($dummyObject1);
-    	$priorityQueue->add ($dummyObject3);
-    	$arrayList->add ($dummyObject2);
+    	$priorityQueue->add ($person1);
+    	$priorityQueue->add ($person3);
+    	$arrayList->add ($person2);
 
     	$this->assertFalse ($priorityQueue->removeAll ($arrayList));
     	$this->assertEquals (2, $priorityQueue->size());
 
-    	// Adds $dummyObject1 twice
-    	$priorityQueue->add ($dummyObject1);
-    	$arrayList->add ($dummyObject1);
+    	// Adds $person1 twice
+    	$priorityQueue->add ($person1);
+    	$arrayList->add ($person1);
 
     	$this->assertEquals (3, $priorityQueue->size());
     	$this->assertEquals (2, $arrayList->size());
-    	$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject1, $dummyObject3));
+    	$this->checksOrdination ($priorityQueue, array ($person1, $person1, $person3));
 
     	$this->assertTrue ($priorityQueue->removeAll ($arrayList));
     	$this->assertEquals (1, $priorityQueue->size());
-    	$this->assertEquals ($dummyObject3, $priorityQueue->peek()->get());
+    	$this->assertEquals ($person3, $priorityQueue->peek()->get());
 	}
 
 
@@ -933,32 +933,32 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenHashSet() {
 
-    	$dummyObject1 = new DummyObject (1, "a", FALSE);
-    	$dummyObject2 = new DummyObject (2, "b", FALSE);
-    	$dummyObject3 = new DummyObject (3, "c", FALSE);
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person2 = new Person ("Mary", 20, FALSE);
+    	$person3 = new Person ("Sara", 25, FALSE);
 
     	$priorityQueue = new PriorityQueue();
     	$hashSet = new HashSet();
     	$this->assertFalse ($priorityQueue->removeAll ($hashSet));
 
-    	$priorityQueue->add ($dummyObject1);
-    	$priorityQueue->add ($dummyObject3);
-    	$hashSet->add ($dummyObject2);
+    	$priorityQueue->add ($person1);
+    	$priorityQueue->add ($person3);
+    	$hashSet->add ($person2);
 
     	$this->assertFalse ($priorityQueue->removeAll ($hashSet));
     	$this->assertEquals (2, $priorityQueue->size());
 
-    	// Adds $dummyObject1 twice
-    	$priorityQueue->add ($dummyObject1);
-    	$hashSet->add ($dummyObject1);
+    	// Adds $person1 twice
+    	$priorityQueue->add ($person1);
+    	$hashSet->add ($person1);
 
     	$this->assertEquals (3, $priorityQueue->size());
     	$this->assertEquals (2, $hashSet->size());
-    	$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject1, $dummyObject3));
+    	$this->checksOrdination ($priorityQueue, array ($person1, $person1, $person3));
 
     	$this->assertTrue ($priorityQueue->removeAll ($hashSet));
     	$this->assertEquals (1, $priorityQueue->size());
-    	$this->assertEquals ($dummyObject3, $priorityQueue->peek()->get());
+    	$this->assertEquals ($person3, $priorityQueue->peek()->get());
 	}
 
 
@@ -967,32 +967,32 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($priorityQueue->removeAll ($sortedSet));
 
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject3);
-		$sortedSet->add ($dummyObject2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person3);
+		$sortedSet->add ($person2);
 
 		$this->assertFalse ($priorityQueue->removeAll ($sortedSet));
 		$this->assertEquals (2, $priorityQueue->size());
 
-		// Adds $dummyObject1 twice
-		$priorityQueue->add ($dummyObject1);
-		$sortedSet->add ($dummyObject1);
+		// Adds $person1 twice
+		$priorityQueue->add ($person1);
+		$sortedSet->add ($person1);
 
 		$this->assertEquals (3, $priorityQueue->size());
 		$this->assertEquals (2, $sortedSet->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject1, $dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person1, $person3));
 
 		$this->assertTrue ($priorityQueue->removeAll ($sortedSet));
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertEquals ($dummyObject3, $priorityQueue->peek()->get());
+		$this->assertEquals ($person3, $priorityQueue->peek()->get());
 	}
 
 
@@ -1001,62 +1001,62 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue1 = new PriorityQueue();
 		$priorityQueue2 = new PriorityQueue();
 		$this->assertFalse ($priorityQueue1->retainAll ($priorityQueue2));
 
 		// Retains all elements of an empty queue
-		$priorityQueue1->add ($dummyObject1);
+		$priorityQueue1->add ($person1);
 		$this->assertTrue ($priorityQueue1->retainAll ($priorityQueue2));
 		$this->assertTrue ($priorityQueue1->isEmpty());
 
-		// Both queues shared dummyObject1
-		$priorityQueue1->add ($dummyObject1);
-		$priorityQueue1->add ($dummyObject2);
-		$priorityQueue2->add ($dummyObject1);
+		// Both queues shared $person1
+		$priorityQueue1->add ($person1);
+		$priorityQueue1->add ($person2);
+		$priorityQueue2->add ($person1);
 
 		$this->assertEquals (2, $priorityQueue1->size());
 		$this->assertEquals (1, $priorityQueue2->size());
 
 		$this->assertTrue ($priorityQueue1->retainAll ($priorityQueue2));
 		$this->assertEquals (1, $priorityQueue1->size());
-		$this->assertTrue ($priorityQueue1->contains ($dummyObject1));
+		$this->assertTrue ($priorityQueue1->contains ($person1));
 
 		// Both queues have the same elements
-		$priorityQueue1->add ($dummyObject2);
-		$priorityQueue2->add ($dummyObject2);
+		$priorityQueue1->add ($person2);
+		$priorityQueue2->add ($person2);
 
 		$this->assertEquals (2, $priorityQueue1->size());
 		$this->assertEquals (2, $priorityQueue2->size());
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2));
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2));
+		$this->checksOrdination ($priorityQueue2, array ($person1, $person2));
 
 		$this->assertFalse ($priorityQueue1->retainAll ($priorityQueue2));
 
 		$this->assertEquals (2, $priorityQueue1->size());
 		$this->assertEquals (2, $priorityQueue2->size());
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2));
 
 		// Checks the ordination of stored objects
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2));
-		$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2));
+		$this->checksOrdination ($priorityQueue2, array ($person1, $person2));
 
 		// Permits dulicate elements
-		$priorityQueue1->add ($dummyObject2);
-		$priorityQueue2->add ($dummyObject3);
+		$priorityQueue1->add ($person2);
+		$priorityQueue2->add ($person3);
 
     	$this->assertEquals (3, $priorityQueue1->size());
     	$this->assertEquals (3, $priorityQueue2->size());
-    	$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2, $dummyObject2));
-    	$this->checksOrdination ($priorityQueue2, array ($dummyObject1, $dummyObject2, $dummyObject3));
+    	$this->checksOrdination ($priorityQueue1, array ($person1, $person2, $person2));
+    	$this->checksOrdination ($priorityQueue2, array ($person1, $person2, $person3));
 
 		$this->assertFalse ($priorityQueue1->retainAll ($priorityQueue2));
 		$this->assertEquals (3, $priorityQueue1->size());
-		$this->checksOrdination ($priorityQueue1, array ($dummyObject1, $dummyObject2, $dummyObject2));
+		$this->checksOrdination ($priorityQueue1, array ($person1, $person2, $person2));
 	}
 
 
@@ -1065,47 +1065,47 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($priorityQueue->retainAll ($arrayList));
 
 		// Retains all elements of an empty list
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertTrue ($priorityQueue->retainAll ($arrayList));
 		$this->assertTrue ($priorityQueue->isEmpty());
 
-		// Both collections shared $dummyObject1
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$arrayList->add ($dummyObject1);
+		// Both collections shared $person1
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$arrayList->add ($person1);
 
 		$this->assertEquals (2, $priorityQueue->size());
 		$this->assertEquals (1, $arrayList->size());
 
 		$this->assertTrue ($priorityQueue->retainAll ($arrayList));
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
+		$this->assertTrue ($priorityQueue->contains ($person1));
 
 		// Both collections have the same elements
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
-		$arrayList->add ($dummyObject2);
-		$arrayList->add ($dummyObject3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$arrayList->add ($person2);
+		$arrayList->add ($person3);
 
 		$this->assertEquals (4, $priorityQueue->size());
 		$this->assertEquals (3, $arrayList->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 
 		$this->assertFalse ($priorityQueue->retainAll ($arrayList));
 		$this->assertEquals (4, $priorityQueue->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 	}
 
 
@@ -1114,47 +1114,47 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$hashSet = new HashSet();
 		$this->assertFalse ($priorityQueue->retainAll ($hashSet));
 
 		// Retains all elements of an empty list
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertTrue ($priorityQueue->retainAll ($hashSet));
 		$this->assertTrue ($priorityQueue->isEmpty());
 
-		// Both collections shared $dummyObject1
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$hashSet->add ($dummyObject1);
+		// Both collections shared $person1
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$hashSet->add ($person1);
 
 		$this->assertEquals (2, $priorityQueue->size());
 		$this->assertEquals (1, $hashSet->size());
 
 		$this->assertTrue ($priorityQueue->retainAll ($hashSet));
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
+		$this->assertTrue ($priorityQueue->contains ($person1));
 
 		// Both collections have the same elements
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
 
 		$this->assertEquals (4, $priorityQueue->size());
 		$this->assertEquals (3, $hashSet->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 
 		$this->assertFalse ($priorityQueue->retainAll ($hashSet));
 		$this->assertEquals (4, $priorityQueue->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 	}
 
 
@@ -1163,47 +1163,47 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($priorityQueue->retainAll ($sortedSet));
 
 		// Retains all elements of an empty list
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertTrue ($priorityQueue->retainAll ($sortedSet));
 		$this->assertTrue ($priorityQueue->isEmpty());
 
-		// Both collections shared $dummyObject1
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$sortedSet->add ($dummyObject1);
+		// Both collections shared $person1
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$sortedSet->add ($person1);
 
 		$this->assertEquals (2, $priorityQueue->size());
 		$this->assertEquals (1, $sortedSet->size());
 
 		$this->assertTrue ($priorityQueue->retainAll ($sortedSet));
 		$this->assertEquals (1, $priorityQueue->size());
-		$this->assertTrue ($priorityQueue->contains ($dummyObject1));
+		$this->assertTrue ($priorityQueue->contains ($person1));
 
 		// Both collections have the same elements
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
 
 		$this->assertEquals (4, $priorityQueue->size());
 		$this->assertEquals (3, $sortedSet->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 
 		$this->assertFalse ($priorityQueue->retainAll ($sortedSet));
 		$this->assertEquals (4, $priorityQueue->size());
-		$this->checksOrdination ($priorityQueue, array ($dummyObject1, $dummyObject2, $dummyObject2
-				                                       ,$dummyObject3));
+		$this->checksOrdination ($priorityQueue, array ($person1, $person2, $person2
+				                                       ,$person3));
 	}
 
 
@@ -1212,45 +1212,45 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testSizeOfPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 		$this->assertEquals (0, $priorityQueue->size());
 		$this->assertTrue ($priorityQueue->isEmpty());
 
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person1);
 		$this->assertEquals (1, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertEquals (2, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$this->assertEquals (3, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
 		// Permits duplicate elements
-		$priorityQueue->add ($dummyObject2);
+		$priorityQueue->add ($person2);
 		$this->assertEquals (4, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
 		// Removes every element
-		$priorityQueue->remove ($dummyObject2);
+		$priorityQueue->remove ($person2);
 		$this->assertEquals (3, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
-		$priorityQueue->remove ($dummyObject1);
+		$priorityQueue->remove ($person1);
 		$this->assertEquals (2, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
-		$priorityQueue->remove ($dummyObject2);
+		$priorityQueue->remove ($person2);
 		$this->assertEquals (1, $priorityQueue->size());
 		$this->assertFalse ($priorityQueue->isEmpty());
 
-		$priorityQueue->remove ($dummyObject3);
+		$priorityQueue->remove ($person3);
 		$this->assertEquals (0, $priorityQueue->size());
 		$this->assertTrue ($priorityQueue->isEmpty());
 	}
@@ -1270,14 +1270,14 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertEmpty ($stream->toArray());
 
 		// Not empty PriorityQueue
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
 
 		$stream = $priorityQueue->stream();
 
@@ -1297,9 +1297,9 @@ final class PriorityQueueTest extends TestCase {
 	 */
 	public function testToArrayOfPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$priorityQueue = new PriorityQueue();
 
@@ -1307,36 +1307,36 @@ final class PriorityQueueTest extends TestCase {
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (0, count ($array));
 
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person1);
 
 		$array = $priorityQueue->toArray();
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (4, count ($array));
 
-		$this->assertEquals ($dummyObject1, $array[0]);
-		$this->assertEquals ($dummyObject1, $array[1]);
-		$this->assertEquals ($dummyObject2, $array[2]);
-		$this->assertEquals ($dummyObject3, $array[3]);
+		$this->assertEquals ($person1, $array[0]);
+		$this->assertEquals ($person1, $array[1]);
+		$this->assertEquals ($person2, $array[2]);
+		$this->assertEquals ($person3, $array[3]);
 
 		// Checks reverse ordination
-		$priorityQueue = new PriorityQueue (new PriorityQueue(), new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue (new PriorityQueue(), new PersonComparator());
 
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
 
 		$array = $priorityQueue->toArray();
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (4, count ($array));
 
-		$this->assertEquals ($dummyObject3, $array[0]);
-		$this->assertEquals ($dummyObject2, $array[1]);
-		$this->assertEquals ($dummyObject2, $array[2]);
-		$this->assertEquals ($dummyObject1, $array[3]);
+		$this->assertEquals ($person3, $array[0]);
+		$this->assertEquals ($person2, $array[1]);
+		$this->assertEquals ($person2, $array[2]);
+		$this->assertEquals ($person1, $array[3]);
 	}
 
 

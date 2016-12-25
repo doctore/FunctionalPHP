@@ -59,30 +59,33 @@ Firstly, we will define some example classes that we will use to explain what we
 ```php
 <?php
 
-namespace FunctionalPHP\example;
+namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\Object;
+use FunctionalPHP\iterable\collection\lists\Lists;
+use FunctionalPHP\iterable\collection\lists\ArrayList;
 
 /**
- * Subclass of Object used in this example (used only for testing purpose).
+ * Subclass of Object used only for testing purpose.
  */
-class Person extends Object {
+class Car extends Object {
 
-	protected $name;
-	protected $age;
+	protected $registration;
+	protected $yearOfProduction;
 
-	public function __construct (string $name, int $age) {
-		$this->name = $name;
-		$this->age  = $age;
+
+	public function __construct (string $registration, int $yearOfProduction) {
+
+		$this->registration = $registration;
+		$this->yearOfProduction = $yearOfProduction;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Object::equals()
 	 */
-	public function equals (Person $object): bool {
-		return $this->name == $object->name &&
-		       $this->age == $object->age;
+	public function equals (Object $otherCar): bool {
+		return strcmp ($this->registration, $otherCar->registration) == 0;
 	}
 
 	/**
@@ -90,16 +93,96 @@ class Person extends Object {
 	 * @see \FunctionalPHP\common\Object::hashCode()
 	 */
 	public function hashCode(): int {
-		return $this->age % 10;
+		return $this->yearOfProduction % 5;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Object::compareTo()
 	 */
-	public function compareTo (Object $object): int {
-		return strcmp ($this->name, $object->name);
+	public function compareTo (Object $otherCar): int {
+		return strcmp ($this->registration, $otherCar->registration);
 	}
+
+}
+
+
+/**
+ * Subclass of Object used only for testing purpose.
+ */
+class Person extends Object {
+
+	protected $name;
+	protected $age;
+	protected $isMale;
+	protected $cars;
+
+	public function __construct (string $name, int $age, bool $isMale, Lists $cars = NULL) {
+		$this->name   = $name;
+		$this->age    = $age;
+		$this->isMale = $isMale;
+
+		$this->cars = (is_null ($cars) ? new ArrayList() : $cars);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\Object::equals()
+	 */
+	public function equals (Object $otherPerson): bool {
+
+		return (strcmp ($this->name, $$otherPerson->name) == 0) && 
+		       $this->age == $otherPerson->age;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\Object::hashCode()
+	 */
+	public function hashCode(): int {
+		return $this->age % 5;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\Object::compareTo()
+	 */
+	public function compareTo (Object $otherPerson): int {
+		return strcmp ($this->name, $otherPerson->name);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\Object::__toString()
+	 */
+	public function __toString() {
+
+		$resultString = "{".get_class ($this).": ";
+
+		$properties = get_object_vars ($this);
+		if (is_array ($properties)) {
+
+			// Adds property name and property value to the result
+			foreach ($properties as $name => $value) {
+
+				$resultString .= "\n {$name} = ";
+
+				if (strcmp ($name, "cars") == 0) {
+
+					$resultString .= "[";
+					if (!is_null ($value)) {
+						foreach ($value as $car)
+							$resultString .= $car."\n";
+					}
+					$resultString .= "]";
+				}
+				else
+					$resultString .= $value;
+			}
+		}
+		return $resultString."}";
+	}
+
 }
 
 ?>
@@ -111,13 +194,14 @@ We have defined a subclass of **Object** with two properties. As you can see, th
 ```php
 <?php
 
-namespace FunctionalPHP\example;
+namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\Comparator;
 use FunctionalPHP\common\Object;
 
+
 /**
- * Comparator instance used to compare two different Person objects (used only for testing purpose).
+ * Comparator instance used to compare two different Person objects, used only for testing purpose.
  */
 class PersonComparator implements Comparator {
 
@@ -126,14 +210,37 @@ class PersonComparator implements Comparator {
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Comparator::compare()
 	 */
-	public function compare (Object $object1, Object $object2): int {
+	public function compare (Object $person1, Object $person2): int {
 
 		/**
-		 *    Assumes Person as parameters and returns the "inverse result" than
-		 * $object1->compareTo ($object2)
+		 *    Assumes Person as parameters and returns the "inverse result" that
+		 * $person1->compareTo ($person2)
 		 */
-		return strcmp ($object2->name, $object1->name);
+		return strcmp ($person2->name, $person1->name);
 	}
+
+}
+
+
+/**
+ * Comparator instance used to compare two different Car objects, used only for testing purpose.
+ */
+class CarComparator implements Comparator {
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\Comparator::compare()
+	 */
+	public function compare (Object $person1, Object $person2): int {
+
+		/**
+		 *    Assumes Car as parameters and returns the "inverse result" that
+		 * $car1->compareTo ($car2)
+		 */
+		return strcmp ($car2->name, $car1->name);
+	}
+
 }
 
 ?>
@@ -144,11 +251,11 @@ The last "previous step" is to define some **Predicates** that we will use when 
 ```php
 <?php
 
-namespace FunctionalPHP\example;
+namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\functional\Predicate;
 use FunctionalPHP\exception\IllegalArgumentException;
-use FunctionalPHP\example\Person;
+use FunctionalPHP\test\Person;
 
 
 /**
@@ -189,12 +296,38 @@ final class IsIntAndPairPredicate implements Predicate {
 		if (count ($args) == 0)
 			return FALSE;
 
-		foreach ($args as $a) {
+			foreach ($args as $a) {
 
-			if (is_int ($a) === FALSE || ($a % 2 != 0))
-				return FALSE;
-		}
-		return TRUE;
+				if (is_int ($a) === FALSE || ($a % 2 != 0))
+					return FALSE;
+			}
+			return TRUE;
+	}
+}
+
+
+/**
+ * Uses to test if the name of the given Person has more than one word (used only for testing purpose).
+ */
+final class HasPersonMoreThanOneWordAsNamePredicate implements Predicate {
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Predicate::test()
+	 */
+	public function test (...$args) : bool {
+
+		if (count ($args) != 1)
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The method has received more than one argument: "
+					                               .var_export ($args));
+		$person = $args[0];
+		if ($person instanceof \Person)
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The given parameter is not an instance of ".Person::class
+					                               ." Its type is: ".gettype ($person));
+
+		return (str_word_count ($person->name) > 1);
 	}
 }
 
@@ -224,33 +357,6 @@ final class HasPersonOddAgePredicate implements Predicate {
 	}
 }
 
-
-/**
- * Uses to test if the name of the given Person has more than one word (used only for testing purpose).
- */
-final class HasPersonMoreThanOneWordAsNamePredicate implements Predicate {
-
-	/**
-	 * {@inheritDoc}
-	 * @see \FunctionalPHP\common\functional\Predicate::test()
-	 */
-	public function test (...$args) : bool {
-
-		if (count ($args) != 1)
-			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The method has received more than one argument: "
-					                               .var_export ($args));
-
-		$person = $args[0];
-		if ($person instanceof \Person)
-			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-					                           ,"The given parameter is not an instance of ".Person::class
-					                               ." Its type is: ".gettype ($person));
-
-		return (str_word_count ($person->name) > 1);
-	}
-}
-
 ?>
 ```
 
@@ -261,18 +367,18 @@ Now we are going to learn how we can use classes like: **ArrayList**, **HashSet*
 ```php
 <?php
 
-namespace FunctionalPHP\example;
+namespace FunctionalPHP\test;
 
-use FunctionalPHP\example\Person;
-use FunctionalPHP\example\PersonComparator;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\PersonComparator;
 use FunctionalPHP\iterable\map\Map;
 use FunctionalPHP\iterable\map\HashMap;
 use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\set\SortedSet;
 
-$person1 = new Person ("John Snow", 23);
-$person2 = new Person ("Peter Pan", 11);
-$personEqualsTo1 = new Person ("John Snow", 23);
+$person1 = new Person ("John Snow", 23, TRUE);
+$person2 = new Person ("Peter Pan", 11, TRUE);
+$personEqualsTo1 = new Person ("John Snow", 23, TRUE);
 
 
 // ArrayList
@@ -327,11 +433,11 @@ Now we are going to start to use the functional programming, beginning with the 
 ```php
 <?php
 
-namespace FunctionalPHP\example;
+namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\functional\CompositePredicate;
-use FunctionalPHP\example\IsIntAndPairPredicate;
-use FunctionalPHP\example\IsIntPredicate;
+use FunctionalPHP\test\IsIntAndPairPredicate;
+use FunctionalPHP\test\IsIntPredicate;
 
 
 $isIntOfEmpty = (new IsIntPredicate())->test();   // Return FALSE
@@ -373,84 +479,116 @@ In the last section of this file we will learn how to use the functionality prov
 ```php
 <?php
 
-namespace FunctionalPHP\example;
+namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\common\functional\BasicStream;
-use FunctionalPHP\example\Person;
-use FunctionalPHP\example\PersonComparator;
-use FunctionalPHP\example\HasPersonOddAgePredicate;
-use FunctionalPHP\example\HasPersonMoreThanOneWordAsNamePredicate;
+use FunctionalPHP\test\Car;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\PersonComparator;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
+use FunctionalPHP\test\HasPersonMoreThanOneWordAsNamePredicate;
 
 
-$person1 = new Person ("John Snow", 23);
-$person2 = new Person ("Peter Pan", 11);
-$person3 = new Person ("Mike", 34);
-$person4 = new Person ("Tom", 20);
+$car1 = new Car ('A-2134', 2015);
+$car2 = new Car ('B-9999', 2015);
+$car3 = new Car ('C-4567', 2010);
 
-$arrayList = new ArrayList();
-$arrayList->add ($person1);
-$arrayList->add ($person2);
-$arrayList->add ($person3);
-$arrayList->add ($person4);
+$arrayListOfCars1 = new ArrayList();
+$arrayListOfCars1->add ($car1);
+$arrayListOfCars1->add ($car3);
 
-$arrayList->stream()->allMatch (new HasPersonOddAgePredicate());   // Return FALSE
-$arrayList->stream()->anyMatch (new HasPersonOddAgePredicate());   // Return TRUE
+$arrayListOfCars2 = new ArrayList();
+$arrayListOfCars2->add ($car2);
 
-$arrayList->stream()->noneMatch (new HasPersonMoreThanOneWordAsNamePredicate());   // Return FALSE
+$person1 = new Person ("Alba", 11, FALSE);
+$person2 = new Person ("Albert", 18, TRUE, $arrayListOfCars2);
+$person3 = new Person ("Bob", 9, TRUE, $arrayListOfCars1);
+$person4 = new Person ("Clark Smith", 34, TRUE);
+$person5 = new Person ("Dalia", 19, FALSE, $arrayListOfCars1);
 
+$arrayListOfPersons = new ArrayList();
+$arrayListOfPersons->add ($person1);
+$arrayListOfPersons->add ($person2);
+$arrayListOfPersons->add ($person3);
+$arrayListOfPersons->add ($person4);
+$arrayListOfPersons->add ($person5);
+
+
+$arrayListOfPersons->stream()->allMatch (new HasPersonOddAgePredicate());   // Return FALSE
+$arrayListOfPersons->stream()->anyMatch (new HasPersonOddAgePredicate());   // Return TRUE
+
+$arrayListOfPersons->stream()->noneMatch (new HasPersonMoreThanOneWordAsNamePredicate());   // Return FALSE
 
 // filter
-$arrayList->stream()->filter (new HasPersonOddAgePredicate())
-                    ->toArray();   // Return [$person1, $person2]
-
+$arrayListOfPersons->stream()->filter (new HasPersonOddAgePredicate())
+                             ->toArray();   // Return [$person1, $person3, $person5]
+                             
 // filterByLambda
-$arrayList->stream()->filterByLambda (function (Person $person) : bool {
-	                                     return strcmp ($person->name, "Mike") == 0;
-                                      })
-                    ->toArray();   // Return [$person3]                   
-                   
+$arrayListOfPersons->stream()->filterByLambda (function (Person $person) : bool {
+	                                              return strcmp ($person->name, "Clark Smith") == 0;
+                                               })
+                             ->toArray();   // Return [$person4]
+                             
 // forEach
-$stream = $arrayList->stream();
+$stream = $$arrayListOfPersons->stream();
 $stream->forEach (function (Person $person) {
 	                 $person->age *= 2;
                   });
-$stream->toArray();      // Return an array on which all age values has been multiplied by 2
-$arrayList->toArray();   // Return the same result.
+$stream->toArray();                // Return an array on which all age values has been multiplied by 2
+$$arrayListOfPersons->toArray();   // Return the same result.
 
 // sortedByComparator
-$arrayList->stream()->sortedByComparator (new PersonComparator())
-	                ->toArray();   // Return [$person4, $person2, $person3, $person1]
+$arrayListOfPersons->stream()->sortedByComparator (new PersonComparator())
+	                         ->toArray();   // Return [$person5, $person4, $person3, $person2, $person1]
 
 // sortedByLambda
-$arrayList->stream()->sortedByLambda (function (Person $person1, Person $person2): int {
+$arrayListOfPersons->stream()->sortedByLambda (function (Person $person1, Person $person2): int {
 				                         return strcmp ($person1->name, $person2->name);
 			                          })
-			        ->toArray();   // Return [$person1, $person3, $person2, $person4]
+			                 ->toArray();   // Return [$person1, $person2, $person3, $person4, $person5]
 
 // map
-$arrayList->stream()->map (function (Person $person1) : int {
-	                          return $person1->age;
-                           })
-                    ->toArray();   // Return [46, 22, 68, 40] due to we have modified age in the previous forEach
+$arrayListOfPersons->stream()->map (function (Person $person1) : int {
+	                                   return $person1->age;
+                                    })
+                             ->toArray();   // Return [22, 36, 18, 68, 38] due to we have modified age in the previous forEach
+                  
+// flatMap                             
+$arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+                    	                   return $person->cars->stream();
+                                        })
+                             ->toArray();   // Return [$car2, $car1, $car3, $car1, $car3]	                
 	                
-	                
-// And a last more complex example
-$arrayList->clear();
-$arrayList->add ($person1);
-$arrayList->add ($person2);
-$arrayList->add ($person3);
-$arrayList->add ($person4);
-$arrayList->add ($person1);
+// And more complex examples
+$arrayListOfPersons->clear();
+$arrayListOfPersons->add ($person1);
+$arrayListOfPersons->add ($person2);
+$arrayListOfPersons->add ($person3);
+$arrayListOfPersons->add ($person4);
+$arrayListOfPersons->add ($person5);
+$arrayListOfPersons->add ($person1);
+
 
 // We want to get the list of different values of age (only odd values) with ascending ordination
-$arrayList->stream()->filter (new HasPersonOddAgePredicate())
-                    ->map (function (Person $person) : int {
-	                          return $person->age;
-                           })
-                    ->distinct()
-                    ->sorted()
-                    ->toArray();   // Return [11, 23]
+$arrayListOfPersons->stream()->filter (new HasPersonOddAgePredicate())
+                             ->map (function (Person $person) : int {
+	                                   return $person->age;
+                                    })
+                             ->distinct()
+                             ->sorted()
+                             ->toArray();   // Return [9, 11, 19]
+                             
+// Now we want to know the distinct car's registrations of all persons
+$arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+			                               return $person->cars->stream()
+			                                                   ->map (function (Car $car) : string {
+			                                                             return $car->registration;
+			                                                          });
+		                                })
+		                     ->distinct()
+		                     ->toArray();   // Return ['B-9999', 'A-2134', 'C-4567']                          
+                             
 ?>
 ```
 

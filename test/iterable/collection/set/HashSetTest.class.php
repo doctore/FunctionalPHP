@@ -11,7 +11,7 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
-use FunctionalPHP\test\DummyObject;
+use FunctionalPHP\test\Person;
 
 /**
  * Class used to test FunctionalPHP\collection\set\HashSet
@@ -35,14 +35,14 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCreateNotEmptyHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet1 = new HashSet();
-		$hashSet1->add ($dummyObject1);
-		$hashSet1->add ($dummyObject2);
-		$hashSet1->add ($dummyObject3);
+		$hashSet1->add ($person1);
+		$hashSet1->add ($person2);
+		$hashSet1->add ($person3);
 
 		$hashSet2 = new HashSet ($hashSet1);
 		$this->assertFalse ($hashSet2->isEmpty());
@@ -59,44 +59,44 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testAddElements() {
 
-		$dummyObject1      = new DummyObject (1, "a", FALSE);
-		$dummyObject1Clone = new DummyObject (1, "a", TRUE);
-		$dummyObject2      = new DummyObject (2, "b", FALSE);
+		$person1      = new Person ("John", 18, TRUE);
+		$person1Clone = new Person ("John", 18, FALSE);
+		$person2      = new Person ("Mary", 20, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertTrue ($hashSet->isEmpty());
 
-		$this->assertTrue ($hashSet->add ($dummyObject1));
+		$this->assertTrue ($hashSet->add ($person1));
 
 		$this->assertFalse ($hashSet->isEmpty());
 		$this->assertEquals (1, $hashSet->size());
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
+		$this->assertTrue ($hashSet->contains ($person1));
 
 		foreach ($hashSet->iterator() as $element) {
 
-			$this->assertEquals ($dummyObject1->intProperty, $element->intProperty);
-			$this->assertEquals ($dummyObject1->stringProperty, $element->stringProperty);
-			$this->assertEquals ($dummyObject1->boolProperty, $element->boolProperty);
+			$this->assertEquals ($person1->age, $element->age);
+			$this->assertEquals ($person1->name, $element->name);
+			$this->assertEquals ($person1->isMale, $element->isMale);
 		}
 
 		// Adds an "equal object"
-		$this->assertFalse ($hashSet->add ($dummyObject1Clone));
+		$this->assertFalse ($hashSet->add ($person1Clone));
 		$this->assertEquals (1, $hashSet->size());
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject1Clone));
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person1Clone));
 
-		// Checks that $dummyObject1 was replaced by $dummyObject1Clone
+		// Checks that $person1 was replaced by $person1Clone
 		foreach ($hashSet->iterator() as $element) {
 
-			$this->assertEquals ($dummyObject1Clone->intProperty, $element->intProperty);
-			$this->assertEquals ($dummyObject1Clone->stringProperty, $element->stringProperty);
-			$this->assertNotEquals ($dummyObject1Clone->boolProperty, $element->boolProperty);
+			$this->assertEquals ($person1Clone->age, $element->age);
+			$this->assertEquals ($person1Clone->name, $element->name);
+			$this->assertNotEquals ($person1Clone->isMale, $element->isMale);
 		}
-		// Adds $dummyObject2
-		$this->assertTrue ($hashSet->add ($dummyObject2));
+		// Adds $person2
+		$this->assertTrue ($hashSet->add ($person2));
 		$this->assertEquals (2, $hashSet->size());
-		$this->assertTrue ($hashSet->contains ($dummyObject1Clone));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
+		$this->assertTrue ($hashSet->contains ($person1Clone));
+		$this->assertTrue ($hashSet->contains ($person2));
 	}
 
 
@@ -116,17 +116,17 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet1 = new HashSet();
 		$this->assertTrue ($hashSet1->isEmpty());
 
 		$hashSet2 = new HashSet();
-		$hashSet2->add ($dummyObject1);
-		$hashSet2->add ($dummyObject2);
-		$hashSet2->add ($dummyObject3);
+		$hashSet2->add ($person1);
+		$hashSet2->add ($person2);
+		$hashSet2->add ($person3);
 		$this->assertEquals (3, $hashSet2->size());
 
 		// Adds elements of $hashSet2 inside $hashSet1
@@ -151,17 +151,17 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertTrue ($hashSet->isEmpty());
 
 		$arrayList = new ArrayList();
-		$arrayList->add ($dummyObject1);
-		$arrayList->add ($dummyObject2);
-		$arrayList->add ($dummyObject3);
+		$arrayList->add ($person1);
+		$arrayList->add ($person2);
+		$arrayList->add ($person3);
 		$this->assertEquals (3, $arrayList->size());
 
 		// Adds elements of $arrayList inside $hashSet
@@ -186,17 +186,17 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertTrue ($hashSet->isEmpty());
 
 		$sortedSet = new SortedSet();
-		$sortedSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
 		$this->assertEquals (3, $sortedSet->size());
 
 		// Adds elements of $sortedSet inside $hashSet
@@ -221,17 +221,17 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testAddAllElementsWithPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertTrue ($hashSet->isEmpty());
 
 		$priorityQueue = new PriorityQueue();
-		$priorityQueue->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
 		$this->assertEquals (3, $priorityQueue->size());
 
 		// Adds elements of $priorityQueue inside $hashSet
@@ -256,17 +256,17 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testClearHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertTrue ($hashSet->isEmpty());
 		$this->assertEquals (0, $hashSet->size());
 
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
 		$this->assertFalse ($hashSet->isEmpty());
 		$this->assertEquals (3, $hashSet->size());
 
@@ -281,29 +281,29 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertFalse ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertFalse ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
 
-		$hashSet->add ($dummyObject1);
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertFalse ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
+		$hashSet->add ($person1);
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertFalse ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
 
-		$hashSet->add ($dummyObject2);
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
+		$hashSet->add ($person2);
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
 
-		$hashSet->add ($dummyObject3);
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
+		$hashSet->add ($person3);
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertTrue ($hashSet->contains ($person3));
 	}
 
 
@@ -312,24 +312,24 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet1 = new HashSet();
 		$hashSet2 = new HashSet();
 		$this->assertTrue ($hashSet1->containsAll ($hashSet2));
 
-		$hashSet1->add ($dummyObject1);
-		$hashSet2->add ($dummyObject1);
+		$hashSet1->add ($person1);
+		$hashSet2->add ($person1);
 		$this->assertTrue ($hashSet1->containsAll ($hashSet2));
 		$this->assertTrue ($hashSet2->containsAll ($hashSet1));
 
-		$hashSet1->add ($dummyObject2);
+		$hashSet1->add ($person2);
 		$this->assertTrue ($hashSet1->containsAll ($hashSet2));
 		$this->assertFalse ($hashSet2->containsAll ($hashSet1));
 
-		$hashSet2->add ($dummyObject3);
+		$hashSet2->add ($person3);
 		$this->assertFalse ($hashSet1->containsAll ($hashSet2));
 		$this->assertFalse ($hashSet2->containsAll ($hashSet1));
 	}
@@ -340,22 +340,22 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$arrayList = new ArrayList();
 		$this->assertTrue ($hashSet->containsAll ($arrayList));
 
-		$hashSet->add ($dummyObject1);
-		$arrayList->add ($dummyObject2);
+		$hashSet->add ($person1);
+		$arrayList->add ($person2);
 		$this->assertFalse ($hashSet->containsAll ($arrayList));
 
-		$hashSet->add ($dummyObject2);
+		$hashSet->add ($person2);
 		$this->assertTrue ($hashSet->containsAll ($arrayList));
 
-		$arrayList->add ($dummyObject3);
+		$arrayList->add ($person3);
 		$this->assertFalse ($hashSet->containsAll ($arrayList));
 	}
 
@@ -365,22 +365,22 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($hashSet->containsAll ($sortedSet));
 
-		$hashSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject2);
+		$hashSet->add ($person1);
+		$sortedSet->add ($person2);
 		$this->assertFalse ($hashSet->containsAll ($sortedSet));
 
-		$hashSet->add ($dummyObject2);
+		$hashSet->add ($person2);
 		$this->assertTrue ($hashSet->containsAll ($sortedSet));
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertFalse ($hashSet->containsAll ($sortedSet));
 	}
 
@@ -390,22 +390,22 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckElementsContainedInAGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertTrue ($hashSet->containsAll ($priorityQueue));
 
-		$hashSet->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject2);
+		$hashSet->add ($person1);
+		$priorityQueue->add ($person2);
 		$this->assertFalse ($hashSet->containsAll ($priorityQueue));
 
-		$hashSet->add ($dummyObject2);
+		$hashSet->add ($person2);
 		$this->assertTrue ($hashSet->containsAll ($priorityQueue));
 
-		$priorityQueue->add ($dummyObject3);
+		$priorityQueue->add ($person3);
 		$this->assertFalse ($hashSet->containsAll ($priorityQueue));
 	}
 
@@ -415,9 +415,9 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet1 = new HashSet();
 		$hashSet2 = new HashSet();
@@ -425,17 +425,17 @@ final class HashSetTest extends TestCase {
 		$this->assertTrue ($hashSet1->equals ($hashSet2));
 		$this->assertTrue ($hashSet2->equals ($hashSet1));
 
-		$hashSet1->add ($dummyObject1);
+		$hashSet1->add ($person1);
 		$this->assertFalse ($hashSet1->equals ($hashSet2));
 		$this->assertFalse ($hashSet2->equals ($hashSet1));
 
-		$hashSet2->add ($dummyObject2);
+		$hashSet2->add ($person2);
 		$this->assertFalse ($hashSet1->equals ($hashSet2));
 		$this->assertFalse ($hashSet2->equals ($hashSet1));
 
 		// The set have the same elements but added in different order
-		$hashSet1->add ($dummyObject2);
-		$hashSet2->add ($dummyObject1);
+		$hashSet1->add ($person2);
+		$hashSet2->add ($person1);
 		$this->assertEquals (2, $hashSet1->size());
 		$this->assertEquals (2, $hashSet2->size());
 
@@ -448,12 +448,12 @@ final class HashSetTest extends TestCase {
 		foreach ($hashSet2->iterator() as $element)
 			$this->assertTrue ($hashSet1->contains ($element));
 
-		// Adds the $dummyObject3
-		$hashSet1->add ($dummyObject3);
+		// Adds the $person3
+		$hashSet1->add ($person3);
 		$this->assertFalse ($hashSet1->equals ($hashSet2));
 		$this->assertFalse ($hashSet2->equals ($hashSet1));
 
-		$hashSet2->add ($dummyObject3);
+		$hashSet2->add ($person3);
 		$this->assertTrue ($hashSet1->equals ($hashSet2));
 		$this->assertTrue ($hashSet2->equals ($hashSet1));
 
@@ -470,16 +470,16 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithArrayList() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashSet = new HashSet();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($hashSet->equals ($arrayList));
 
-		$hashSet->add ($dummyObject);
+		$hashSet->add ($person);
 		$this->assertFalse ($hashSet->equals ($arrayList));
 
-		$arrayList->add ($dummyObject);
+		$arrayList->add ($person);
 		$this->assertFalse ($hashSet->equals ($arrayList));
 	}
 
@@ -489,20 +489,20 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$sortedSet = new SortedSet();
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person1);
 		$this->assertFalse ($hashSet->equals ($sortedSet));
 		$this->assertFalse ($sortedSet->equals ($hashSet));
 
-		$sortedSet->add ($dummyObject1);
+		$sortedSet->add ($person1);
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 
@@ -512,21 +512,21 @@ final class HashSetTest extends TestCase {
 		foreach ($sortedSet->iterator() as $element)
 			$this->assertTrue ($hashSet->contains ($element));
 
-		// Adds $dummyObject2
-		$hashSet->add ($dummyObject2);
+		// Adds $person2
+		$hashSet->add ($person2);
 		$this->assertFalse ($hashSet->equals ($sortedSet));
 		$this->assertFalse ($sortedSet->equals ($hashSet));
 
-		$sortedSet->add ($dummyObject2);
+		$sortedSet->add ($person2);
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 
-		// Adds $dummyObject3
-		$hashSet->add ($dummyObject3);
+		// Adds $person3
+		$hashSet->add ($person3);
 		$this->assertFalse ($hashSet->equals ($sortedSet));
 		$this->assertFalse ($sortedSet->equals ($hashSet));
 
-		$sortedSet->add ($dummyObject3);
+		$sortedSet->add ($person3);
 		$this->assertTrue ($hashSet->equals ($sortedSet));
 		$this->assertTrue ($sortedSet->equals ($hashSet));
 
@@ -543,16 +543,16 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testCheckEqualityWithPriorityQueue() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$hashSet = new HashSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($hashSet->equals ($priorityQueue));
 
-		$hashSet->add ($dummyObject);
+		$hashSet->add ($person);
 		$this->assertFalse ($hashSet->equals ($priorityQueue));
 
-		$priorityQueue->add ($dummyObject);
+		$priorityQueue->add ($person);
 		$this->assertFalse ($hashSet->equals ($priorityQueue));
 	}
 
@@ -562,22 +562,22 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testHashCodeOfHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertEquals (0, $hashSet->hashCode());
 
-		$hashSet->add ($dummyObject1);
-		$this->assertEquals ($dummyObject1->hashCode(), $hashSet->hashCode());
+		$hashSet->add ($person1);
+		$this->assertEquals ($person1->hashCode(), $hashSet->hashCode());
 
-		$hashSet->add ($dummyObject2);
-		$this->assertEquals ($dummyObject1->hashCode() + $dummyObject2->hashCode()
+		$hashSet->add ($person2);
+		$this->assertEquals ($person1->hashCode() + $person2->hashCode()
 				            ,$hashSet->hashCode());
 
-		$hashSet->add ($dummyObject3);
-		$this->assertEquals ($dummyObject1->hashCode() + $dummyObject2->hashCode() + $dummyObject3->hashCode()
+		$hashSet->add ($person3);
+		$this->assertEquals ($person1->hashCode() + $person2->hashCode() + $person3->hashCode()
 				            ,$hashSet->hashCode());
 	}
 
@@ -587,41 +587,41 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testEmptyHashSet() {
 
-    	$dummyObject1 = new DummyObject (1, "a", FALSE);
-    	$dummyObject2 = new DummyObject (2, "b", FALSE);
-    	$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
     	$hashSet = new HashSet();
     	$this->assertTrue ($hashSet->isEmpty());
     	$this->assertEquals (0, $hashSet->size());
 
-    	$hashSet->add ($dummyObject1);
+    	$hashSet->add ($person1);
     	$this->assertFalse ($hashSet->isEmpty());
     	$this->assertEquals (1, $hashSet->size());
 
-    	$hashSet->add ($dummyObject2);
+    	$hashSet->add ($person2);
     	$this->assertFalse ($hashSet->isEmpty());
     	$this->assertEquals (2, $hashSet->size());
 
-    	$hashSet->add ($dummyObject3);
+    	$hashSet->add ($person3);
     	$this->assertFalse ($hashSet->isEmpty());
     	$this->assertEquals (3, $hashSet->size());
 
     	// Does not accept duplicate elements
-    	$hashSet->add ($dummyObject3);
+    	$hashSet->add ($person3);
     	$this->assertFalse ($hashSet->isEmpty());
     	$this->assertEquals (3, $hashSet->size());
 
     	// Removes every element
-    	$hashSet->remove ($dummyObject3);
+    	$hashSet->remove ($person3);
     	$this->assertFalse ($hashSet->isEmpty());
     	$this->assertEquals (2, $hashSet->size());
 
-    	$hashSet->remove ($dummyObject2);
+    	$hashSet->remove ($person2);
     	$this->assertFalse ($hashSet->isEmpty());
     	$this->assertEquals (1, $hashSet->size());
 
-    	$hashSet->remove ($dummyObject1);
+    	$hashSet->remove ($person1);
     	$this->assertTrue ($hashSet->isEmpty());
     	$this->assertEquals (0, $hashSet->size());
 	}
@@ -632,9 +632,9 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testIterateOverHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertTrue ($hashSet->isEmpty());
@@ -645,37 +645,37 @@ final class HashSetTest extends TestCase {
 			$this->assertTrue (FALSE);
 		}
 
-		// Adds $dummyObject1
-		$hashSet->add ($dummyObject1);
+		// Adds $person1
+		$hashSet->add ($person1);
 		$this->assertEquals (1, $hashSet->size());
 
 		foreach ($hashSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
-		// Adds another dummy objects
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject3);
+		// Adds another person
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
 		$this->assertEquals (3, $hashSet->size());
 
-		$isDummyObjectsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
+		$isPersonsInHashSet = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
 		foreach ($hashSet->iterator() as $element) {
 
-			if ($element->equals ($dummyObject1))
-				$isDummyObjectsInHashSet[1] = TRUE;
+			if ($element->equals ($person1))
+				$isPersonsInHashSet[1] = TRUE;
 
-			elseif ($element->equals ($dummyObject2))
-				$isDummyObjectsInHashSet[2] = TRUE;
+			elseif ($element->equals ($person2))
+			$isPersonsInHashSet[2] = TRUE;
 
-			elseif ($element->equals ($dummyObject3))
-				$isDummyObjectsInHashSet[3] = TRUE;
+			elseif ($element->equals ($person3))
+			$isPersonsInHashSet[3] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInHashSet[1]);
-		$this->assertTrue ($isDummyObjectsInHashSet[2]);
-		$this->assertTrue ($isDummyObjectsInHashSet[3]);
+		$this->assertTrue ($isPersonsInHashSet[1]);
+		$this->assertTrue ($isPersonsInHashSet[2]);
+		$this->assertTrue ($isPersonsInHashSet[3]);
 	}
 
 
@@ -684,85 +684,85 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRemoveElements() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (11, "k", FALSE);
-		$dummyObject5 = new DummyObject (12, "l", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+		$person4 = new Person ("Mark", 30, TRUE);
+		$person5 = new Person ("Will", 22, TRUE);
 
 		$hashSet = new HashSet();
-		$this->assertFalse ($hashSet->remove ($dummyObject1));
-		$this->assertFalse ($hashSet->remove ($dummyObject2));
-		$this->assertFalse ($hashSet->remove ($dummyObject3));
-		$this->assertFalse ($hashSet->remove ($dummyObject4));
-		$this->assertFalse ($hashSet->remove ($dummyObject5));
+		$this->assertFalse ($hashSet->remove ($person1));
+		$this->assertFalse ($hashSet->remove ($person2));
+		$this->assertFalse ($hashSet->remove ($person3));
+		$this->assertFalse ($hashSet->remove ($person4));
+		$this->assertFalse ($hashSet->remove ($person5));
 
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject3);
-		$hashSet->add ($dummyObject4);
-		$hashSet->add ($dummyObject5);
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
+		$hashSet->add ($person4);
+		$hashSet->add ($person5);
 		$this->assertEquals (5, $hashSet->size());
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
-		$this->assertTrue ($hashSet->contains ($dummyObject4));
-		$this->assertTrue ($hashSet->contains ($dummyObject5));
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertTrue ($hashSet->contains ($person3));
+		$this->assertTrue ($hashSet->contains ($person4));
+		$this->assertTrue ($hashSet->contains ($person5));
 
-		// Removes $dummyObject1
-		$this->assertTrue ($hashSet->remove ($dummyObject1));
+		// Removes $person1
+		$this->assertTrue ($hashSet->remove ($person1));
 		$this->assertEquals (4, $hashSet->size());
 
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
-		$this->assertTrue ($hashSet->contains ($dummyObject4));
-		$this->assertTrue ($hashSet->contains ($dummyObject5));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertTrue ($hashSet->contains ($person3));
+		$this->assertTrue ($hashSet->contains ($person4));
+		$this->assertTrue ($hashSet->contains ($person5));
 
-		// Removes $dummyObject2
-		$this->assertFalse ($hashSet->remove ($dummyObject1));
-		$this->assertTrue ($hashSet->remove ($dummyObject2));
+		// Removes $person2
+		$this->assertFalse ($hashSet->remove ($person1));
+		$this->assertTrue ($hashSet->remove ($person2));
 		$this->assertEquals (3, $hashSet->size());
 
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertFalse ($hashSet->contains ($dummyObject2));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
-		$this->assertTrue ($hashSet->contains ($dummyObject4));
-		$this->assertTrue ($hashSet->contains ($dummyObject5));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertFalse ($hashSet->contains ($person2));
+		$this->assertTrue ($hashSet->contains ($person3));
+		$this->assertTrue ($hashSet->contains ($person4));
+		$this->assertTrue ($hashSet->contains ($person5));
 
-		// Removes $dummyObject3
-		$this->assertFalse ($hashSet->remove ($dummyObject2));
-		$this->assertTrue ($hashSet->remove ($dummyObject3));
+		// Removes $person3
+		$this->assertFalse ($hashSet->remove ($person2));
+		$this->assertTrue ($hashSet->remove ($person3));
 		$this->assertEquals (2, $hashSet->size());
 
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertFalse ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
-		$this->assertTrue ($hashSet->contains ($dummyObject4));
-		$this->assertTrue ($hashSet->contains ($dummyObject5));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertFalse ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
+		$this->assertTrue ($hashSet->contains ($person4));
+		$this->assertTrue ($hashSet->contains ($person5));
 
-		// Removes $dummyObject4
-		$this->assertFalse ($hashSet->remove ($dummyObject3));
-		$this->assertTrue ($hashSet->remove ($dummyObject4));
+		// Removes $person4
+		$this->assertFalse ($hashSet->remove ($person3));
+		$this->assertTrue ($hashSet->remove ($person4));
 		$this->assertEquals (1, $hashSet->size());
 
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertFalse ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
-		$this->assertFalse ($hashSet->contains ($dummyObject4));
-		$this->assertTrue ($hashSet->contains ($dummyObject5));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertFalse ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
+		$this->assertFalse ($hashSet->contains ($person4));
+		$this->assertTrue ($hashSet->contains ($person5));
 
-		// Removes $dummyObject5
-		$this->assertFalse ($hashSet->remove ($dummyObject4));
-		$this->assertTrue ($hashSet->remove ($dummyObject5));
+		// Removes $person5
+		$this->assertFalse ($hashSet->remove ($person4));
+		$this->assertTrue ($hashSet->remove ($person5));
 		$this->assertEquals (0, $hashSet->size());
 		$this->assertTrue ($hashSet->isEmpty());
 
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertFalse ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
-		$this->assertFalse ($hashSet->contains ($dummyObject4));
-		$this->assertFalse ($hashSet->contains ($dummyObject5));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertFalse ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
+		$this->assertFalse ($hashSet->contains ($person4));
+		$this->assertFalse ($hashSet->contains ($person5));
 	}
 
 
@@ -771,17 +771,17 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet1 = new HashSet();
 		$hashSet2 = new HashSet();
 		$this->assertFalse ($hashSet1->removeAll ($hashSet2));
 
-		$hashSet1->add ($dummyObject1);
-		$hashSet1->add ($dummyObject3);
-		$hashSet2->add ($dummyObject2);
+		$hashSet1->add ($person1);
+		$hashSet1->add ($person3);
+		$hashSet2->add ($person2);
 
 		$this->assertFalse ($hashSet1->removeAll ($hashSet2));
 		$this->assertEquals (2, $hashSet1->size());
@@ -789,9 +789,9 @@ final class HashSetTest extends TestCase {
 		$this->assertFalse ($hashSet2->removeAll ($hashSet1));
 		$this->assertEquals (1, $hashSet2->size());
 
-		// Adds $dummyObject1 twice
-    	$hashSet1->add ($dummyObject1);
-    	$hashSet2->add ($dummyObject1);
+		// Adds $person1 twice
+    	$hashSet1->add ($person1);
+    	$hashSet2->add ($person1);
 
 		$this->assertTrue ($hashSet1->removeAll ($hashSet2));
 		$this->assertEquals (1, $hashSet1->size());
@@ -804,29 +804,29 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($hashSet->removeAll ($arrayList));
 
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject3);
-		$arrayList->add ($dummyObject2);
+		$hashSet->add ($person1);
+		$hashSet->add ($person3);
+		$arrayList->add ($person2);
 
 		$this->assertFalse ($hashSet->removeAll ($arrayList));
 		$this->assertEquals (2, $hashSet->size());
 
-		// Adds $dummyObject1 twice
-		$hashSet->add ($dummyObject1);
-		$arrayList->add ($dummyObject1);
+		// Adds $person1 twice
+		$hashSet->add ($person1);
+		$arrayList->add ($person1);
 
 		$this->assertTrue ($hashSet->removeAll ($arrayList));
 		$this->assertEquals (1, $hashSet->size());
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person3));
 	}
 
 
@@ -835,29 +835,29 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($hashSet->removeAll ($sortedSet));
 
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject3);
-		$sortedSet->add ($dummyObject2);
+		$hashSet->add ($person1);
+		$hashSet->add ($person3);
+		$sortedSet->add ($person2);
 
 		$this->assertFalse ($hashSet->removeAll ($sortedSet));
 		$this->assertEquals (2, $hashSet->size());
 
-		// Adds $dummyObject1 twice
-		$hashSet->add ($dummyObject1);
-		$sortedSet->add ($dummyObject1);
+		// Adds $person1 twice
+		$hashSet->add ($person1);
+		$sortedSet->add ($person1);
 
 		$this->assertTrue ($hashSet->removeAll ($sortedSet));
 		$this->assertEquals (1, $hashSet->size());
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person3));
 	}
 
 
@@ -866,29 +866,29 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRemoveAllElementsOfGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($hashSet->removeAll ($priorityQueue));
 
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject3);
-		$priorityQueue->add ($dummyObject2);
+		$hashSet->add ($person1);
+		$hashSet->add ($person3);
+		$priorityQueue->add ($person2);
 
 		$this->assertFalse ($hashSet->removeAll ($priorityQueue));
 		$this->assertEquals (2, $hashSet->size());
 
-		// Adds $dummyObject1 twice
-		$hashSet->add ($dummyObject1);
-		$priorityQueue->add ($dummyObject1);
+		// Adds $person1 twice
+		$hashSet->add ($person1);
+		$priorityQueue->add ($person1);
 
 		$this->assertTrue ($hashSet->removeAll ($priorityQueue));
 		$this->assertEquals (1, $hashSet->size());
-		$this->assertFalse ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject3));
+		$this->assertFalse ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person3));
 	}
 
 
@@ -897,23 +897,23 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet1 = new HashSet();
 		$hashSet2 = new HashSet();
 		$this->assertFalse ($hashSet1->retainAll ($hashSet2));
 
 		// Retains all elements of an empty set
-		$hashSet1->add ($dummyObject1);
+		$hashSet1->add ($person1);
 		$this->assertTrue ($hashSet1->retainAll ($hashSet2));
 		$this->assertTrue ($hashSet1->isEmpty());
 
-		// Both sets shared $dummyObject1
-		$hashSet1->add ($dummyObject1);
-		$hashSet1->add ($dummyObject2);
-		$hashSet2->add ($dummyObject1);
+		// Both sets shared $person1
+		$hashSet1->add ($person1);
+		$hashSet1->add ($person2);
+		$hashSet2->add ($person1);
 
 		$this->assertEquals (2, $hashSet1->size());
 		$this->assertEquals (1, $hashSet2->size());
@@ -922,11 +922,11 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (1, $hashSet1->size());
 
 		foreach ($hashSet1->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both sets have the same elements
-		$hashSet1->add ($dummyObject2);
-		$hashSet2->add ($dummyObject2);
+		$hashSet1->add ($person2);
+		$hashSet2->add ($person2);
 
 		$this->assertEquals (2, $hashSet1->size());
 		$this->assertEquals (2, $hashSet2->size());
@@ -935,30 +935,30 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (2, $hashSet1->size());
 		$this->assertEquals (2, $hashSet2->size());
 
-		$isDummyObjectsInBothSets = array (1 => FALSE, 2 => FALSE);
+		$isPersonsInBothSets = array (1 => FALSE, 2 => FALSE);
 		foreach ($hashSet1->iterator() as $element) {
 
-			if ($element->equals ($dummyObject1) && $hashSet2->contains ($element))
-				$isDummyObjectsInBothSets[1] = TRUE;
+			if ($element->equals ($person1) && $hashSet2->contains ($element))
+				$isPersonsInBothSets[1] = TRUE;
 
-			elseif ($element->equals ($dummyObject2) && $hashSet2->contains ($element))
-				$isDummyObjectsInBothSets[2] = TRUE;
+			elseif ($element->equals ($person2) && $hashSet2->contains ($element))
+			$isPersonsInBothSets[2] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInBothSets[1]);
-		$this->assertTrue ($isDummyObjectsInBothSets[2]);
+		$this->assertTrue ($isPersonsInBothSets[1]);
+		$this->assertTrue ($isPersonsInBothSets[2]);
 
-		// Adds $dummyObject3
-		$hashSet1->add ($dummyObject3);
+		// Adds $person3
+		$hashSet1->add ($person3);
 		$this->assertTrue ($hashSet1->retainAll ($hashSet2));
 		$this->assertEquals (2, $hashSet1->size());
 
-		$this->assertTrue ($hashSet1->contains ($dummyObject1));
-		$this->assertTrue ($hashSet1->contains ($dummyObject2));
-		$this->assertFalse ($hashSet1->contains ($dummyObject3));
+		$this->assertTrue ($hashSet1->contains ($person1));
+		$this->assertTrue ($hashSet1->contains ($person2));
+		$this->assertFalse ($hashSet1->contains ($person3));
 	}
 
 
@@ -967,23 +967,23 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenArrayList() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$arrayList = new ArrayList();
 		$this->assertFalse ($hashSet->retainAll ($arrayList));
 
 		// Retains all elements of an empty list
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person1);
 		$this->assertTrue ($hashSet->retainAll ($arrayList));
 		$this->assertTrue ($hashSet->isEmpty());
 
-		// Both collections shared dummyObject1
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$arrayList->add ($dummyObject1);
+		// Both collections shared $person1
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$arrayList->add ($person1);
 
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (1, $arrayList->size());
@@ -992,11 +992,11 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (1, $hashSet->size());
 
 		foreach ($hashSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both collections have the same elements
-		$hashSet->add ($dummyObject2);
-		$arrayList->add ($dummyObject2);
+		$hashSet->add ($person2);
+		$arrayList->add ($person2);
 
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (2, $arrayList->size());
@@ -1005,30 +1005,30 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (2, $arrayList->size());
 
-		$isDummyObjectsInBothCollections = array (1 => FALSE, 2 => FALSE);
+		$isPersonsInBothCollections = array (1 => FALSE, 2 => FALSE);
 		foreach ($hashSet->iterator() as $element) {
 
-			if ($element->equals ($dummyObject1) && $arrayList->contains ($element))
-				$isDummyObjectsInBothCollections[1] = TRUE;
+			if ($element->equals ($person1) && $arrayList->contains ($element))
+				$isPersonsInBothCollections[1] = TRUE;
 
-			elseif ($element->equals ($dummyObject2) && $arrayList->contains ($element))
-				$isDummyObjectsInBothCollections[2] = TRUE;
+			elseif ($element->equals ($person2) && $arrayList->contains ($element))
+			$isPersonsInBothCollections[2] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInBothCollections[1]);
-		$this->assertTrue ($isDummyObjectsInBothCollections[2]);
+		$this->assertTrue ($isPersonsInBothCollections[1]);
+		$this->assertTrue ($isPersonsInBothCollections[2]);
 
-		// Adds $dummyObject3
-		$hashSet->add ($dummyObject3);
+		// Adds $person3
+		$hashSet->add ($person3);
 		$this->assertTrue ($hashSet->retainAll ($arrayList));
 		$this->assertEquals (2, $hashSet->size());
 
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
 	}
 
 
@@ -1037,23 +1037,23 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenSortedSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$sortedSet = new SortedSet();
 		$this->assertFalse ($hashSet->retainAll ($sortedSet));
 
 		// Retains all elements of an empty list
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person1);
 		$this->assertTrue ($hashSet->retainAll ($sortedSet));
 		$this->assertTrue ($hashSet->isEmpty());
 
-		// Both collections shared dummyObject1
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject1);
+		// Both collections shared $person1
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$sortedSet->add ($person1);
 
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (1, $sortedSet->size());
@@ -1062,11 +1062,11 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (1, $hashSet->size());
 
 		foreach ($hashSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both collections have the same elements
-		$hashSet->add ($dummyObject2);
-		$sortedSet->add ($dummyObject2);
+		$hashSet->add ($person2);
+		$sortedSet->add ($person2);
 
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (2, $sortedSet->size());
@@ -1075,30 +1075,30 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (2, $sortedSet->size());
 
-		$isDummyObjectsInBothCollections = array (1 => FALSE, 2 => FALSE);
+		$isPersonsInBothCollections = array (1 => FALSE, 2 => FALSE);
 		foreach ($hashSet->iterator() as $element) {
 
-			if ($element->equals ($dummyObject1) && $sortedSet->contains ($element))
-				$isDummyObjectsInBothCollections[1] = TRUE;
+			if ($element->equals ($person1) && $sortedSet->contains ($element))
+				$isPersonsInBothCollections[1] = TRUE;
 
-			elseif ($element->equals ($dummyObject2) && $sortedSet->contains ($element))
-				$isDummyObjectsInBothCollections[2] = TRUE;
+			elseif ($element->equals ($person2) && $sortedSet->contains ($element))
+			$isPersonsInBothCollections[2] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInBothCollections[1]);
-		$this->assertTrue ($isDummyObjectsInBothCollections[2]);
+		$this->assertTrue ($isPersonsInBothCollections[1]);
+		$this->assertTrue ($isPersonsInBothCollections[2]);
 
-		// Adds $dummyObject3
-		$hashSet->add ($dummyObject3);
+		// Adds $person3
+		$hashSet->add ($person3);
 		$this->assertTrue ($hashSet->retainAll ($sortedSet));
 		$this->assertEquals (2, $hashSet->size());
 
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
 	}
 
 
@@ -1107,23 +1107,23 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testRetainAllElementsOfGivenPriorityQueue() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$priorityQueue = new PriorityQueue();
 		$this->assertFalse ($hashSet->retainAll ($priorityQueue));
 
 		// Retains all elements of an empty list
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person1);
 		$this->assertTrue ($hashSet->retainAll ($priorityQueue));
 		$this->assertTrue ($hashSet->isEmpty());
 
-		// Both collections shared dummyObject1
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject1);
+		// Both collections shared $person1
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$priorityQueue->add ($person1);
 
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (1, $priorityQueue->size());
@@ -1132,11 +1132,11 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (1, $hashSet->size());
 
 		foreach ($hashSet->iterator() as $element)
-			$this->assertEquals ($dummyObject1, $element);
+			$this->assertEquals ($person1, $element);
 
 		// Both collections have the same elements
-		$hashSet->add ($dummyObject2);
-		$priorityQueue->add ($dummyObject2);
+		$hashSet->add ($person2);
+		$priorityQueue->add ($person2);
 
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (2, $priorityQueue->size());
@@ -1145,30 +1145,30 @@ final class HashSetTest extends TestCase {
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertEquals (2, $priorityQueue->size());
 
-		$isDummyObjectsInBothCollections = array (1 => FALSE, 2 => FALSE);
+		$isPersonsInBothCollections = array (1 => FALSE, 2 => FALSE);
 		foreach ($hashSet->iterator() as $element) {
 
-			if ($element->equals ($dummyObject1) && $priorityQueue->contains ($element))
-				$isDummyObjectsInBothCollections[1] = TRUE;
+			if ($element->equals ($person1) && $priorityQueue->contains ($element))
+				$isPersonsInBothCollections[1] = TRUE;
 
-			elseif ($element->equals ($dummyObject2) && $priorityQueue->contains ($element))
-				$isDummyObjectsInBothCollections[2] = TRUE;
+			elseif ($element->equals ($person2) && $priorityQueue->contains ($element))
+			$isPersonsInBothCollections[2] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInBothCollections[1]);
-		$this->assertTrue ($isDummyObjectsInBothCollections[2]);
+		$this->assertTrue ($isPersonsInBothCollections[1]);
+		$this->assertTrue ($isPersonsInBothCollections[2]);
 
-		// Adds $dummyObject3
-		$hashSet->add ($dummyObject3);
+		// Adds $person3
+		$hashSet->add ($person3);
 		$this->assertTrue ($hashSet->retainAll ($priorityQueue));
 		$this->assertEquals (2, $hashSet->size());
 
-		$this->assertTrue ($hashSet->contains ($dummyObject1));
-		$this->assertTrue ($hashSet->contains ($dummyObject2));
-		$this->assertFalse ($hashSet->contains ($dummyObject3));
+		$this->assertTrue ($hashSet->contains ($person1));
+		$this->assertTrue ($hashSet->contains ($person2));
+		$this->assertFalse ($hashSet->contains ($person3));
 	}
 
 
@@ -1177,41 +1177,41 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testSizeOfHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 		$this->assertEquals (0, $hashSet->size());
 		$this->assertTrue ($hashSet->isEmpty());
 
-		$hashSet->add ($dummyObject1);
+		$hashSet->add ($person1);
 		$this->assertEquals (1, $hashSet->size());
 		$this->assertFalse ($hashSet->isEmpty());
 
-		$hashSet->add ($dummyObject2);
+		$hashSet->add ($person2);
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertFalse ($hashSet->isEmpty());
 
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person3);
 		$this->assertEquals (3, $hashSet->size());
 		$this->assertFalse ($hashSet->isEmpty());
 
 		// Does not permits duplicates
-		$hashSet->add ($dummyObject2);
+		$hashSet->add ($person2);
 		$this->assertEquals (3, $hashSet->size());
 		$this->assertFalse ($hashSet->isEmpty());
 
 		// Removes every element
-		$hashSet->remove ($dummyObject2);
+		$hashSet->remove ($person2);
 		$this->assertEquals (2, $hashSet->size());
 		$this->assertFalse ($hashSet->isEmpty());
 
-		$hashSet->remove ($dummyObject1);
+		$hashSet->remove ($person1);
 		$this->assertEquals (1, $hashSet->size());
 		$this->assertFalse ($hashSet->isEmpty());
 
-		$hashSet->remove ($dummyObject3);
+		$hashSet->remove ($person3);
 		$this->assertEquals (0, $hashSet->size());
 		$this->assertTrue ($hashSet->isEmpty());
 	}
@@ -1231,14 +1231,14 @@ final class HashSetTest extends TestCase {
 		$this->assertEmpty ($stream->toArray());
 
 		// Not empty HashSet
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
 
 		$stream = $hashSet->stream();
 
@@ -1258,9 +1258,9 @@ final class HashSetTest extends TestCase {
 	 */
 	public function testToArrayOfHashSet() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
 		$hashSet = new HashSet();
 
@@ -1268,36 +1268,36 @@ final class HashSetTest extends TestCase {
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (0, count ($array));
 
-		$hashSet->add ($dummyObject1);
-		$hashSet->add ($dummyObject2);
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
 
 		// Does not permits duplicates
-		$hashSet->add ($dummyObject3);
+		$hashSet->add ($person3);
 
 		$array = $hashSet->toArray();
 		$this->assertTrue (is_array ($array));
 		$this->assertEquals (3, count ($array));
 
-		$isDummyObjectsInArray = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
+		$isPersonsInArray = array (1 => FALSE, 2 => FALSE, 3 => FALSE);
 		foreach ($array as $element) {
 
-			if ($element->equals ($dummyObject1))
-				$isDummyObjectsInArray[1] = TRUE;
+			if ($element->equals ($person1))
+				$isPersonsInArray[1] = TRUE;
 
-			elseif ($element->equals ($dummyObject2))
-				$isDummyObjectsInArray[2] = TRUE;
+			elseif ($element->equals ($person2))
+			$isPersonsInArray[2] = TRUE;
 
-			elseif ($element->equals ($dummyObject3))
-				$isDummyObjectsInArray[3] = TRUE;
+			elseif ($element->equals ($person3))
+			$isPersonsInArray[3] = TRUE;
 
 			// This code should not be executed
 			else
 				$this->assertTrue (FALSE);
 		}
-		$this->assertTrue ($isDummyObjectsInArray[1]);
-		$this->assertTrue ($isDummyObjectsInArray[2]);
-		$this->assertTrue ($isDummyObjectsInArray[3]);
+		$this->assertTrue ($isPersonsInArray[1]);
+		$this->assertTrue ($isPersonsInArray[2]);
+		$this->assertTrue ($isPersonsInArray[3]);
 	}
 
 }

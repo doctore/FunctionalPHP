@@ -8,14 +8,18 @@ use PHPUnit\Framework\TestCase;
 
 use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
+
 use FunctionalPHP\common\Optional;
+use FunctionalPHP\common\functional\Stream;
 use FunctionalPHP\common\functional\BasicStream;
-use FunctionalPHP\test\DummyObject;
-use FunctionalPHP\test\DummyObjectComparator;
-use FunctionalPHP\test\HasDummyObjectOddIntPropertyPredicate;
-use FunctionalPHP\test\HasDummyObjectStringPropertyOfTwoCharactersPredicate;
-use FunctionalPHP\test\IsFloatTheIntPropertyOfDummyObjectPredicate;
-use FunctionalPHP\test\IsIntTheIntPropertyOfDummyObjectPredicate;
+
+use FunctionalPHP\test\Car;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\PersonComparator;
+use FunctionalPHP\test\HasPersonMoreThanOneWordAsNamePredicate;
+use FunctionalPHP\test\HasPersonNameWithValuePredicate;
+use FunctionalPHP\test\HasPersonNoAgeValuePredicate;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
 
 
 /**
@@ -29,8 +33,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testCreateEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
@@ -42,11 +46,11 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testCreateNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 	}
 
 
@@ -55,13 +59,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testAllMatchOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertTrue ($basicStream->allMatch (new HasDummyObjectOddIntPropertyPredicate()));
-		$this->assertTrue ($basicStream->allMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate()));
-		$this->assertTrue ($basicStream->allMatch (new IsFloatTheIntPropertyOfDummyObjectPredicate()));
-		$this->assertTrue ($basicStream->allMatch (new IsIntTheIntPropertyOfDummyObjectPredicate()));
+		$this->assertTrue ($basicStream->allMatch (new HasPersonMoreThanOneWordAsNamePredicate()));
+		$this->assertTrue ($basicStream->allMatch (new HasPersonNameWithValuePredicate()));
+		$this->assertTrue ($basicStream->allMatch (new HasPersonNoAgeValuePredicate()));
+		$this->assertTrue ($basicStream->allMatch (new HasPersonOddAgePredicate()));
 	}
 
 
@@ -70,13 +74,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testAllMatchOfNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertFalse ($basicStream->allMatch (new HasDummyObjectOddIntPropertyPredicate()));
-		$this->assertFalse ($basicStream->allMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate()));
-		$this->assertFalse ($basicStream->allMatch (new IsFloatTheIntPropertyOfDummyObjectPredicate()));
-		$this->assertTrue ($basicStream->allMatch (new IsIntTheIntPropertyOfDummyObjectPredicate()));
+		$this->assertFalse ($basicStream->allMatch (new HasPersonMoreThanOneWordAsNamePredicate()));
+		$this->assertTrue ($basicStream->allMatch (new HasPersonNameWithValuePredicate()));
+		$this->assertFalse ($basicStream->allMatch (new HasPersonNoAgeValuePredicate()));
+		$this->assertFalse ($basicStream->allMatch (new HasPersonOddAgePredicate()));
 	}
 
 
@@ -85,13 +89,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testAnyMatchOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertFalse ($basicStream->anyMatch (new HasDummyObjectOddIntPropertyPredicate()));
-		$this->assertFalse ($basicStream->anyMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate()));
-		$this->assertFalse ($basicStream->anyMatch (new IsFloatTheIntPropertyOfDummyObjectPredicate()));
-		$this->assertFalse ($basicStream->anyMatch (new IsIntTheIntPropertyOfDummyObjectPredicate()));
+		$this->assertFalse ($basicStream->anyMatch (new HasPersonMoreThanOneWordAsNamePredicate()));
+		$this->assertFalse ($basicStream->anyMatch (new HasPersonNameWithValuePredicate()));
+		$this->assertFalse ($basicStream->anyMatch (new HasPersonNoAgeValuePredicate()));
+		$this->assertFalse ($basicStream->anyMatch (new HasPersonOddAgePredicate()));
 	}
 
 
@@ -100,13 +104,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testAnyMatchOfNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertTrue ($basicStream->anyMatch (new HasDummyObjectOddIntPropertyPredicate()));
-		$this->assertTrue ($basicStream->anyMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate()));
-		$this->assertFalse ($basicStream->anyMatch (new IsFloatTheIntPropertyOfDummyObjectPredicate()));
-		$this->assertTrue ($basicStream->anyMatch (new IsIntTheIntPropertyOfDummyObjectPredicate()));
+		$this->assertTrue ($basicStream->anyMatch (new HasPersonMoreThanOneWordAsNamePredicate()));
+		$this->assertTrue ($basicStream->anyMatch (new HasPersonNameWithValuePredicate()));
+		$this->assertFalse ($basicStream->anyMatch (new HasPersonNoAgeValuePredicate()));
+		$this->assertTrue ($basicStream->anyMatch (new HasPersonOddAgePredicate()));
 	}
 
 
@@ -116,16 +120,16 @@ final class BasicStreamTest extends TestCase {
 	public function testCount() {
 
 		// Empty Stream
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$this->assertEquals (0, $basicStream->count());
 
 		// Not empty Stream
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 	}
 
 
@@ -134,8 +138,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testDistinctOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->distinct();
 
@@ -149,21 +153,21 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testDistinctStoringObjectsInsideBasicStream() {
 
-		$arrayListWithDuplicates = $this->generateDummyArrayList();
-		$arrayListWithoutDuplicates = $this->generateDummyArrayList (FALSE);
+		$arrayListOfPersonsWithDuplicates = $this->generatePersonsArrayList();
+		$arrayListOfPersonsWithoutDuplicates = $this->generatePersonsArrayList (FALSE);
 
-		$basicStream = new BasicStream ($arrayListWithDuplicates);
+		$basicStream = new BasicStream ($arrayListOfPersonsWithDuplicates);
 		$basicStream->distinct();
 
 		$this->assertGreaterThan (0, $basicStream->count());
-		$this->assertNotEquals ($arrayListWithDuplicates->size(), $basicStream->count());
-		$this->assertEquals ($arrayListWithoutDuplicates->size(), $basicStream->count());
+		$this->assertNotEquals ($arrayListOfPersonsWithDuplicates->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersonsWithoutDuplicates->size(), $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
-		$this->assertEquals ($arrayListWithoutDuplicates->size(), count ($contentOfStream));
+		$this->assertEquals ($arrayListOfPersonsWithoutDuplicates->size(), count ($contentOfStream));
 
-		for ($i = 0; $i < $arrayListWithoutDuplicates->size(); $i++)
-			$this->assertEquals ($arrayListWithoutDuplicates->get($i), $contentOfStream[$i]);
+		for ($i = 0; $i < $arrayListOfPersonsWithoutDuplicates->size(); $i++)
+			$this->assertEquals ($arrayListOfPersonsWithoutDuplicates->get($i), $contentOfStream[$i]);
 	}
 
 
@@ -172,16 +176,16 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testDistinctStoringStringsInsideBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		// Converts into a Stream of strings
-		$basicStream->map (function (DummyObject $dummyObject) : string {
+		$basicStream->map (function (Person $person) : string {
 			                  return "sameString";
 		                   });
 
 		$this->assertGreaterThan (1, $basicStream->count());
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 
 		$basicStream->distinct();
 
@@ -199,16 +203,16 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testDistinctStoringIntInsideBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		// Converts into a Stream of strings
-		$basicStream->map (function (DummyObject $dummyObject) : int {
+		$basicStream->map (function (Person $person) : int {
 			                  return 24;
 		                   });
 
 		$this->assertGreaterThan (1, $basicStream->count());
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 
 		$basicStream->distinct();
 
@@ -226,16 +230,16 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testDistinctStoringBoolInsideBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		// Converts into a Stream of strings
-		$basicStream->map (function (DummyObject $dummyObject) : bool {
+		$basicStream->map (function (Person $person) : bool {
 			                  return TRUE;
 		                   });
 
 		$this->assertGreaterThan (1, $basicStream->count());
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 
 		$basicStream->distinct();
 
@@ -253,25 +257,25 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filter (new HasDummyObjectOddIntPropertyPredicate());
+		$basicStream->filter (new HasPersonOddAgePredicate());
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
 
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->filter (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->filter (new HasPersonMoreThanOneWordAsNamePredicate());
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
 
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->filter (new IsFloatTheIntPropertyOfDummyObjectPredicate());
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->filter (new HasPersonNoAgeValuePredicate());
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
 
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->filter (new IsIntTheIntPropertyOfDummyObjectPredicate());
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->filter (new HasPersonNameWithValuePredicate());
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
 	}
@@ -282,47 +286,47 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterOnePredicate() {
 
-		// IsIntTheIntPropertyOfDummyObjectPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonNameWithValuePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filter (new IsIntTheIntPropertyOfDummyObjectPredicate());
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$basicStream->filter (new HasPersonNameWithValuePredicate());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
-		$this->assertEquals ($arrayList->size(), count ($contentOfStream));
+		$this->assertEquals ($arrayListOfPersons->size(), count ($contentOfStream));
 
-		for ($i = 0; $i < $arrayList->size(); $i++)
-			$this->assertEquals ($arrayList->get($i), $contentOfStream[$i]);
+		for ($i = 0; $i < $arrayListOfPersons->size(); $i++)
+			$this->assertEquals ($arrayListOfPersons->get($i), $contentOfStream[$i]);
 
-		// IsFloatTheIntPropertyOfDummyObjectPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonNoAgeValuePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filter (new IsFloatTheIntPropertyOfDummyObjectPredicate());
+		$basicStream->filter (new HasPersonNoAgeValuePredicate());
 		$this->assertEquals (0, $basicStream->count());
 
-		// HasDummyObjectOddIntPropertyPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonOddAgePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filter (new HasDummyObjectOddIntPropertyPredicate());
+		$basicStream->filter (new HasPersonOddAgePredicate());
 		$this->assertGreaterThan (0, $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertTrue ($contentOfStream[$i]->intProperty % 2 != 0);
+			$this->assertTrue ($contentOfStream[$i]->age % 2 != 0);
 
-		// HasDummyObjectStringPropertyOfTwoCharactersPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonMoreThanOneWordAsNamePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filter (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());
+		$basicStream->filter (new HasPersonMoreThanOneWordAsNamePredicate());
 		$this->assertGreaterThan (0, $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertTrue (strlen ($contentOfStream[$i]->stringProperty) == 2);
+			$this->assertTrue (str_word_count ($contentOfStream[$i]->name) > 1);
 	}
 
 
@@ -331,20 +335,20 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterMoreThanOnePredicate() {
 
-		// HasDummyObjectOddIntPropertyPredicate && HasDummyObjectStringPropertyOfTwoCharactersPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonOddAgePredicate && HasPersonMoreThanOneWordAsNamePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filter (new HasDummyObjectOddIntPropertyPredicate())
-		            ->filter (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());
+		$basicStream->filter (new HasPersonOddAgePredicate())
+		            ->filter (new HasPersonMoreThanOneWordAsNamePredicate());
 
         $this->assertGreaterThan (0, $basicStream->count());
 
         $contentOfStream = $basicStream->toArray();
         for ($i = 0; $i < count ($contentOfStream); $i++) {
 
-        	$this->assertTrue ($contentOfStream[$i]->intProperty % 2 != 0);
-        	$this->assertTrue (strlen ($contentOfStream[$i]->stringProperty) == 2);
+        	$this->assertTrue ($contentOfStream[$i]->age % 2 != 0);
+        	$this->assertTrue (str_word_count ($contentOfStream[$i]->name) > 1);
         }
 	}
 
@@ -356,8 +360,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaWithClosureWithMoreThanOneParameter() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->filterByLambda (function (int $p1, string $p2) {
 			                             $p1 += 1;
@@ -373,8 +377,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaWithClosureWithParameterTypeDifferentOfStreamElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->filterByLambda (function (string $p1) {
 			                             $p1 .= "_test";
@@ -389,11 +393,11 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaWithClosureWithInvalidReturnedType() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filterByLambda (function (DummyObject $dummyObject) : DummyObject {
-			                             $dummyObject->intProperty *= 2;
+		$basicStream->filterByLambda (function (Person $person) : Person {
+			                             $person->age *= 2;
 		                              });
 	}
 
@@ -405,11 +409,11 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filterByLambda (function (DummyObject $dummyObject) {
-			                             $dummyObject->intProperty *= 2;
+		$basicStream->filterByLambda (function (Person $person) {
+			                             $person->age *= 2;
 		                              });
 	}
 
@@ -419,34 +423,34 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaByOneIteration() {
 
-		// Filter pair intProperty values
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// Filter pair age values
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filterByLambda (function (DummyObject $dummyObject) : bool {
-			                             return $dummyObject->intProperty % 2 == 0;
+		$basicStream->filterByLambda (function (Person $person) : bool {
+			                             return $person->age % 2 == 0;
 		                              });
 
 		$this->assertGreaterThan (0, $basicStream->count());
-		$this->assertFalse ($arrayList->size() == $basicStream->count());
+		$this->assertFalse ($arrayListOfPersons->size() == $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals (0, $contentOfStream[$i]->intProperty % 2);
+			$this->assertEquals (0, $contentOfStream[$i]->age % 2);
 
-		// Filter stringProperty values with lenght = 3
-		$basicStream = new BasicStream ($arrayList);
+		// Filter name values with lenght = 3
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filterByLambda (function (DummyObject $dummyObject) : bool {
-			                             return strlen ($dummyObject->stringProperty) == 3;
+		$basicStream->filterByLambda (function (Person $person) : bool {
+			                             return strlen ($person->name) == 3;
 		                              });
 
 		$this->assertGreaterThan (0, $basicStream->count());
-		$this->assertFalse ($arrayList->size() == $basicStream->count());
+		$this->assertFalse ($arrayListOfPersons->size() == $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals (3, strlen ($contentOfStream[$i]->stringProperty));
+			$this->assertEquals (3, strlen ($contentOfStream[$i]->name));
 	}
 
 
@@ -455,25 +459,25 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaByMoreThanOneIteration() {
 
-		// Filter pair intProperty values
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// Filter pair age values
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->filterByLambda (function (DummyObject $dummyObject) : bool {
-			                             return $dummyObject->intProperty % 2 == 0;
+		$basicStream->filterByLambda (function (Person $person) : bool {
+			                             return $person->age % 2 == 0;
 		                              })
-		            ->filterByLambda (function (DummyObject $dummyObject) : bool {
-		                              	 return strlen ($dummyObject->stringProperty) == 3;
+		            ->filterByLambda (function (Person $person) : bool {
+		                              	 return str_word_count ($person->name) == 3;
 		                              });
 
 		$this->assertGreaterThan (0, $basicStream->count());
-		$this->assertFalse ($arrayList->size() == $basicStream->count());
+		$this->assertFalse ($arrayListOfPersons->size() == $basicStream->count());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++) {
 
-			$this->assertEquals (0, $contentOfStream[$i]->intProperty % 2);
-			$this->assertEquals (3, strlen ($contentOfStream[$i]->stringProperty));
+			$this->assertEquals (0, $contentOfStream[$i]->age % 2);
+			$this->assertEquals (3, str_word_count ($contentOfStream[$i]->name));
 		}
 	}
 
@@ -483,17 +487,17 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFindFirstOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$optional = $basicStream->findFirst();
 		$this->assertFalse ($optional->isPresent());
 
-		// IsFloatTheIntPropertyOfDummyObjectPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonNoAgeValuePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$optional = $basicStream->filter (new IsFloatTheIntPropertyOfDummyObjectPredicate())
+		$optional = $basicStream->filter (new HasPersonNoAgeValuePredicate())
 		                        ->findFirst();
 
 		$this->assertFalse ($optional->isPresent());
@@ -506,32 +510,208 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFindFirstOfNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$optional = $basicStream->findFirst();
 		$this->assertTrue ($optional->isPresent());
 
-		// HasDummyObjectOddIntPropertyPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonOddAgePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$optional = $basicStream->filter (new HasDummyObjectOddIntPropertyPredicate())
+		$optional = $basicStream->filter (new HasPersonOddAgePredicate())
 		                        ->findFirst();
 
 		$this->assertTrue ($optional->isPresent());
-		$this->assertTrue ($optional->get()->intProperty % 2 != 0);
+		$this->assertTrue ($optional->get()->age % 2 != 0);
 
-		// HasDummyObjectStringPropertyOfTwoCharactersPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// HasPersonMoreThanOneWordAsNamePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$optional = $basicStream->filter (new HasDummyObjectStringPropertyOfTwoCharactersPredicate())
+		$optional = $basicStream->filter (new HasPersonMoreThanOneWordAsNamePredicate())
 		                        ->findFirst();
 
 		$this->assertTrue ($optional->isPresent());
-		$this->assertTrue (strlen ($optional->get()->stringProperty) == 2);
+		$this->assertTrue (str_word_count ($optional->get()->name) > 1);
 	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFlatMapWithClosureWithMoreThanOneParameter() {
+
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (int $p1, string $p2) {
+			                      $p1 += 1;
+		                       });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFlatMapWithClosureWithParameterTypeDifferentOfStreamElements() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (int $p1) {
+			                      $p1 += 1;
+		                       });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFlatMapWithClosureWithInvalidReturnedType() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (Person $person) : int {
+			                      $person->age *= 2;
+		                       });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFlatMapOfEmptyBasicStream() {
+
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (Person $person) : Stream {
+			                      return $person->cars->stream();
+		                       });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 */
+	public function testFlatMapFlatteningACollectionOfObjects() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (Person $person) : Stream {
+			                      return $person->cars->stream();
+		                       });
+
+		$this->assertEquals (Car::class, $basicStream->getCurrentTypeStoredByStream());
+
+		// Gets the list of all cars of the "original ArrayList"
+		$arrayListOfCars = new ArrayList();
+		foreach ($arrayListOfPersons->iterator() as $person)
+			$arrayListOfCars->addAll ($person->cars);
+
+		$this->assertEquals ($basicStream->count(), $arrayListOfCars->size());
+
+		// Gets the list of all cars of the current Stream
+		$arrayListOfPersonsFromStream = new ArrayList();
+		foreach ($basicStream->toArray() as $car)
+			$arrayListOfPersonsFromStream->add ($car);
+
+		$this->assertEquals ($arrayListOfCars->size(), $arrayListOfPersonsFromStream->size());
+
+		// Checks if both ArrayList contains the same elements
+		$arrayListOfCars->removeAll ($arrayListOfPersonsFromStream);
+
+		$this->assertEquals (0, $arrayListOfCars->size());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 */
+	public function testFlatMapFlatteningAStringCollection() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (Person $person) : Stream {
+                                  return $person->cars->stream()
+                                                      ->map (function (Car $car) : string {
+                                                                return $car->registration;
+                                                             });
+		                       });
+
+		$this->assertEquals ("string", $basicStream->getCurrentTypeStoredByStream());
+
+		// Gets the list of all car's registration of the "original ArrayList"
+		$arrayOfCarRegistrations = array();
+		foreach ($arrayListOfPersons->iterator() as $person) {
+
+			foreach ($person->cars->iterator() as $car)
+				$arrayOfCarRegistrations[] = $car->registration;
+		}
+		$this->assertEquals ($basicStream->count(), count ($arrayOfCarRegistrations));
+
+		// Gets the list of all car's registration of the current Stream
+		$arrayOfCarRegistrationsFromStream = $basicStream->toArray();
+
+		$this->assertEquals (count ($arrayOfCarRegistrations), count ($arrayOfCarRegistrationsFromStream));
+
+		// Checks if both arrays contains the same elements
+		$arrayWithDifferences = array_diff ($arrayOfCarRegistrations, $arrayOfCarRegistrationsFromStream);
+
+		$this->assertEquals (0, count ($arrayWithDifferences));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::flatMap
+	 */
+	public function testFlatMapFlatteningAnIntCollection() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->flatMap (function (Person $person) : Stream {
+			                      return $person->cars->stream()
+			                                          ->map (function (Car $car) : int {
+				                                                return $car->yearOfProduction;
+			                                                 });
+		                       });
+
+		$this->assertEquals ("int", $basicStream->getCurrentTypeStoredByStream());
+
+		// Gets the list of all car's year of production of the "original ArrayList"
+		$arrayOfCarYearOfProduction = array();
+		foreach ($arrayListOfPersons->iterator() as $person) {
+
+			foreach ($person->cars->iterator() as $car)
+				$arrayOfCarYearOfProduction[] = $car->yearOfProduction;
+		}
+		$this->assertEquals ($basicStream->count(), count ($arrayOfCarYearOfProduction));
+
+		// Gets the list of all car's year of production of the current Stream
+		$arrayOfCarYearOfProductionFromStream = $basicStream->toArray();
+
+		$this->assertEquals (count ($arrayOfCarYearOfProduction), count ($arrayOfCarYearOfProductionFromStream));
+
+		// Checks if both arrays contains the same elements
+		$arrayWithDifferences = array_diff ($arrayOfCarYearOfProduction, $arrayOfCarYearOfProductionFromStream);
+
+		$this->assertEquals (0, count ($arrayWithDifferences));
+	}
+
 
 
 	/**
@@ -541,8 +721,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testForEachWithClosureWithMoreThanOneParameter() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->forEach (function (int $p1, string $p2) {
 			                      $p1 += 1;
@@ -558,8 +738,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testForEachWithClosureWithParameterTypeDifferentOfStreamElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->forEach (function (int $p1) {
 		 	                      $p1 += 1;
@@ -574,27 +754,11 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testForEachWithClosureWithInvalidReturnedType() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->forEach (function (DummyObject $dummyObject) : int {
-			                      $dummyObject->intProperty *= 2;
-		                       });
-	}
-
-
-	/**
-	 * @covers FunctionalPHP\common\functional\BasicStream::forEach
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
-	 */
-	public function testForEachOfEmptyBasicStream() {
-
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
-
-		$basicStream->forEach (function (DummyObject $dummyObject) {
-			                      $dummyObject->intProperty *= 2;
+		$basicStream->forEach (function (Person $person) : int {
+			                      $person->age *= 2;
 		                       });
 	}
 
@@ -604,36 +768,36 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testForEachOfNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->forEach (function (DummyObject $dummyObject) {
-			                      $dummyObject->intProperty *= 2;
+		$basicStream->forEach (function (Person $person) {
+			                      $person->age *= 2;
 		                       });
 
 		// It is necessary "reinitialize" it due to the stream works with the same objects that "initial arrayList"
-		$arrayList = $this->generateDummyArrayList();
+		$arrayListOfPersons = $this->generatePersonsArrayList();
 		$contentOfStream = $basicStream->toArray();
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($contentOfStream));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($contentOfStream));
 
-		for ($i = 0; $i < $arrayList->size(); $i++)
-			$this->assertEquals ($arrayList->get($i)->intProperty * 2, $contentOfStream[$i]->intProperty);
+		for ($i = 0; $i < $arrayListOfPersons->size(); $i++)
+			$this->assertEquals ($arrayListOfPersons->get($i)->age * 2, $contentOfStream[$i]->age);
 
-		// Using the filter HasDummyObjectStringPropertyOfTwoCharactersPredicate
-		$arrayList = $this->generateDummyArrayList();
-		$originalStream = new BasicStream ($arrayList);
+		// Using the filter HasPersonMoreThanOneWordAsNamePredicate
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$originalStream = new BasicStream ($arrayListOfPersons);
 
-		$originalStream->filter (new HasDummyObjectStringPropertyOfTwoCharactersPredicate());
+		$originalStream->filter (new HasPersonMoreThanOneWordAsNamePredicate());
 
-		$arrayList = $this->generateDummyArrayList();
-		$finalStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$finalStream = new BasicStream ($arrayListOfPersons);
 
 		// Only applies forEach to the finalStream
-		$finalStream->filter (new HasDummyObjectStringPropertyOfTwoCharactersPredicate())
-		            ->forEach (function (DummyObject $dummyObject) {
-			                      $dummyObject->stringProperty .= "_2";
+		$finalStream->filter (new HasPersonMoreThanOneWordAsNamePredicate())
+		            ->forEach (function (Person $person) {
+			                      $person->name .= "_2";
 		                       });
 
         $contentOfOriginalStream = $originalStream->toArray();
@@ -643,8 +807,8 @@ final class BasicStreamTest extends TestCase {
         $this->assertEquals (count ($contentOfOriginalStream), count ($contentOfFinalStream));
 
         for ($i = 0; $i < count ($contentOfOriginalStream); $i++)
-        	$this->assertEquals ($contentOfOriginalStream[$i]->stringProperty . "_2"
-        			            ,$contentOfFinalStream[$i]->stringProperty);
+        	$this->assertEquals ($contentOfOriginalStream[$i]->name . "_2"
+        			            ,$contentOfFinalStream[$i]->name);
 	}
 
 
@@ -655,8 +819,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testLimitWithMaxSizeLessThanZero() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->limit (-1);
 	}
@@ -668,16 +832,16 @@ final class BasicStreamTest extends TestCase {
 	public function testLimitOfEmptyBasicStream() {
 
 		// Limit = 0
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->limit (0);
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
 
 		// Limit = 10
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->limit (10);
 		$this->assertEquals (0, $basicStream->count());
@@ -691,32 +855,32 @@ final class BasicStreamTest extends TestCase {
 	public function testLimitOfNotEmptyBasicStream() {
 
 		// Limit = 5
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->limit (5);
 
-		$this->assertGreaterThan ($basicStream->count(), $arrayList->size());
+		$this->assertGreaterThan ($basicStream->count(), $arrayListOfPersons->size());
 		$this->assertEquals (5, $basicStream->count());
 		$this->assertEquals (5, count ($basicStream->toArray()));
 
 		// Limit = 10
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->limit (10);
 
-		$this->assertGreaterThan ($basicStream->count(), $arrayList->size());
+		$this->assertGreaterThan ($basicStream->count(), $arrayListOfPersons->size());
 		$this->assertEquals (10, $basicStream->count());
 		$this->assertEquals (10, count ($basicStream->toArray()));
 
-		// Limit = $arrayList->size() + 1
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		// Limit = $arrayListOfPersons->size() + 1
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->limit ($arrayList->size() + 1);
+		$basicStream->limit ($arrayListOfPersons->size() + 1);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 	}
 
 
@@ -727,10 +891,10 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMinOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->min (new DummyObjectComparator());
+		$basicStream->min (new PersonComparator());
 	}
 
 
@@ -741,13 +905,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMinOfBasicStreamWithStringElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : string {
-			                  return $dummyObject->stringProperty;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : string {
+			                  return $person->name;
 		                   });
 
-		$basicStream->min (new DummyObjectComparator());
+		$basicStream->min (new PersonComparator());
 	}
 
 
@@ -758,13 +922,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMinOfBasicStreamWithIntElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : int {
-			                  return $dummyObject->intProperty;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : int {
+			                  return $person->age;
 		                   });
 
-		$basicStream->min (new DummyObjectComparator());
+		$basicStream->min (new PersonComparator());
 	}
 
 
@@ -775,13 +939,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMinOfBasicStreamWithFloatElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : float {
-			                  return $dummyObject->intProperty * 0.1;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : float {
+			                  return $person->age * 0.1;
 		                   });
 
-		$basicStream->min (new DummyObjectComparator());
+		$basicStream->min (new PersonComparator());
 	}
 
 
@@ -792,13 +956,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMinOfBasicStreamWithBoolElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : bool {
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : bool {
 			                  return TRUE;
 		                   });
 
-		$basicStream->min (new DummyObjectComparator());
+		$basicStream->min (new PersonComparator());
 	}
 
 
@@ -807,18 +971,18 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMinOfBasicStreamWithObjects() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$priorityQueue = new PriorityQueue ($arrayList, new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue ($arrayListOfPersons, new PersonComparator());
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
 		// Get the min and compare with the first element in the PriorityQueue
-		$minInStream = $basicStream->min (new DummyObjectComparator());
+		$minInStream = $basicStream->min (new PersonComparator());
 		$this->assertNotNull ($minInStream);
 		$this->assertTrue ($minInStream->isPresent());
 
@@ -838,8 +1002,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMapWithClosureWithMoreThanOneParameter() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->map (function (int $p1, string $p2) {
 			                  $p1 += 1;
@@ -855,8 +1019,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMapWithClosureWithParameterTypeDifferentOfStreamElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->map (function (bool $p1) {
 			                  $p1 = TRUE;
@@ -871,11 +1035,11 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMapWithClosureWithInvalidNativeReturnedType() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->map (function (DummyObject $dummyObject) : array {
-			                  return array ($dummyObject->intProperty);
+		$basicStream->map (function (Person $person) : array {
+			                  return array ($person->age);
 		                   });
 	}
 
@@ -887,27 +1051,11 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMapWithClosureWithInvalidObjectReturnedType() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->map (function (DummyObject $dummyObject) : Object {
-			                  return $dummyObject;
-		                   });
-	}
-
-
-	/**
-	 * @covers FunctionalPHP\common\functional\BasicStream::map
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
-	 */
-	public function testMapOfEmptyBasicStream() {
-
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
-
-		$basicStream->map (function (DummyObject $dummyObject) : DummyObject {
-			                  return $dummyObject;
+		$basicStream->map (function (Person $person) : Object {
+			                  return $person;
 		                   });
 	}
 
@@ -917,32 +1065,34 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMapConvertOriginalObjectIntoNativeType() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		// Converts into a Stream of strings
-		$basicStream->map (function (DummyObject $dummyObject) : string {
+		$basicStream->map (function (Person $person) : string {
 			                  return "sameString";
 		                   });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ("string", $basicStream->getCurrentTypeStoredByStream());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
 			$this->assertEquals ("sameString", $contentOfStream[$i]);
 
 		// Initialize Stream and converts it into a Stream of float
-		$basicStream = new BasicStream ($arrayList);
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->map (function (DummyObject $dummyObject) : float {
-				              return $dummyObject->intProperty * 0.1;
+		$basicStream->map (function (Person $person) : float {
+				              return $person->age * 0.1;
 			               });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ("float", $basicStream->getCurrentTypeStoredByStream());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($arrayList->get($i)->intProperty * 0.1, $contentOfStream[$i]);
+			$this->assertEquals ($arrayListOfPersons->get($i)->age * 0.1, $contentOfStream[$i]);
 	}
 
 
@@ -951,30 +1101,32 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMapAppliesMoreThanOnce() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		// Converts into a Stream of strings
-		$basicStream->map (function (DummyObject $dummyObject) : string {
-			                  return $dummyObject->stringProperty;
+		$basicStream->map (function (Person $person) : string {
+			                  return $person->name;
 		                   });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ("string", $basicStream->getCurrentTypeStoredByStream());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($arrayList->get($i)->stringProperty, $contentOfStream[$i]);
+			$this->assertEquals ($arrayListOfPersons->get($i)->name, $contentOfStream[$i]);
 
 		// Convert current Stream of string into a Stream of int
-		$basicStream->map (function (string $stringProperty) : int {
-			return strlen ($stringProperty);
-		});
+		$basicStream->map (function (string $name) : int {
+			                  return strlen ($name);
+		                   });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ("int", $basicStream->getCurrentTypeStoredByStream());
 
 		$contentOfStream = $basicStream->toArray();
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals (strlen ($arrayList->get($i)->stringProperty), $contentOfStream[$i]);
+			$this->assertEquals (strlen ($arrayListOfPersons->get($i)->name), $contentOfStream[$i]);
 	}
 
 
@@ -985,10 +1137,10 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMaxOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->max (new DummyObjectComparator());
+		$basicStream->max (new PersonComparator());
 	}
 
 
@@ -999,13 +1151,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMaxOfBasicStreamWithStringElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : string {
-			                  return $dummyObject->stringProperty;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : string {
+			                  return $person->name;
 		                   });
 
-		$basicStream->max (new DummyObjectComparator());
+		$basicStream->max (new PersonComparator());
 	}
 
 
@@ -1016,13 +1168,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMaxOfBasicStreamWithIntElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : int {
-			                  return $dummyObject->intProperty;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : int {
+			                  return $person->age;
 		                   });
 
-		$basicStream->max (new DummyObjectComparator());
+		$basicStream->max (new PersonComparator());
 	}
 
 
@@ -1033,13 +1185,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMaxOfBasicStreamWithFloatElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : float {
-			                  return $dummyObject->intProperty * 0.1;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : float {
+			                  return $person->age * 0.1;
 		                   });
 
-		$basicStream->max (new DummyObjectComparator());
+		$basicStream->max (new PersonComparator());
 	}
 
 
@@ -1050,13 +1202,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMaxOfBasicStreamWithBoolElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : bool {
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : bool {
 			                  return TRUE;
 		                   });
 
-		$basicStream->max (new DummyObjectComparator());
+		$basicStream->max (new PersonComparator());
 	}
 
 
@@ -1065,18 +1217,18 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testMaxOfBasicStreamWithObjects() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$priorityQueue = new PriorityQueue ($arrayList, new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue ($arrayListOfPersons, new PersonComparator());
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
 		// Get the min and compare with the last element in the PriorityQueue
-		$maxInStream = $basicStream->max (new DummyObjectComparator());
+		$maxInStream = $basicStream->max (new PersonComparator());
 		$this->assertNotNull ($maxInStream);
 		$this->assertTrue ($maxInStream->isPresent());
 
@@ -1097,13 +1249,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testNoneMatchOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertTrue ($basicStream->noneMatch (new HasDummyObjectOddIntPropertyPredicate()));
-		$this->assertTrue ($basicStream->noneMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate()));
-		$this->assertTrue ($basicStream->noneMatch (new IsFloatTheIntPropertyOfDummyObjectPredicate()));
-		$this->assertTrue ($basicStream->noneMatch (new IsIntTheIntPropertyOfDummyObjectPredicate()));
+		$this->assertTrue ($basicStream->noneMatch (new HasPersonOddAgePredicate()));
+		$this->assertTrue ($basicStream->noneMatch (new HasPersonMoreThanOneWordAsNamePredicate()));
+		$this->assertTrue ($basicStream->noneMatch (new HasPersonNoAgeValuePredicate()));
+		$this->assertTrue ($basicStream->noneMatch (new HasPersonNameWithValuePredicate()));
 	}
 
 
@@ -1112,13 +1264,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testNoneMatchOfNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertFalse ($basicStream->noneMatch (new HasDummyObjectOddIntPropertyPredicate()));
-		$this->assertFalse ($basicStream->noneMatch (new HasDummyObjectStringPropertyOfTwoCharactersPredicate()));
-		$this->assertTrue ($basicStream->noneMatch (new IsFloatTheIntPropertyOfDummyObjectPredicate()));
-		$this->assertFalse ($basicStream->noneMatch (new IsIntTheIntPropertyOfDummyObjectPredicate()));
+		$this->assertFalse ($basicStream->noneMatch (new HasPersonOddAgePredicate()));
+		$this->assertFalse ($basicStream->noneMatch (new HasPersonMoreThanOneWordAsNamePredicate()));
+		$this->assertTrue ($basicStream->noneMatch (new HasPersonNoAgeValuePredicate()));
+		$this->assertFalse ($basicStream->noneMatch (new HasPersonNameWithValuePredicate()));
 	}
 
 
@@ -1127,8 +1279,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
@@ -1144,13 +1296,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedOfBasicStreamWithObjects() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$priorityQueue = new PriorityQueue ($arrayList);
+		$priorityQueue = new PriorityQueue ($arrayListOfPersons);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
@@ -1172,8 +1324,8 @@ final class BasicStreamTest extends TestCase {
 		// After ordering the elements in the stream
 		$basicStream->sorted();
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
@@ -1193,22 +1345,22 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedOfBasicStreamWithIntegers() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$ordinationIntPropertyArray = array();
-		foreach ($arrayList->iterator() as $element)
-			$ordinationIntPropertyArray[] = $element->intProperty;
+		$ordinationageArray = array();
+		foreach ($arrayListOfPersons->iterator() as $element)
+			$ordinationageArray[] = $element->age;
 
-		sort ($ordinationIntPropertyArray);
+		sort ($ordinationageArray);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
-		$basicStream->map (function (DummyObject $dummyObject) : int {
-			                  return $dummyObject->intProperty;
+		$basicStream->map (function (Person $person) : int {
+			                  return $person->age;
 		                   });
 
 		// Initially not all elements in this stream are sorted
@@ -1217,24 +1369,24 @@ final class BasicStreamTest extends TestCase {
 
 		for ($i = 0; $i < count ($contentOfStream); $i++) {
 
-			if ($contentOfStream[$i] === $ordinationIntPropertyArray[$i])
+			if ($contentOfStream[$i] === $ordinationageArray[$i])
 				$numberOfElementsInTheSamePosition++;
 		}
 		$this->assertGreaterThan (0, $numberOfElementsInTheSamePosition);
-		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationIntPropertyArray));
+		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationageArray));
 
 		// After ordering the elements in the stream
 		$basicStream->sorted();
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
 		$contentOfStream = $basicStream->toArray();
 
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($ordinationIntPropertyArray[$i], $contentOfStream[$i]);
+			$this->assertEquals ($ordinationageArray[$i], $contentOfStream[$i]);
 	}
 
 
@@ -1243,22 +1395,22 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedOfBasicStreamWithStrings() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$ordinationIntPropertyArray = array();
-		foreach ($arrayList->iterator() as $element)
-			$ordinationIntPropertyArray[] = $element->stringProperty;
+		$ordinationageArray = array();
+		foreach ($arrayListOfPersons->iterator() as $element)
+			$ordinationageArray[] = $element->name;
 
-		sort ($ordinationIntPropertyArray);
+		sort ($ordinationageArray);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
-		$basicStream->map (function (DummyObject $dummyObject) : string {
-			                  return $dummyObject->stringProperty;
+		$basicStream->map (function (Person $person) : string {
+			                  return $person->name;
 		                   });
 
 		// Initially not all elements in this stream are sorted
@@ -1267,24 +1419,24 @@ final class BasicStreamTest extends TestCase {
 
 		for ($i = 0; $i < count ($contentOfStream); $i++) {
 
-			if ($contentOfStream[$i] === $ordinationIntPropertyArray[$i])
+			if ($contentOfStream[$i] === $ordinationageArray[$i])
 				$numberOfElementsInTheSamePosition++;
 		}
 		$this->assertGreaterThan (0, $numberOfElementsInTheSamePosition);
-		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationIntPropertyArray));
+		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationageArray));
 
 		// After ordering the elements in the stream
 		$basicStream->sorted();
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
 		$contentOfStream = $basicStream->toArray();
 
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($ordinationIntPropertyArray[$i], $contentOfStream[$i]);
+			$this->assertEquals ($ordinationageArray[$i], $contentOfStream[$i]);
 	}
 
 
@@ -1295,10 +1447,10 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByComparatorOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->sortedByComparator (new DummyObjectComparator());
+		$basicStream->sortedByComparator (new PersonComparator());
 	}
 
 
@@ -1309,13 +1461,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByComparatorOfBasicStreamWithStringElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : string {
-			                  return $dummyObject->stringProperty;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : string {
+			                  return $person->name;
 		                   });
 
-		$basicStream->sortedByComparator (new DummyObjectComparator());
+		$basicStream->sortedByComparator (new PersonComparator());
 	}
 
 
@@ -1326,13 +1478,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByComparatorOfBasicStreamWithIntElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : int {
-			                  return $dummyObject->intProperty;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : int {
+			                  return $person->age;
 		                   });
 
-		$basicStream->sortedByComparator (new DummyObjectComparator());
+		$basicStream->sortedByComparator (new PersonComparator());
 	}
 
 
@@ -1343,13 +1495,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByComparatorOfBasicStreamWithFloatElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : float {
-			                  return $dummyObject->intProperty * 0.1;
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : float {
+			                  return $person->age * 0.1;
 		                   });
 
-		$basicStream->sortedByComparator (new DummyObjectComparator());
+		$basicStream->sortedByComparator (new PersonComparator());
 	}
 
 
@@ -1360,13 +1512,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByComparatorOfBasicStreamWithBoolElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
-		$basicStream->map (function (DummyObject $dummyObject) : bool {
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+		$basicStream->map (function (Person $person) : bool {
 			                  return TRUE;
 		                   });
 
-		$basicStream->sortedByComparator (new DummyObjectComparator());
+		$basicStream->sortedByComparator (new PersonComparator());
 	}
 
 
@@ -1375,13 +1527,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByComparatorOfBasicStreamWithObjects() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$priorityQueue = new PriorityQueue ($arrayList, new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue ($arrayListOfPersons, new PersonComparator());
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
@@ -1395,16 +1547,16 @@ final class BasicStreamTest extends TestCase {
 			if ($element->equals ($contentOfStream[$i]))
 				$numberOfElementsInTheSamePosition++;
 
-				$i++;
+			$i++;
 		}
-		$this->assertEquals (0, $numberOfElementsInTheSamePosition);
+		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, $basicStream->count());
 		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, $priorityQueue->size());
 
 		// After ordering the elements in the stream
-		$basicStream->sortedByComparator (new DummyObjectComparator());
+		$basicStream->sortedByComparator (new PersonComparator());
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
@@ -1426,8 +1578,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByLambdaWithClosureWithDifferentOfTwoParameters() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->sortedByLambda (function (int $p) {
 			                             $p += 1;
@@ -1442,8 +1594,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByLambdaWithClosureWithParameterTypeDifferentOfStreamElements() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->sortedByLambda (function (string $p1, string $p2) : int {
 			                             $p1 .= "_test";
@@ -1459,30 +1611,28 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByLambdaWithClosureWithInvalidReturnedType() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->sortedByLambda (function (DummyObject $dummyObject1, DummyObject $dummyObject2) : DummyObject {
-			                             return $dummyObject1;
+		$basicStream->sortedByLambda (function (Person $person1, Person $person2) : Person {
+			                             return $person1;
 		                              });
 	}
 
 
 	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::sortedByLambda
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
 	public function testSortedByLambdaOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
 
-		$basicStream->sortedByLambda (function (DummyObject $dummyObject1, DummyObject $dummyObject2) : int {
-			                             return $dummyObject1->intProperty;
+		$basicStream->sortedByLambda (function (Person $person1, Person $person2) : int {
+			                             return $person1->age;
 		                              });
 
 		$this->assertEquals (0, $basicStream->count());
@@ -1495,13 +1645,13 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByLambdaOfBasicStreamWithObjects() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$priorityQueue = new PriorityQueue ($arrayList, new DummyObjectComparator());
+		$priorityQueue = new PriorityQueue ($arrayListOfPersons, new PersonComparator());
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
@@ -1517,16 +1667,16 @@ final class BasicStreamTest extends TestCase {
 
 			$i++;
 		}
-		$this->assertEquals (0, $numberOfElementsInTheSamePosition);
+		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, $basicStream->count());
 		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, $priorityQueue->size());
 
 		// After ordering the elements in the stream
-		$basicStream->sortedByLambda (function (DummyObject $dummyObject1, DummyObject $dummyObject2): int {
-		                                 return $dummyObject2->intProperty - $dummyObject1->intProperty;
+		$basicStream->sortedByLambda (function (Person $person1, Person $person2): int {
+			                             return strcmp ($person2->name, $person1->name);
 	                                  });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 		$this->assertEquals ($priorityQueue->size(), $basicStream->count());
 		$this->assertEquals ($priorityQueue->size(), count ($basicStream->toArray()));
 
@@ -1546,14 +1696,14 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByLambdaOfBasicStreamWithStrings() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$ordinationIntPropertyArray = array();
-		foreach ($arrayList->iterator() as $element)
-			$ordinationIntPropertyArray[] = $element->stringProperty;
+		$ordinationageArray = array();
+		foreach ($arrayListOfPersons->iterator() as $element)
+			$ordinationageArray[] = $element->name;
 
-		usort ($ordinationIntPropertyArray, function (string $string1, string $string2) : int {
+		usort ($ordinationageArray, function (string $string1, string $string2) : int {
 
 			                                   if ($string1 == $string2)
 				                                  return 0;
@@ -1561,14 +1711,14 @@ final class BasicStreamTest extends TestCase {
 			                                   return ($string1 < $string2) ? -1 : 1;
 		                                    });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
-		$basicStream->map (function (DummyObject $dummyObject) : string {
-			return $dummyObject->stringProperty;
-		});
+		$basicStream->map (function (Person $person) : string {
+			                  return $person->name;
+		                   });
 
 		// Initially not all elements in this stream are sorted
 		$contentOfStream = $basicStream->toArray();
@@ -1576,11 +1726,11 @@ final class BasicStreamTest extends TestCase {
 
 		for ($i = 0; $i < count ($contentOfStream); $i++) {
 
-			if ($contentOfStream[$i] === $ordinationIntPropertyArray[$i])
+			if ($contentOfStream[$i] === $ordinationageArray[$i])
 				$numberOfElementsInTheSamePosition++;
 		}
 		$this->assertGreaterThan (0, $numberOfElementsInTheSamePosition);
-		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationIntPropertyArray));
+		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationageArray));
 
 		// After ordering the elements in the stream
 		$basicStream->sortedByLambda (function (string $string1, string $string2) : int {
@@ -1591,15 +1741,15 @@ final class BasicStreamTest extends TestCase {
 			                             return ($string1 < $string2) ? -1 : 1;
 		                              });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
 		$contentOfStream = $basicStream->toArray();
 
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($ordinationIntPropertyArray[$i], $contentOfStream[$i]);
+			$this->assertEquals ($ordinationageArray[$i], $contentOfStream[$i]);
 	}
 
 
@@ -1608,14 +1758,14 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testSortedByLambdaOfBasicStreamWithFloats() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$ordinationIntPropertyArray = array();
-		foreach ($arrayList->iterator() as $element)
-			$ordinationIntPropertyArray[] = $element->intProperty * 0.1;
+		$ordinationageArray = array();
+		foreach ($arrayListOfPersons->iterator() as $element)
+			$ordinationageArray[] = $element->age * 0.1;
 
-		usort ($ordinationIntPropertyArray, function (float $float1, float $float2) : int {
+		usort ($ordinationageArray, function (float $float1, float $float2) : int {
 
 			                                   if ($float1 == $float2)
 				                                  return 0;
@@ -1623,13 +1773,13 @@ final class BasicStreamTest extends TestCase {
 				                               return ($float1 < $float2) ? -1 : 1;
 		                                    });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
-		$basicStream->map (function (DummyObject $dummyObject) : float {
-			                  return $dummyObject->intProperty * 0.1;
+		$basicStream->map (function (Person $person) : float {
+			                  return $person->age * 0.1;
 		                   });
 
 		// Initially not all elements in this stream are sorted
@@ -1638,11 +1788,11 @@ final class BasicStreamTest extends TestCase {
 
 		for ($i = 0; $i < count ($contentOfStream); $i++) {
 
-			if ($contentOfStream[$i] === $ordinationIntPropertyArray[$i])
+			if ($contentOfStream[$i] === $ordinationageArray[$i])
 				$numberOfElementsInTheSamePosition++;
 		}
 		$this->assertGreaterThan (0, $numberOfElementsInTheSamePosition);
-		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationIntPropertyArray));
+		$this->assertGreaterThan ($numberOfElementsInTheSamePosition, count ($ordinationageArray));
 
 		// After ordering the elements in the stream
 		$basicStream->sortedByLambda (function (float $float1, float $float2) : int {
@@ -1653,15 +1803,15 @@ final class BasicStreamTest extends TestCase {
 			                             return ($float1 < $float2) ? -1 : 1;
 		                              });
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
-		$this->assertEquals (count ($ordinationIntPropertyArray), $basicStream->count());
-		$this->assertEquals (count ($ordinationIntPropertyArray), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
+		$this->assertEquals (count ($ordinationageArray), $basicStream->count());
+		$this->assertEquals (count ($ordinationageArray), count ($basicStream->toArray()));
 
 		$contentOfStream = $basicStream->toArray();
 
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($ordinationIntPropertyArray[$i], $contentOfStream[$i]);
+			$this->assertEquals ($ordinationageArray[$i], $contentOfStream[$i]);
 	}
 
 
@@ -1670,8 +1820,8 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testToArrayOfEmptyBasicStream() {
 
-		$arrayList = new ArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$this->assertEquals (0, $basicStream->count());
 		$this->assertEquals (0, count ($basicStream->toArray()));
@@ -1683,49 +1833,65 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testToArrayOfNotEmptyBasicStream() {
 
-		$arrayList = $this->generateDummyArrayList();
-		$basicStream = new BasicStream ($arrayList);
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$this->assertEquals ($arrayList->size(), $basicStream->count());
-		$this->assertEquals ($arrayList->size(), count ($basicStream->toArray()));
+		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
+		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 
 		$contentOfStream = $basicStream->toArray();
 
 		for ($i = 0; $i < count ($contentOfStream); $i++)
-			$this->assertEquals ($arrayList->get($i), $contentOfStream[$i]);
+			$this->assertEquals ($arrayListOfPersons->get($i), $contentOfStream[$i]);
 	}
 
 
 	/**
 	 * Uses in the different tests as "initial collection"
 	 */
-	private function generateDummyArrayList (bool $addDuplicates = TRUE) : ArrayList {
+	private function generatePersonsArrayList (bool $addDuplicates = TRUE) : ArrayList {
 
-		$arrayList = new ArrayList();
-		$arrayList->add (new DummyObject (1, "a", FALSE));
-		$arrayList->add (new DummyObject (2, "b", FALSE));
-		$arrayList->add (new DummyObject (3, "c", FALSE));
-		$arrayList->add (new DummyObject (4, "d", FALSE));
+		$car1 = new Car ('A-2134', 2015);
+		$car2 = new Car ('B-9999', 2015);
+		$car3 = new Car ('C-4567', 2010);
+		$car4 = new Car ('D-1675', 2000);
 
-		$arrayList->add (new DummyObject (5, "aa", TRUE));
-		$arrayList->add (new DummyObject (6, "bb", TRUE));
-		$arrayList->add (new DummyObject (7, "cc", TRUE));
-		$arrayList->add (new DummyObject (8, "dd", TRUE));
+		$arrayListOfCars1 = new ArrayList();
+		$arrayListOfCars1->add ($car1);
+		$arrayListOfCars1->add ($car3);
 
-		$arrayList->add (new DummyObject (9, "aaa", TRUE));
-		$arrayList->add (new DummyObject (10, "bbb", FALSE));
-		$arrayList->add (new DummyObject (11, "ccc", TRUE));
-		$arrayList->add (new DummyObject (12, "ddd", FALSE));
+		$arrayListOfCars2 = new ArrayList();
+		$arrayListOfCars2->add ($car2);
+
+		$arrayListOfCars3 = new ArrayList();
+		$arrayListOfCars3->add ($car1);
+		$arrayListOfCars3->add ($car4);
+
+		// Creates the collection of Persons
+		$arrayListOfPersons = new ArrayList();
+
+		$arrayListOfPersons->add (new Person ("Alba", 11, FALSE));
+		$arrayListOfPersons->add (new Person ("Albert", 18, TRUE, $arrayListOfCars2));
+		$arrayListOfPersons->add (new Person ("Bob", 9, TRUE));
+		$arrayListOfPersons->add (new Person ("Clark Smith", 34, TRUE));
+		$arrayListOfPersons->add (new Person ("Dalia", 19, FALSE));
+
+		$arrayListOfPersons->add (new Person ("Howard Shore", 33, TRUE));
+		$arrayListOfPersons->add (new Person ("John Snow", 29, TRUE, $arrayListOfCars1));
+		$arrayListOfPersons->add (new Person ("Mark", 20, TRUE));
+		$arrayListOfPersons->add (new Person ("Mary Hanks", 44, FALSE));
+		$arrayListOfPersons->add (new Person ("Sara Clark", 55, TRUE, $arrayListOfCars3));
+		$arrayListOfPersons->add (new Person ("Sonny John McKay", 24, TRUE));
 
 		// Adds some duplicate elements
 		if ($addDuplicates) {
-			$arrayList->add (new DummyObject (1, "a", FALSE));
-			$arrayList->add (new DummyObject (7, "cc", TRUE));
-			$arrayList->add (new DummyObject (7, "cc", TRUE));
-			$arrayList->add (new DummyObject (11, "ccc", TRUE));
-			$arrayList->add (new DummyObject (12, "ddd", FALSE));
+			$arrayListOfPersons->add (new Person ("Alba", 11, FALSE));
+			$arrayListOfPersons->add (new Person ("John Snow", 29, TRUE, $arrayListOfCars1));
+			$arrayListOfPersons->add (new Person ("John Snow", 29, TRUE, $arrayListOfCars1));
+			$arrayListOfPersons->add (new Person ("Mary Hanks", 44, FALSE));
+			$arrayListOfPersons->add (new Person ("Sara Clark", 55, TRUE, $arrayListOfCars3));
 		}
-		return $arrayList;
+		return $arrayListOfPersons;
 	}
 
 }

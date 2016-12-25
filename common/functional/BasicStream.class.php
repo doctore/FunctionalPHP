@@ -171,6 +171,37 @@ class BasicStream implements Stream {
 
 	/**
 	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Stream::flapMap()
+	 */
+	public function flatMap (\Closure $funtionUsedToFlat) : Stream {
+
+		$this->checkClosureFunctionOfFlatMap ($funtionUsedToFlat);
+
+		$internalDataAfterAppliesGivenFunction = array();
+		$finalTypeOfStoredElements             = NULL;
+		foreach ($this->internalData as $element) {
+
+			$newStream = $funtionUsedToFlat ($element);
+			$finalTypeOfStoredElements = $newStream->getCurrentTypeStoredByStream();
+
+			// Concats the result of the given function on "current element" to the previous results
+			$internalDataAfterAppliesGivenFunction = array_merge ($internalDataAfterAppliesGivenFunction
+					                                             ,$newStream->toArray());
+		}
+		if (is_null ($finalTypeOfStoredElements))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"It was not possible to update the type of the stored "
+					                                    ."elements in this stream");
+
+		$this->internalData = $internalDataAfterAppliesGivenFunction;
+		$this->currentTypeOfInternalData = $finalTypeOfStoredElements;
+
+		return $this;
+	}
+
+
+	/**
+	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\functional\Stream::forEach()
 	 */
 	public function forEach (\Closure $functionToApply) {
@@ -178,6 +209,16 @@ class BasicStream implements Stream {
 		$this->checkClosureFunctionOfForeach ($functionToApply);
 
 		array_map ($functionToApply, $this->internalData);
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Stream::getCurrentTypeStoredByStream()
+	 */
+	public function getCurrentTypeStoredByStream() : string {
+
+		return $this->currentTypeOfInternalData;
 	}
 
 
@@ -357,9 +398,10 @@ class BasicStream implements Stream {
 
 	/**
 	 * Checks if the given closure in filterByLambda function verify the following rules:
-	 *PriorityQueue
+	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 	 *
 	 * @param \Closure $closureFunction
@@ -370,7 +412,7 @@ class BasicStream implements Stream {
 	private function checkClosureFunctionOfFilterByLambda (\Closure $closureFunction) {
 
 		// Checks 1. and 2.
-		$reflectionFunction = $this->checkClosureParameters ($closureFunction, 1);
+		$reflectionFunction = $this->checkClosureParameters (__FUNCTION__, $closureFunction, 1);
 
 		// 3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 		$returnType = (string) $reflectionFunction->getReturnType();
@@ -385,10 +427,40 @@ class BasicStream implements Stream {
 
 
 	/**
+	 * Checks if the given closure in flatMap function verify the following rules:
+	 *
+	 *   1. Only has one parameter.
+	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
+	 *   3. The returned type must be an instance of Stream.
+	 *
+	 * @param \Closure $closureFunction
+	 *    Closure function to check.
+	 *
+	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
+	 */
+	private function checkClosureFunctionOfFlatMap (\Closure $closureFunction) {
+
+		// Checks 1. and 2.
+		$reflectionFunction = $this->checkClosureParameters (__FUNCTION__, $closureFunction, 1);
+
+		// 3. The returned type must be an instance of Stream.
+		$returnType = (string) $reflectionFunction->getReturnType();
+
+		if ($returnType == NULL || empty ($returnType) || (strcmp ($returnType, Stream::class) != 0 &&
+				                                           !$this->isGivenTypeSubclassOfGivenList ($returnType, Stream::class)))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"The returned type of the given closure function: ".$returnType." is not "
+					                                    ."valid. Please use ".Stream::class." or a subclass of it");
+	}
+
+
+	/**
 	 * Checks if the given closure in foreach function verify the following rules:
 	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
 	 *
 	 * @param \Closure $closureFunction
@@ -399,7 +471,7 @@ class BasicStream implements Stream {
 	private function checkClosureFunctionOfForeach (\Closure $closureFunction) {
 
 		// Checks 1. and 2.
-		$reflectionFunction = $this->checkClosureParameters ($closureFunction, 1);
+		$reflectionFunction = $this->checkClosureParameters (__FUNCTION__, $closureFunction, 1);
 
 		// 3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
 		$returnType = (string) $reflectionFunction->getReturnType();
@@ -418,6 +490,7 @@ class BasicStream implements Stream {
 	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is not null and valid, that is:
 	 *        3.1 Equal to the type of Stream's elements
 	 *        3.2 One of Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP
@@ -433,7 +506,7 @@ class BasicStream implements Stream {
 	private function checkClosureFunctionOfMap (\Closure $closureFunction) : string {
 
 		// Checks 1. and 2.
-		$reflectionFunction = $this->checkClosureParameters ($closureFunction, 1);
+		$reflectionFunction = $this->checkClosureParameters (__FUNCTION__, $closureFunction, 1);
 
 		// 3. The returned type is not null and valid
 		$returnType = (string) $reflectionFunction->getReturnType();
@@ -461,6 +534,7 @@ class BasicStream implements Stream {
 	 *
 	 *   1. Only has two parameters.
 	 *   2. The type of the given parameters must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
 	 *   3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_SORTEDBYLAMBDA)
 	 *
 	 * @param \Closure $closureFunction
@@ -471,7 +545,7 @@ class BasicStream implements Stream {
 	private function checkClosureFunctionOfSortedByLambda (\Closure $closureFunction) {
 
 		// Checks 1. and 2.
-		$reflectionFunction = $this->checkClosureParameters ($closureFunction, 2);
+		$reflectionFunction = $this->checkClosureParameters (__FUNCTION__, $closureFunction, 2);
 
 		// 3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
 		$returnType = (string) $reflectionFunction->getReturnType();
@@ -490,8 +564,11 @@ class BasicStream implements Stream {
 	 * Checks if the given closure has valid parameters and verifies the following rules:
 	 *
 	 *   1. The number of parameters must be equals to $numberOfParameters
-	 *   2. The type of the parameters must be equal to the type of the stream's elements.
+	 *   2. The type of the parameters must be equal to the type of the stream's elements
+	 *      (or subclass of Object if the stream stores Objects).
 	 *
+	 * @param $originalStreamFunction
+	 *    Function of this Stream that we are verifying.
 	 * @param \Closure $closureFunction
 	 *    Closure function to check.
 	 * @param int $numberOfParameters
@@ -501,13 +578,14 @@ class BasicStream implements Stream {
 	 *
 	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
 	 */
-	private function checkClosureParameters (\Closure $closureFunction, int $numberOfParameters) : \ReflectionFunction {
+	private function checkClosureParameters (string $originalStreamFunction, \Closure $closureFunction
+			                                ,int $numberOfParameters) : \ReflectionFunction {
 
 		// 1. Only has one parameter.
 		$reflectionFunction = new \ReflectionFunction ($closureFunction);
 
 		if ($reflectionFunction->getNumberOfParameters() != $numberOfParameters)
-			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
 					                                ,"The given closure function has ".$reflectionFunction->getNumberOfParameters()
 					                                    ." parameters, however only ".$numberOfParameters." are permitted");
 
@@ -516,12 +594,21 @@ class BasicStream implements Stream {
 
 			$parameterType = (string) ($reflectionFunction->getParameters()[$i])->getType();
 
-			if ($parameterType == NULL || empty ($parameterType) || strcmp ($parameterType, $this->currentTypeOfInternalData) != 0)
+			if ($parameterType == NULL || empty ($parameterType))
 				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
-						                                ,"In the given closure function and the paremeter number: ".($i+1)
-						                                    .", its type: ".$parameterType." is not equal to the elements "
-						                                    ."stored in the Stream: "
-						                                    .(is_null ($this->currentTypeOfInternalData) ? "NULL" : $this->currentTypeOfInternalData));
+						                                ,"In the given closure function and the paremeter number: "
+						                                    .($i+1).", its type can not be null");
+
+			if (strcmp ($parameterType, $this->currentTypeOfInternalData) != 0) {
+
+				// Test if it is a subclass of Object
+				if (!$this->isGivenTypeSubclassOfGivenList ($parameterType, Object::class))
+					throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
+							                                ,"In the given closure function and the paremeter number: ".($i+1)
+							                                    .", its type: ".$parameterType." is not equal to the elements "
+							                                    ."stored in the Stream: "
+							                                    .(is_null ($this->currentTypeOfInternalData) ? "NULL" : $this->currentTypeOfInternalData));
+			}
 		}
 		return $reflectionFunction;
 	}

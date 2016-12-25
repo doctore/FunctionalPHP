@@ -7,9 +7,10 @@ require_once '../LoadRequiredFiles.php';
 use PHPUnit\Framework\TestCase;
 
 use FunctionalPHP\common\Optional;
-use FunctionalPHP\test\DummyObject;
 use FunctionalPHP\exception\IllegalArgumentException;
 use FunctionalPHP\exception\UnsupportedOperationException;
+use FunctionalPHP\test\Person;
+
 
 /**
  * Class used to test FunctionalPHP\common\Optional
@@ -32,11 +33,11 @@ final class OptionalTest extends TestCase {
 	 */
 	public function testOptionalWithNotNullValue() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
-		$optional = new Optional ($dummyObject);
+		$person = new Person ("John", 18, TRUE);
+		$optional = new Optional ($person);
 
 		$this->assertTrue ($optional->isPresent());
-		$this->assertTrue ($dummyObject->equals ($optional->get()));
+		$this->assertTrue ($person->equals ($optional->get()));
 	}
 
 
@@ -45,12 +46,11 @@ final class OptionalTest extends TestCase {
 	 */
 	public function testCheckEquality() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
-		$dummyObject3 = new DummyObject (3, "c", FALSE);
-		$dummyObject4 = new DummyObject (3, "c", TRUE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, TRUE);
+		$person3 = new Person ("Sara", 25, FALSE);
 
-		$optional1 = new Optional ($dummyObject1);
+		$optional1 = new Optional ($person1);
 		$this->assertTrue ($optional1->equals ($optional1));
 
 		$optional2 = new Optional (NULL);
@@ -62,9 +62,9 @@ final class OptionalTest extends TestCase {
 		$this->assertTrue ($optional2->equals ($optional3));
 		$this->assertTrue ($optional3->equals ($optional2));
 
-		// Compares two Optional objects with "equals DummyObjects" as content
-		$optional4 = new Optional ($dummyObject3);
-		$optional5 = new Optional ($dummyObject4);
+		// Compares two Optional objects with "equals Person" as content
+		$optional4 = new Optional ($person2);
+		$optional5 = new Optional ($person3);
 		$this->assertTrue ($optional4->equals ($optional5));
 		$this->assertTrue ($optional5->equals ($optional4));
 
@@ -99,16 +99,16 @@ final class OptionalTest extends TestCase {
 	 */
 	public function testGetWithNonNullContent() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
 
-		$optional1 = new Optional ($dummyObject1);
+		$optional1 = new Optional ($person1);
 		$this->assertNotNull ($optional1->get());
-		$this->assertEquals ($dummyObject1, $optional1->get());
+		$this->assertEquals ($person1, $optional1->get());
 
-		$optional2 = new Optional ($dummyObject2);
+		$optional2 = new Optional ($person2);
 		$this->assertNotNull ($optional2->get());
-		$this->assertEquals ($dummyObject2, $optional2->get());
+		$this->assertEquals ($person2, $optional2->get());
 	}
 
 
@@ -117,12 +117,12 @@ final class OptionalTest extends TestCase {
 	 */
 	public function testIsPresent() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
 		$optional1 = new Optional (NULL);
 		$this->assertFalse ($optional1->isPresent());
 
-		$optional2 = new Optional ($dummyObject);
+		$optional2 = new Optional ($person);
 		$this->assertTrue ($optional2->isPresent());
 
 		$optional3 = new Optional (123);
@@ -135,14 +135,14 @@ final class OptionalTest extends TestCase {
 	 */
 	public function testOrElse() {
 
-		$dummyObject1 = new DummyObject (1, "a", FALSE);
-		$dummyObject2 = new DummyObject (2, "b", FALSE);
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
 
 		$optional1 = new Optional (NULL);
-		$this->assertEquals ($dummyObject1, $optional1->orElse ($dummyObject1));
+		$this->assertEquals ($person1, $optional1->orElse ($person1));
 
-		$optional2 = new Optional ($dummyObject2);
-		$this->assertEquals ($dummyObject2, $optional2->orElse ($dummyObject1));
+		$optional2 = new Optional ($person2);
+		$this->assertEquals ($person2, $optional2->orElse ($person2));
 	}
 
 
@@ -175,10 +175,10 @@ final class OptionalTest extends TestCase {
 	 */
 	public function testOrElseThrowNoException() {
 
-		$dummyObject = new DummyObject (1, "a", FALSE);
+		$person = new Person ("John", 18, TRUE);
 
-		$optional = new Optional ($dummyObject);
-		$this->assertEquals ($dummyObject
+		$optional = new Optional ($person);
+		$this->assertEquals ($person
 				            ,$optional->orElseThrow (new UnsupportedOperationException ("This exception won't be threw")));
 	}
 
