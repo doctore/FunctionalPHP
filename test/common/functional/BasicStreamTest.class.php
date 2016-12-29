@@ -6,8 +6,10 @@ require_once '../../LoadRequiredFiles.php';
 
 use PHPUnit\Framework\TestCase;
 
+use FunctionalPHP\iterable\map\Map;
 use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
+use FunctionalPHP\iterable\collection\set\HashSet;
 
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\common\functional\Collectors;
@@ -131,6 +133,231 @@ final class BasicStreamTest extends TestCase {
 		            ->collect (Collectors::toList());
 	}
 
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 */
+	public function testCollectToList() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$arrayListOfPersonsAfterCollect = $basicStream->collect (Collectors::toList());
+
+		$this->assertEquals ($arrayListOfPersons, $arrayListOfPersonsAfterCollect);
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 */
+	public function testCollectToSet() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$hashSetOfPersons = new HashSet ($arrayListOfPersons);
+		$hashSetOfPersonsAfterCollect = $basicStream->collect (Collectors::toSet());
+
+		$this->assertEquals ($hashSetOfPersons, $hashSetOfPersonsAfterCollect);
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 */
+	public function testCollectPartitioningBy() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$hashMap = $basicStream->collect (Collectors::partitioningBy (new HasPersonOddAgePredicate()));
+
+		$this->assertNotNull ($hashMap);
+		$this->assertNotNull ($hashMap->get (FALSE));
+		$this->assertNotNull ($hashMap->get (TRUE));
+
+		$this->assertTrue ($hashMap->get (FALSE)->isPresent());
+		$this->assertTrue ($hashMap->get (TRUE)->isPresent());
+
+		$this->assertGreaterThan (0, $hashMap->get (FALSE)->get()->getIterable()->size());
+		$this->assertGreaterThan (0, $hashMap->get (TRUE)->get()->getIterable()->size());
+
+		$arrayListOfPersonsAfterCollect = new ArrayList();
+
+		// Checks the predicate in the content of the HashMap
+		foreach ($hashMap->get (FALSE)->get()->getIterable()->iterator() as $person) {
+
+			$this->assertFalse ((new HasPersonOddAgePredicate())->test ($person));
+			$arrayListOfPersonsAfterCollect->add ($person);
+		}
+
+		foreach ($hashMap->get (TRUE)->get()->getIterable()->iterator() as $person) {
+
+			$this->assertTrue ((new HasPersonOddAgePredicate())->test ($person));
+			$arrayListOfPersonsAfterCollect->add ($person);
+		}
+		$this->assertTrue ($arrayListOfPersons->containsAll ($arrayListOfPersonsAfterCollect));
+		$this->assertTrue ($arrayListOfPersonsAfterCollect->containsAll ($arrayListOfPersons));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 */
+	public function testCollectpartitioningByUsingCollection() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$hashSetOfPersons = new HashSet ($arrayListOfPersons);
+
+		$hashMap = $basicStream->collect (Collectors::partitioningByUsingCollection (new HasPersonOddAgePredicate()
+				                                                                    ,new HashSet()));
+		$this->assertNotNull ($hashMap);
+		$this->assertNotNull ($hashMap->get (FALSE));
+		$this->assertNotNull ($hashMap->get (TRUE));
+
+		$this->assertTrue ($hashMap->get (FALSE)->isPresent());
+		$this->assertTrue ($hashMap->get (TRUE)->isPresent());
+
+		$this->assertGreaterThan (0, $hashMap->get (FALSE)->get()->getIterable()->size());
+		$this->assertGreaterThan (0, $hashMap->get (TRUE)->get()->getIterable()->size());
+
+		$hashSetOfPersonsAfterCollect = new HashSet();
+
+		// Checks the predicate in the content of the HashMap
+		foreach ($hashMap->get (FALSE)->get()->getIterable()->iterator() as $person) {
+
+			$this->assertFalse ((new HasPersonOddAgePredicate())->test ($person));
+			$hashSetOfPersonsAfterCollect->add ($person);
+		}
+
+		foreach ($hashMap->get (TRUE)->get()->getIterable()->iterator() as $person) {
+
+			$this->assertTrue ((new HasPersonOddAgePredicate())->test ($person));
+			$hashSetOfPersonsAfterCollect->add ($person);
+		}
+		$this->assertTrue ($hashSetOfPersons->containsAll ($hashSetOfPersonsAfterCollect));
+		$this->assertTrue ($hashSetOfPersonsAfterCollect->containsAll ($hashSetOfPersons));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 */
+	public function testCollectGroupingBy() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+
+		$arrayListOfCars = new ArrayList();
+		foreach ($arrayListOfPersons->iterator() as $person) {
+
+			foreach ($person->cars->iterator() as $car)
+				$arrayListOfCars->add ($car);
+		}
+        $this->assertGreaterThan (0, $arrayListOfCars->size());
+
+        $arrayOfDifferentYearOfProduction = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+			                                                                           return $person->cars->stream()
+			                                                                                               ->map (function (Car $car) : int {
+			                                                                                                         return $car->yearOfProduction;
+			                                                                                                      });
+		                                                                            })
+		                                                                 ->distinct()
+		                                                                 ->toArray();
+        $this->assertNotEmpty ($arrayOfDifferentYearOfProduction);
+
+		// Grouping by the year of production of the cars belonging to the initial list of persons
+		$hashMap = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+		                                                      return $person->cars->stream();
+		                                                   })
+		                                        ->collect (Collectors::groupingBy (function (Car $car) : int {
+		                                                	                          return $car->yearOfProduction;
+		                                                                           }));
+        $this->assertNotNull ($hashMap);
+        $this->assertEquals (Map::KEY_NUMERIC_TYPE, $hashMap->getTypeOfKeys());
+        $this->assertEquals (count ($arrayOfDifferentYearOfProduction), count ($hashMap->keys()));
+
+        // Checks that the given map contains all different values of yearOfProduction
+        for ($i = 0; $i < count ($arrayOfDifferentYearOfProduction); $i++) {
+
+        	$this->assertNotNull ($hashMap->get ($arrayOfDifferentYearOfProduction[$i]));
+        	$this->assertTrue ($hashMap->get ($arrayOfDifferentYearOfProduction[$i])->isPresent());
+        }
+        // Checks the values of every key in the map
+        $arrayListOfCarsAfterCollect = new ArrayList();
+
+        for ($i = 0; $i < count ($arrayOfDifferentYearOfProduction); $i++) {
+
+	        foreach ($hashMap->get ($arrayOfDifferentYearOfProduction[$i])->get()->getIterable()->iterator() as $car) {
+
+	        	$this->assertEquals ($arrayOfDifferentYearOfProduction[$i], $car->yearOfProduction);
+	        	$arrayListOfCarsAfterCollect->add ($car);
+	        }
+        }
+        $this->assertTrue ($arrayListOfCars->containsAll ($arrayListOfCarsAfterCollect));
+        $this->assertTrue ($arrayListOfCarsAfterCollect->containsAll ($arrayListOfCars));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 */
+	public function testCollectGroupingByUsingCollection() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+
+		$hashSetOfCars = new HashSet();
+		foreach ($arrayListOfPersons->iterator() as $person) {
+
+			foreach ($person->cars->iterator() as $car)
+				$hashSetOfCars->add ($car);
+		}
+		$this->assertGreaterThan (0, $hashSetOfCars->size());
+
+		$arrayOfDifferentYearOfProduction = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+			                                                                           return $person->cars->stream()
+			                                                                                               ->map (function (Car $car) : int {
+				                                                                                                     return $car->yearOfProduction;
+			                                                                                                      });
+		                                                                            })
+		                                                                 ->distinct()
+		                                                                 ->toArray();
+		$this->assertNotEmpty ($arrayOfDifferentYearOfProduction);
+
+		// Grouping by the year of production of the cars belonging to the initial list of persons
+		$hashMap = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+			                                                  return $person->cars->stream();
+		                                                   })
+		                                        ->collect (Collectors::groupingByUsingCollection (function (Car $car) : int {
+			                                                                                         return $car->yearOfProduction;
+		                                                                                          }
+		                                                                                         ,new HashSet()));
+		$this->assertNotNull ($hashMap);
+		$this->assertEquals (Map::KEY_NUMERIC_TYPE, $hashMap->getTypeOfKeys());
+		$this->assertEquals (count ($arrayOfDifferentYearOfProduction), count ($hashMap->keys()));
+
+		// Checks that the given map contains all different values of yearOfProduction
+		for ($i = 0; $i < count ($arrayOfDifferentYearOfProduction); $i++) {
+
+			$this->assertNotNull ($hashMap->get ($arrayOfDifferentYearOfProduction[$i]));
+			$this->assertTrue ($hashMap->get ($arrayOfDifferentYearOfProduction[$i])->isPresent());
+		}
+		// Checks the values of every key in the map
+		$hashSetOfCarsAfterCollect = new HashSet();
+
+		for ($i = 0; $i < count ($arrayOfDifferentYearOfProduction); $i++) {
+
+			foreach ($hashMap->get ($arrayOfDifferentYearOfProduction[$i])->get()->getIterable()->iterator() as $car) {
+
+				$this->assertEquals ($arrayOfDifferentYearOfProduction[$i], $car->yearOfProduction);
+				$hashSetOfCarsAfterCollect->add ($car);
+			}
+		}
+		$this->assertTrue ($hashSetOfCars->containsAll ($hashSetOfCarsAfterCollect));
+		$this->assertTrue ($hashSetOfCarsAfterCollect->containsAll ($hashSetOfCars));
+	}
 
 
 	/**
