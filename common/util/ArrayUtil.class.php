@@ -5,6 +5,9 @@ namespace FunctionalPHP\common\util;
 use FunctionalPHP\common\Comparator;
 use FunctionalPHP\common\Object;
 
+/**
+ * Utility class used to work with arrays.
+ */
 final class ArrayUtil {
 
 	/**

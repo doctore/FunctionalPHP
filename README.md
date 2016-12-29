@@ -11,6 +11,7 @@
     - [Basic use of Iterable](#basic-use-of-iterable)
     - [Basic use of Predicate](#basic-use-of-predicate)    
     - [Basic use of Stream](#basic-use-of-stream)
+    - [Basic use of Collectors](#basic-use-of-collectors)
 
 ## Why this project was created?
 
@@ -41,6 +42,7 @@ Below is shown a brief introduction to the components included in this project:
 * **CompositePredicate**: complex **Predicate** on which we can add several logical conditions like: AND, OR, etc
 * **Stream**: interface used to provide of functional programming features to the collections: **ArrayList**, **HashSet**, **PriorityQueue** and **SortedSet**.
 * **BasicStream**: implementation of the **Stream** interface.
+* **Collectors**: utility class that implements various useful reduction operations, such as accumulating elements into collections, summarizing elements according to various criteria, etc.
 
 ## Iterable in more detail
 
@@ -472,7 +474,7 @@ $isIntXorPairOfMixedIntegers = (new CompositePredicate (new IsIntPredicate()))
 
 ### Basic use of Stream
 
-In the last section of this file we will learn how to use the functionality provided by **Stream** interface, implemented by **BasicStream** class: 
+In the following section we will learn how to use the functionality provided by **Stream** interface, implemented by **BasicStream** class: 
 
 ```php
 <?php
@@ -481,6 +483,7 @@ namespace FunctionalPHP\test;
 
 use FunctionalPHP\common\Optional;
 use FunctionalPHP\common\functional\BasicStream;
+
 use FunctionalPHP\test\Car;
 use FunctionalPHP\test\Person;
 use FunctionalPHP\test\PersonComparator;
@@ -595,3 +598,108 @@ It is important to have one thing in mind and we have seen in the previous examp
 For this reason, *forEach* method modifies the elements stored in "both classes": original Collection and destination Stream. This does not happen anymore when *map* method changes the type of the stored elements in the Stream.
 
 Java 8 works in the same way, but if you want you can change this behaviuor modifying how the elements of the **Collection** are stored in the **Stream** (in this case *BasicStream::_construct*)
+
+### Basic use of Collectors
+
+At this point we will learn how to use the useful functionality provided by **Collectiors** class, that allow us, for example, accumulating elements into collections or summarizing elements according to various criteria:
+
+```php
+<?php
+
+namespace FunctionalPHP\test;
+
+use FunctionalPHP\common\Optional;
+use FunctionalPHP\common\functional\BasicStream;
+use FunctionalPHP\common\functional\Collectors;
+
+use FunctionalPHP\test\Car;
+use FunctionalPHP\test\Person;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
+
+
+$car1 = new Car ('A-2134', 2015);
+$car2 = new Car ('B-9999', 2015);
+$car3 = new Car ('C-4567', 2010);
+
+$arrayListOfCars1 = new ArrayList();
+$arrayListOfCars1->add ($car1);
+$arrayListOfCars1->add ($car3);
+
+$arrayListOfCars2 = new ArrayList();
+$arrayListOfCars2->add ($car2);
+
+$person1 = new Person ("Alba", 11, FALSE);
+$person2 = new Person ("Albert", 18, TRUE, $arrayListOfCars2);
+$person3 = new Person ("Bob", 9, TRUE, $arrayListOfCars1);
+$person4 = new Person ("Clark Smith", 34, TRUE);
+$person5 = new Person ("Dalia", 19, FALSE, $arrayListOfCars1);
+
+$arrayListOfPersons = new ArrayList();
+$arrayListOfPersons->add ($person1);
+$arrayListOfPersons->add ($person2);
+$arrayListOfPersons->add ($person3);
+$arrayListOfPersons->add ($person4);
+$arrayListOfPersons->add ($person5);
+
+
+// toList
+$arrayListOfAllCars = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+	                                                             return $person->cars->stream();
+                                                              })
+                                                   ->collect (Collectors::toList());   // Return an ArrayList with: $car2, $car1, $car3, $car1, $car3
+                                                   
+// toSet
+$hashSetOfAllCars = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+	                                                           return $person->cars->stream();
+                                                            })
+                                                 ->collect (Collectors::toSet());   // Return a HashSet with: $car2, $car1, $car3
+                                                 
+// partitioningBy                                                 
+$hashMap = $arrayListOfPersons->stream()->collect (Collectors::partitioningBy (new HasPersonOddAgePredicate()));
+
+/**
+ * Return a HashMap with the following information:
+ *   
+ *   $hashMap->get (FALSE) => return an Optional of ObjectWithIterable with the elements of the Stream that does not verify the given predicate  
+ *   $hashMap->get (TRUE)  => return an Optional of ObjectWithIterable with the elements of the Stream that verify the given predicate
+ */
+$arrayListOfPersonDoesNotVerifyPredicate = $hashMap->get (FALSE)->get()->getIterable();   // Return an ArrayList with: $person2, $person4
+$arrayListOfPersonVerifyPredicate        = $hashMap->get (TRUE)->get()->getIterable();    // Return an ArrayList with: $person1, $person3, $person5, $person1
+ 
+
+// partitioningByUsingCollection                                                 
+$hashMap = $arrayListOfPersons->stream()->collect (Collectors::partitioningByUsingCollection (new HasPersonOddAgePredicate(), new HashSet()));
+
+$hashSetOfPersonDoesNotVerifyPredicate = $hashMap->get (FALSE)->get()->getIterable();   // Return a HashSet with: $person2, $person4
+$hashSetOfPersonVerifyPredicate        = $hashMap->get (TRUE)->get()->getIterable();    // Return a HashSet with: $person1, $person3, $person5
+           
+// groupingBy
+$hashMap = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+	                                                  return $person->cars->stream();
+                                                   })
+                                        ->collect (Collectors::groupingBy (function (Car $car) : int {
+                                        	                                  return $car->yearOfProduction;
+                                                                           }));
+/**
+ * Return a HashMap with the following information:
+ *   
+ *   $hashMap->get (2010) => return an Optional of ObjectWithIterable with the cars with a yearOfProduction = 2010
+ *   $hashMap->get (2015) => return an Optional of ObjectWithIterable with the cars with a yearOfProduction = 2015
+ */
+$arrayListOfCarsOf2010 = $hashMap->get (2010)->get()->getIterable();   // Return an ArrayList with: $car3, $car3
+$arrayListOfCarsOf2015 = $hashMap->get (2015)->get()->getIterable();   // Return an ArrayList with: $car2, $car1, $car1
+
+// groupingByUsingCollection
+$hashMap = $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
+	                                                  return $person->cars->stream();
+                                                   })
+                                        ->collect (Collectors::groupingByUsingCollection (function (Car $car) : int {
+	                                                                                         return $car->yearOfProduction;
+                                                                                          }
+                                                                                         ,new HashSet()));
+
+$hashSetOfCarsOf2010 = $hashMap->get (2010)->get()->getIterable();   // Return a HashSet with: $car3
+$hashSetOfCarsOf2015 = $hashMap->get (2015)->get()->getIterable();   // Return a HashSet with: $car2, $car1
+
+?>
+```

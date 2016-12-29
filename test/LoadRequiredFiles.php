@@ -7,10 +7,15 @@ require_once __DIR__."/../common/functional/Predicate.interface.php";
 require_once __DIR__."/../common/functional/Stream.interface.php";
 require_once __DIR__."/../common/functional/CompositePredicate.class.php";
 require_once __DIR__."/../common/functional/BasicStream.class.php";
+require_once __DIR__."/../common/functional/Collectors.class.php";
+
 require_once __DIR__."/../common/util/ArrayUtil.class.php";
+require_once __DIR__."/../common/util/ReflectionUtil.class.php";
+
 require_once __DIR__."/../common/Comparable.interface.php";
 require_once __DIR__."/../common/Comparator.interface.php";
 require_once __DIR__."/../common/Object.class.php";
+require_once __DIR__."/../common/ObjectWithIterable.class.php";
 require_once __DIR__."/../common/Optional.class.php";
 
 require_once __DIR__."/../exception/IllegalArgumentException.class.php";

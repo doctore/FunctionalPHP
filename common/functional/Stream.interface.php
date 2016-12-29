@@ -8,6 +8,7 @@ use FunctionalPHP\common\Optional;
 use FunctionalPHP\common\functional\Predicate;
 use FunctionalPHP\exception\IllegalArgumentException;
 use FunctionalPHP\exception\UnsupportedOperationException;
+use FunctionalPHP\iterable\Iterable;
 
 /**
  *    A sequence of elements supporting sequential aggregate operations. Collections and streams,
@@ -52,6 +53,22 @@ interface Stream {
 	public function anyMatch (Predicate $predicate) : bool;
 
 	/**
+	 * Performs a collect operation on the elements of this stream using a CollectorImpl.
+	 *
+	 * @example
+	 *	 $basicStream->collect (Collectors::partitioningByUsingCollection (new MyPredicate(), new HashSet()));
+	 *
+	 * @param CollectorImpl $collector
+	 *    Object with the information used to know how to accumulate the elements of the this stream
+	 *
+	 * @return Iterable with the result to apply the given CollectorImpl to this stream
+	 *
+	 * @throws UnsupportedOperationException if the type of the elements stored in the stream is not
+	 *                                       Object (or a subclass of it)
+	 */
+	public function collect (CollectorImpl $collector) : Iterable;
+
+	/**
 	 * Returns the count of elements in this stream.
 	 *
 	 * @return the count of elements in this stream
@@ -87,7 +104,7 @@ interface Stream {
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter is equal to the type of the stream's elements.
 	 *      (or subclass of Object if the stream stores Objects).
-	 *   3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
+	 *   3. The returned type is not empty and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 	 *
 	 * @example
 	 *	 $basicStream->filterByLambda (function (int $intValue) : bool {
@@ -143,7 +160,7 @@ interface Stream {
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
 	 *      (or subclass of Object if the stream stores Objects).
-	 *   3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+	 *   3. The returned type is empty or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
 	 *
 	 * @example
 	 *   $basicStream->forEach (function (string $oldStringValue) {
@@ -196,7 +213,7 @@ interface Stream {
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
 	 *      (or subclass of Object if the stream stores Objects).
-	 *   3. The returned type is not null and valid, that is:
+	 *   3. The returned type is not empty and valid, that is:
 	 *        3.1 Equal to the type of Stream's elements
 	 *        3.2 One of Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP
 	 *        3.3 A subclass of Object.
@@ -267,7 +284,7 @@ interface Stream {
 	 *   1. Only has two parameters.
 	 *   2. The type of the given parameters must be equal to the type of the stream's elements.
 	 *      (or subclass of Object if the stream stores Objects).
-	 *   3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_SORTEDBYLAMBDA)
+	 *   3. The returned type is not empty and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_SORTEDBYLAMBDA)
 	 *
 	 * @example
 	 *   $basicStream->sortedByLambda (function (string $string1, string $string2) : int {

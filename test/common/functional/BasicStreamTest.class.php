@@ -10,6 +10,7 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 
 use FunctionalPHP\common\Optional;
+use FunctionalPHP\common\functional\Collectors;
 use FunctionalPHP\common\functional\Stream;
 use FunctionalPHP\common\functional\BasicStream;
 
@@ -112,6 +113,24 @@ final class BasicStreamTest extends TestCase {
 		$this->assertFalse ($basicStream->anyMatch (new HasPersonNoAgeValuePredicate()));
 		$this->assertTrue ($basicStream->anyMatch (new HasPersonOddAgePredicate()));
 	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::collect
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testCollectWithAStreamThatDoesNotStoreObjects() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->map (function (Person $person) : float {
+			                  return $person->age * 0.1;
+		                   })
+		            ->collect (Collectors::toList());
+	}
+
 
 
 	/**
@@ -886,15 +905,13 @@ final class BasicStreamTest extends TestCase {
 
 	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::min
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
 	public function testMinOfEmptyBasicStream() {
 
 		$arrayListOfPersons = new ArrayList();
 		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->min (new PersonComparator());
+		$this->assertFalse ($basicStream->min (new PersonComparator())->isPresent());
 	}
 
 
@@ -1132,15 +1149,13 @@ final class BasicStreamTest extends TestCase {
 
 	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::max
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
 	public function testMaxOfEmptyBasicStream() {
 
 		$arrayListOfPersons = new ArrayList();
 		$basicStream = new BasicStream ($arrayListOfPersons);
 
-		$basicStream->max (new PersonComparator());
+		$this->assertFalse ($basicStream->max (new PersonComparator())->isPresent());
 	}
 
 
@@ -1442,8 +1457,6 @@ final class BasicStreamTest extends TestCase {
 
 	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::sortedByComparator
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
 	public function testSortedByComparatorOfEmptyBasicStream() {
 
@@ -1451,6 +1464,9 @@ final class BasicStreamTest extends TestCase {
 		$basicStream = new BasicStream ($arrayListOfPersons);
 
 		$basicStream->sortedByComparator (new PersonComparator());
+
+		$this->assertEquals (0, $basicStream->count());
+		$this->assertEmpty ($basicStream->toArray());
 	}
 
 
