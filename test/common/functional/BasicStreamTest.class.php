@@ -1517,6 +1517,105 @@ final class BasicStreamTest extends TestCase {
 
 
 	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::reduce
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testReduceWithClosureWithDifferentOfTwoParameters() {
+
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->reduce (function (int $p) {
+			                     $p += 1;
+		                      });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::reduce
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testReduceWithClosureWithReturnedTypeDifferentOfFirstParamter() {
+
+		$arrayListOfPersons = new ArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->reduce (function (int $p, Person $person) : float {
+			                     return $person->age * 0.1;
+		                      });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::reduce
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testReduceWithClosureWithSecondParameterDifferentOfStoredElementsInStream() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$basicStream->reduce (function ($accumulatedValue, Optional $optional) {
+			                     return 1;
+		                      });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::reduce
+	 */
+	public function testReduceWithoutInitialValue() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$sumOfAge = 0;
+		foreach ($arrayListOfPersons->iterator() as $person)
+			$sumOfAge += $person->age;
+
+		$this->assertGreaterThan (0, $sumOfAge);
+
+		$result = $basicStream->reduce (function ($accumulatedValue, Person $person) {
+
+			                               if (is_null ($accumulatedValue))
+			                     	          $accumulatedValue = 0;
+
+			                               return $person->age + $accumulatedValue;
+		                                });
+		$this->assertNotNull ($result);
+		$this->assertTrue ($result->isPresent());
+		$this->assertEquals ($sumOfAge, $result->get());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::reduce
+	 */
+	public function testReduceWithInitialValue() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$basicStream = new BasicStream ($arrayListOfPersons);
+
+		$sumOfAge = 0;
+		foreach ($arrayListOfPersons->iterator() as $person)
+			$sumOfAge += $person->age;
+
+		$this->assertGreaterThan (0, $sumOfAge);
+
+		$result = $basicStream->reduce (function ($accumulatedValue, Person $person) {
+				                           return $person->age + $accumulatedValue;
+		                                }
+		                               ,0);
+		$this->assertNotNull ($result);
+		$this->assertTrue ($result->isPresent());
+		$this->assertEquals ($sumOfAge, $result->get());
+	}
+
+
+	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::sorted
 	 */
 	public function testSortedOfEmptyBasicStream() {

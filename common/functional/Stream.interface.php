@@ -259,19 +259,19 @@ interface Stream {
 
 	/**
 	 *    Performs a reduction on the elements of this stream, using an associative accumulation
-     * function, and returns an Optional describing the reduced value, if any. This is equivalent
-     * to:
-     *
-     *   <pre>
-     *      $result = $initialValue;
-     *
-     *      foreach (elements of Stream as $element)
-     *         $result = $accumulator ($result, $element);
-     *
-     *      return new Optional ($result);
-     *   </pre>
-     *
-     * The given function must satisfies the following rules:
+	 * function, and returns an Optional describing the reduced value, if any. This is equivalent
+	 * to:
+	 *
+	 *   <pre>
+	 *      $result = $initialValue;
+	 *
+	 *      foreach (elements of Stream as $element)
+	 *         $result = $accumulator ($result, $element);
+	 *
+	 *      return new Optional ($result);
+	 *   </pre>
+	 *
+	 * The given function must satisfies the following rules:
 	 *
 	 *   1. Only has two parameters.
 	 *   2. The type of the first parameter must be equal to the return type of this function.

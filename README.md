@@ -565,7 +565,7 @@ $arrayListOfPersons->stream()->flatMap (function (Person $person) : Stream {
 $result = $arrayListOfPersons->stream()->reduce (function (int $accumulatedValue, Person $person) : int {
 	                                                return $person->age + $accumulatedValue;
                                                  }
-		                                         ,0);   // Return 182 (22 + 36 + 18 + 68 + 38) due to we have modified age in the previous forEach
+		                                         ,0);   // Return 182, due to we have modified age in the previous forEach
 	                
 // And more complex examples
 $arrayListOfPersons->clear();
