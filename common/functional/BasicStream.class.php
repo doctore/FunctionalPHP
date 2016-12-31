@@ -347,6 +347,25 @@ class BasicStream implements Stream {
 
 	/**
 	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Stream::reduce()
+	 */
+	public function reduce (\Closure $accumulator, $initialValue = NULL) : Optional {
+
+		$this->checkClosureFunctionOfReduce ($accumulator);
+
+		if ($this->count() == 0)
+			return new Optional ($initialValue);
+
+		$result = $initialValue;
+		foreach ($this->internalData as $element)
+			$result = $accumulator ($result, $element);
+
+		return new Optional ($result);
+	}
+
+
+	/**
+	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\functional\Stream::sorted()
 	 */
 	public function sorted() : Stream {
@@ -564,6 +583,50 @@ class BasicStream implements Stream {
 
 
 	/**
+	 * Checks if the given closure in reduce function verify the following rules:
+	 *
+	 *   1. Only has two parameters.
+	 *   2. The type of the first parameter must be equal to the return type of this function.
+	 *   3. The type of the second parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
+	 *
+	 * @param \Closure $closureFunction
+	 *    Closure function to check.
+	 *
+	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
+	 */
+	private function checkClosureFunctionOfReduce (\Closure $closureFunction) {
+
+		// Gets information about the given closure (returned type, types of the parameters, etc)
+		$reflectionFunctionInformation = ReflectionUtil::getReflectionInformationOfClosure ($closureFunction);
+
+		// Checks 1.
+		if ($reflectionFunctionInformation->numberOfParameters != 2)
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"The given closure function has ".$reflectionFunctionInformation->numberOfParameters
+					                                    ." parameters, however only 2 are permitted");
+		// Checks 2.
+		$parameterType = $reflectionFunctionInformation->typesOfParameters[0];
+		$returnType    = $reflectionFunctionInformation->typeOfReturnedValue;
+
+		if (strcmp ($parameterType, $returnType) != 0)
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"In the given closure function the type of the first parameter: ".$parameterType
+					                                    ." is not equal to the returned type of the function: ".$returnType);
+		// Checks 3.
+		$parameterType = $reflectionFunctionInformation->typesOfParameters[1];
+
+		if (strcmp ($parameterType, $this->currentTypeOfInternalData) != 0 &&
+				!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($parameterType, Object::class))
+
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"In the given closure function the type of the second parameter: "
+					                                    .$parameterType." is not equal (or a subclass) to the elements "
+					                                    ."stored in the Stream: ".$this->currentTypeOfInternalData);
+	}
+
+
+	/**
 	 * Checks if the given closure in sortedByLambda function verify the following rules:
 	 *
 	 *   1. Only has two parameters.
@@ -631,15 +694,14 @@ class BasicStream implements Stream {
 						                                ,"In the given closure function and the paremeter number: "
 						                                    .($i+1).", its type can not be null or empty");
 
-			if (strcmp ($parameterType, $this->currentTypeOfInternalData) != 0) {
+			// The type of the current parameter must be equal to the stored elements in the Stream
+			if (strcmp ($parameterType, $this->currentTypeOfInternalData) != 0 &&
+					!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($parameterType, Object::class))
 
-				// Test if it is a subclass of Object
-				if (!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($parameterType, Object::class))
-					throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
-							                                ,"In the given closure function and the paremeter number: ".($i+1)
-							                                    .", its type: ".$parameterType." is not equal to the elements "
-							                                    ."stored in the Stream: ".$this->currentTypeOfInternalData);
-			}
+				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
+							                            ,"In the given closure function and the parameter number: ".($i+1)
+							                                 .", its type: ".$parameterType." is not equal (or a subclass) to the "
+						                                     ." elements stored in the Stream: ".$this->currentTypeOfInternalData);
 		}
 	}
 

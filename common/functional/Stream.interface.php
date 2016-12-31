@@ -258,6 +258,44 @@ interface Stream {
 	public function noneMatch (Predicate $predicate) : bool;
 
 	/**
+	 *    Performs a reduction on the elements of this stream, using an associative accumulation
+     * function, and returns an Optional describing the reduced value, if any. This is equivalent
+     * to:
+     *
+     *   <pre>
+     *      $result = $initialValue;
+     *
+     *      foreach (elements of Stream as $element)
+     *         $result = $accumulator ($result, $element);
+     *
+     *      return new Optional ($result);
+     *   </pre>
+     *
+     * The given function must satisfies the following rules:
+	 *
+	 *   1. Only has two parameters.
+	 *   2. The type of the first parameter must be equal to the return type of this function.
+	 *   3. The type of the second parameter must be equal to the type of the stream's elements.
+	 *      (or subclass of Object if the stream stores Objects).
+	 *
+	 * @example
+	 *   $basicStream->reduce (function (int $accumulatedValue, MyObject $myObject) : int {
+	 *		                      return $myObject->intProperty + $accumulatedValue;
+	 *	                       }
+	 *                         ,0);
+	 *
+	 * @param \Closure $accumulator
+	 *    An associative function for combining two values
+	 * @param $initialValue
+	 *    Initial value used to accumulate the values of the elements stored in the stream
+	 *
+	 * @return Optional describing the result of the reduction
+	 *
+	 * @throws UnsupportedOperationException if the given function is not valid
+	 */
+	public function reduce (\Closure $accumulator, $initialValue = NULL) : Optional;
+
+	/**
 	 *    Sorts the elements of the Stream according to natural order
 	 * (@see \FunctionalPHP\common\Object::compareTo() for Objects).
 	 *
