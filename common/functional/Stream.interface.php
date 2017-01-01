@@ -28,6 +28,24 @@ interface Stream {
 
 
 	/**
+	 *    Creates a concatenated stream whose elements are all the elements of the first stream followed
+	 * by all the elements of the second stream. The resulting stream is ordered if both of the input
+	 * streams are ordered.
+	 *
+	 * @param Stream $firstStream
+	 *    The first stream to concatenate
+	 * @param Stream $secondStream
+	 *    The second stream to concatenate
+	 *
+	 * @return Stream with the concatenation of the two input streams
+	 *
+	 * @throws UnsupportedOperationException if the type of the elements stored in both streams are
+	 *                                       incompatible (they are not equals or does not belong
+	 *                                       to a subclass of Object).
+	 */
+	public static function concat (Stream $firstStream, Stream $secondStream) : Stream;
+
+	/**
 	 *    Returns whether all elements of this stream match the provided predicate. May not evaluate
 	 * the predicate on all elements if not necessary for determining the result. If the stream is
 	 * empty then TRUE is returned and the predicate is not evaluated.

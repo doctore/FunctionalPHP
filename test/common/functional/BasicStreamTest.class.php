@@ -11,7 +11,9 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 
+use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;
+
 use FunctionalPHP\common\functional\Collectors;
 use FunctionalPHP\common\functional\Stream;
 use FunctionalPHP\common\functional\BasicStream;
@@ -55,6 +57,118 @@ final class BasicStreamTest extends TestCase {
 		$this->assertEquals ($arrayListOfPersons->size(), $basicStream->count());
 		$this->assertEquals ($arrayListOfPersons->size(), count ($basicStream->toArray()));
 	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::concat
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testConcatWithStreamsWithDifferentTypesOfStoredElements() {
+
+		$arrayListOfPersons = $this->generatePersonsArrayList();
+		$firstStream = new BasicStream ($arrayListOfPersons);
+
+		$secondStream = $arrayListOfPersons->stream()->map (function (Person $person) : int {
+			                                                   return $person->age;
+		                                                    });
+		BasicStream::concat ($firstStream, $secondStream);
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::concat
+	 */
+	public function testConcatWithStreamsWithDifferentTypesOfObjectsOfStoredElements() {
+
+		$arrayListOfPersons = new ArrayList();
+		$arrayListOfPersons->add (new Person ("Alba", 11, FALSE));
+		$arrayListOfPersons->add (new Person ("Albert", 18, TRUE));
+
+		$arrayListOfCars = new ArrayList();
+		$arrayListOfCars->add (new Car ('A-2134', 2015));
+		$arrayListOfCars->add (new Car ('B-9999', 2015));
+
+		$firstStream  = $arrayListOfPersons->stream();
+		$secondStream = $arrayListOfCars->stream();
+
+		// Concats both streams
+		$concatenatedStream = BasicStream::concat ($firstStream, $secondStream);
+
+		$this->assertNotNull ($concatenatedStream);
+		$this->assertEquals ($arrayListOfPersons->size() + $arrayListOfCars->size(), $concatenatedStream->count());
+		$this->assertEquals (Object::class, $concatenatedStream->getCurrentTypeStoredByStream());
+
+		// Checks contained elements
+		$numberOfPersonsFound = 0;
+		$numberOfCarsFound    = 0;
+		$contentOfStream      = $concatenatedStream->toArray();
+
+		for ($i = 0; $i < count ($contentOfStream); $i++) {
+
+			$currentElement = $contentOfStream[$i];
+			if (strcmp (get_class ($currentElement), Person::class) == 0) {
+
+				$this->assertTrue ($arrayListOfPersons->contains ($currentElement));
+				$numberOfPersonsFound++;
+			}
+			else if (strcmp (get_class ($currentElement), Car::class) == 0) {
+
+				$this->assertTrue ($arrayListOfCars->contains ($currentElement));
+				$numberOfCarsFound++;
+			}
+			// This condition never can be true
+			else
+				$this->assertTrue (FALSE);
+		}
+		$this->assertEquals ($arrayListOfPersons->size(), $numberOfPersonsFound);
+		$this->assertEquals ($arrayListOfCars->size(), $numberOfCarsFound);
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\common\functional\BasicStream::concat
+	 */
+	public function testConcatWithStreamsWithIntAsTypeOfStoredElements() {
+
+		$arrayListOfPersons = new ArrayList();
+		$arrayListOfPersons->add (new Person ("Alba", 11, FALSE));
+		$arrayListOfPersons->add (new Person ("Albert", 18, TRUE));
+
+		$arrayListOfCars = new ArrayList();
+		$arrayListOfCars->add (new Car ('A-2134', 2015));
+		$arrayListOfCars->add (new Car ('B-9999', 2015));
+
+		$firstStream  = $arrayListOfPersons->stream()->map (function (Person $person) : int {
+			                                                   return $person->age;
+		                                                    });
+
+		$secondStream = $arrayListOfCars->stream()->map (function (Car $car) : int {
+			                                                return $car->yearOfProduction;
+		                                                 });
+		// Concats both streams
+		$concatenatedStream = BasicStream::concat ($firstStream, $secondStream);
+
+		$this->assertNotNull ($concatenatedStream);
+		$this->assertEquals ($arrayListOfPersons->size() + $arrayListOfCars->size(), $concatenatedStream->count());
+		$this->assertEquals ("int", $concatenatedStream->getCurrentTypeStoredByStream());
+
+		// Checks contained elements
+		$concatenatedArrayOfAgesAndYearsOfProduction = array();
+		foreach ($arrayListOfPersons->iterator() as $person)
+			$concatenatedArrayOfAgesAndYearsOfProduction[] = $person->age;
+
+		foreach ($arrayListOfCars->iterator() as $car)
+			$concatenatedArrayOfAgesAndYearsOfProduction[] = $car->yearOfProduction;
+
+
+		$contentOfStream = $concatenatedStream->toArray();
+
+		$this->assertEquals (count ($concatenatedArrayOfAgesAndYearsOfProduction), count ($contentOfStream));
+		$this->assertEmpty (array_diff ($concatenatedArrayOfAgesAndYearsOfProduction, $contentOfStream));
+		$this->assertEmpty (array_diff ($contentOfStream, $concatenatedArrayOfAgesAndYearsOfProduction));
+	}
+
 
 
 	/**
@@ -1284,22 +1398,6 @@ final class BasicStreamTest extends TestCase {
 
 		$basicStream->map (function (Person $person) : array {
 			                  return array ($person->age);
-		                   });
-	}
-
-
-	/**
-	 * @covers FunctionalPHP\common\functional\BasicStream::map
-	 *
-	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
-	 */
-	public function testMapWithClosureWithInvalidObjectReturnedType() {
-
-		$arrayListOfPersons = $this->generatePersonsArrayList();
-		$basicStream = new BasicStream ($arrayListOfPersons);
-
-		$basicStream->map (function (Person $person) : Object {
-			                  return $person;
 		                   });
 	}
 

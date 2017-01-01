@@ -19,6 +19,7 @@ use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\Iterable;
 use FunctionalPHP\common\util\ReflectionFunctionInformation;
+use FunctionalPHP\iterable\collection\lists\ArrayList;
 
 
 /**
@@ -51,6 +52,30 @@ class BasicStream implements Stream {
 			$this->currentTypeOfInternalData = get_class ($this->internalData[0]);
 		else
 			$this->currentTypeOfInternalData = Object::class;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\common\functional\Stream::concat()
+	 */
+	public static function concat (Stream $firstStream, Stream $secondStream) : Stream {
+
+		if (strcmp ($firstStream->getCurrentTypeStoredByStream(), $secondStream->getCurrentTypeStoredByStream()) != 0 &&
+				(!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($firstStream->getCurrentTypeStoredByStream(), Object::class) ||
+				 !ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($secondStream->getCurrentTypeStoredByStream(), Object::class)))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"This operation only can be executed if the type of the stored elements of given "
+					                                    ."streams are equals or belongs to the class ".Object::class." (or a subclass "
+					                                    ."of it). The type of the first stream is: ".$firstStream->getCurrentTypeStoredByStream()
+					                                    ." and the type of the second stream is: ".$secondStream->getCurrentTypeStoredByStream());
+
+		$concatenatedStream = new BasicStream (new ArrayList());
+		$concatenatedStream->internalData = array_merge ($firstStream->internalData, $secondStream->internalData);
+		$concatenatedStream->currentTypeOfInternalData = strcmp ($firstStream->getCurrentTypeStoredByStream()
+				                                                ,$secondStream->getCurrentTypeStoredByStream()) == 0 ? $firstStream->getCurrentTypeStoredByStream()
+				                                                                                                     : Object::class;
+		return $concatenatedStream;
 	}
 
 
