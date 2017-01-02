@@ -322,7 +322,7 @@ final class HasPersonMoreThanOneWordAsNamePredicate implements Predicate {
 					                           ,"The method has received more than one argument: "
 					                               .var_export ($args));
 		$person = $args[0];
-		if ($person instanceof \Person)
+		if (!$person instanceof Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The given parameter is not an instance of ".Person::class
 					                               ." Its type is: ".gettype ($person));
@@ -348,7 +348,7 @@ final class HasPersonOddAgePredicate implements Predicate {
 					                           ,"The method has received more than one argument: "
 					                               .var_export ($args));
 		$person = $args[0];
-		if ($person instanceof \Person)
+		if (!$person instanceof Person)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The given parameter is not an instance of ".Person::class
 					                               ." Its type is: ".gettype ($person));
