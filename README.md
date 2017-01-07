@@ -12,6 +12,7 @@
     - [Basic use of Predicate](#basic-use-of-predicate)    
     - [Basic use of Stream](#basic-use-of-stream)
     - [Basic use of Collectors](#basic-use-of-collectors)
+- [Tests](#tests)    
 
 ## Why this project was created?
 
@@ -708,4 +709,18 @@ $hashSetOfCarsOf2010 = $hashMap->get (2010)->get()->getIterable();   // Return a
 $hashSetOfCarsOf2015 = $hashMap->get (2015)->get()->getIterable();   // Return a HashSet with: $car2, $car1
 
 ?>
+```
+
+## Tests
+
+All classes of this project have tests using PHPUnit, you will see them in the folder **/test** and you will be able to execute anyone of them with running in the folder where it is located, the following command in the console:
+
+```
+phpunit *TheFileOfTest*
+```
+
+Currently the project has the following tests and assertions:
+
+```
+(408 tests, 4562 assertions)
 ```
