@@ -716,7 +716,7 @@ $hashSetOfCarsOf2015 = $hashMap->get (2015)->get()->getIterable();   // Return a
 All classes of this project have tests using PHPUnit, you will see them in the folder **/test** and you will be able to execute anyone of them with running in the folder where it is located, the following command in the console:
 
 ```
-phpunit *TheFileOfTest*
+phpunit the_file_that_you_want_to_test
 ```
 
 Currently the project has the following tests and assertions:
