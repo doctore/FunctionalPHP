@@ -141,8 +141,6 @@ class HashSet extends AbstractSet {
 
 		foreach ($this->iterator() as $element)
 			$functionToApply ($element);
-
-		//array_map ($functionToApply, $this->internalData);
 	}
 
 
