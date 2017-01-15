@@ -13,6 +13,10 @@ use FunctionalPHP\common\functional\Stream;
  */
 interface Collection extends Iterable {
 
+	// Permited "returned types" of the functions that receives a closure function as parameter
+	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH = array ("void");
+
+
 	/**
 	 * Adds the given object to this collection and returns TRUE if this collection changed.
 	 *
@@ -28,7 +32,7 @@ interface Collection extends Iterable {
 	 *
 	 * @throws IllegalArgumentException if some property of the element prevents it from being
 	 *         added to this collection
-     * @throws UnsupportedOperationException if this operation is not supported by this collection
+	 * @throws UnsupportedOperationException if this operation is not supported by this collection
 	 */
 	public function add (Object $element) : bool;
 
@@ -42,7 +46,7 @@ interface Collection extends Iterable {
 	 *
 	 * @throws IllegalArgumentException if some property of an element of the specified collection
 	 *         prevents it from being added to this collection
-     * @throws UnsupportedOperationException if this operation is not supported by this collection
+	 * @throws UnsupportedOperationException if this operation is not supported by this collection
 	 */
 	public function addAll (Collection $collection) : bool;
 
@@ -79,6 +83,26 @@ interface Collection extends Iterable {
 	 * @return TRUE if the specified object is equal to this collection, FALSE otherwise
 	 */
 	public function equals (Collection $collection) : bool;
+
+	/**
+	 *    Applies the given function to the elements of this collection. The given function must satisfies
+	 * the following rules:
+	 *
+	 *   1. Only has one parameter.
+	 *   2. The type of this unique parameter must be equal (or subclass) of Object.
+	 *   3. The returned type is empty or valid (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+	 *
+	 * @example
+	 *   $arrayList->forEach (function (MyObject $myObject) {
+	 *	                         $myObject->intProperty++;
+	 *	                      });
+	 *
+	 * @param \Closure $functionToApply
+	 *    Function to apply to each element.
+	 *
+	 * @throws UnsupportedOperationException if the given function is not valid
+	 */
+	public function forEach (\Closure $functionToApply);
 
 	/**
 	 *    Removes a single instance of the specified element from this collection, if it is present.

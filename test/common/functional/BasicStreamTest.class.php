@@ -1073,7 +1073,6 @@ final class BasicStreamTest extends TestCase {
 	}
 
 
-
 	/**
 	 * @covers FunctionalPHP\common\functional\BasicStream::forEach
 	 *

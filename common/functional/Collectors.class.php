@@ -176,7 +176,7 @@ final class Collectors {
 	 * @example
 	 *	 Collectors::groupingByUsingCollection (function (MyObject $myObject) : string {
 	 *                                             return $myObject->stringProperty;
-	 *                                          }, new HashSet());	 *
+	 *                                          }, new HashSet());
 	 * @param \Closure $closure
 	 *    Function to apply to each element.
 	 * @param Collection $collection

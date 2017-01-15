@@ -568,6 +568,94 @@ final class ArrayListTest extends TestCase {
 
 
     /**
+     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     *
+     * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+     */
+    public function testForEachWithClosureWithMoreThanOneParameter() {
+
+    	$arrayList = new ArrayList();
+
+    	$arrayList->forEach (function (int $p1, string $p2) {
+    		                    $p1 += 1;
+    		                    $p2 .= "_test";
+    	                     });
+    }
+
+
+    /**
+     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     *
+     * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+     */
+    public function testForEachWithClosureWithParameterTypeDifferentOfObject() {
+
+    	$arrayList = new ArrayList();
+
+    	$arrayList->forEach (function (int $p1) {
+    		                    $p1 += 1;
+    	                     });
+    }
+
+
+    /**
+     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     *
+     * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+     */
+    public function testForEachWithClosureWithInvalidReturnedType() {
+
+    	$arrayList = new ArrayList();
+    	$arrayList->add (new Person ("John", 18, TRUE));
+
+    	$arrayList->forEach (function (Person $person) : int {
+    		                    $person->age *= 2;
+    	                     });
+    }
+
+
+    /**
+     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     */
+    public function testForEachOfValidClosureFunction() {
+
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person1Clone = new Person ("John", 18, TRUE);
+
+    	$person2 = new Person ("Sara", 25, FALSE);
+    	$person2Clone = new Person ("Sara", 25, FALSE);
+
+    	$person3 = new Person ("Mary", 20, FALSE);
+    	$person3Clone = new Person ("Mary", 20, FALSE);
+
+    	$arrayListOriginal = new ArrayList();
+    	$arrayListOriginal->add ($person1);
+    	$arrayListOriginal->add ($person2);
+    	$arrayListOriginal->add ($person3);
+
+    	$arrayListToModified = new ArrayList();
+    	$arrayListToModified->add ($person1Clone);
+    	$arrayListToModified->add ($person2Clone);
+    	$arrayListToModified->add ($person3Clone);
+
+    	$arrayListToModified->forEach (function (Person $person) {
+    		                              $person->age *= 2;
+    	                               });
+
+    	$this->assertGreaterThan (0, $arrayListToModified->size());
+    	$this->assertEquals ($arrayListOriginal->size(), $arrayListToModified->size());
+
+    	// Checks that only has changed the value of age property
+    	for ($i = 0; $i < $arrayListOriginal->size(); $i++) {
+
+    		$this->assertEquals ($arrayListOriginal->get($i)->name, $arrayListToModified->get($i)->name);
+    		$this->assertEquals ($arrayListOriginal->get($i)->age * 2, $arrayListToModified->get($i)->age);
+    		$this->assertEquals ($arrayListOriginal->get($i)->isMale, $arrayListToModified->get($i)->isMale);
+    	}
+    }
+
+
+    /**
      * @covers FunctionalPHP\collection\lists\ArrayList::get
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException

@@ -552,7 +552,6 @@ class BasicStream implements Stream {
 		$returnType = $reflectionFunctionInformation->typeOfReturnedValue;
 
 		if (!empty ($returnType) && !in_array ($returnType, Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH))
-
 			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                                ,"The returned type of the given closure function: ".$returnType
 					                                    ." is not valid. Please delete the returned type or use one of the following: "
@@ -601,7 +600,7 @@ class BasicStream implements Stream {
 				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 						                                ,"The returned type of the given closure function: ".$returnType." is not "
 						                                   ."valid. Please use a subclass of ".Object::class." or one of the following: "
-							                               .var_export (Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP, TRUE));
+						                                   .var_export (Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP, TRUE));
 		}
 		return $returnType;
 	}
@@ -703,13 +702,13 @@ class BasicStream implements Stream {
 	private function checkClosureParameters (string $originalStreamFunction, ReflectionFunctionInformation $reflectionFunctionInformation
 			                                ,int $numberOfParameters) {
 
-		// 1. Only has one parameter.
+		// 1. The number of parameters must be equals to $numberOfParameters
 		if ($reflectionFunctionInformation->numberOfParameters != $numberOfParameters)
 			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
 					                                ,"The given closure function has ".$reflectionFunctionInformation->numberOfParameters
 					                                    ." parameters, however only ".$numberOfParameters." are permitted");
 
-		// 2. The type of the parameters must be equal to the type of the stream's elements.
+		// 2. The type of the parameters must be equal to the type of the stream's elements
 		for ($i = 0; $i < $reflectionFunctionInformation->numberOfParameters; $i++) {
 
 			$parameterType = $reflectionFunctionInformation->typesOfParameters[$i];
@@ -725,8 +724,8 @@ class BasicStream implements Stream {
 
 				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
 							                            ,"In the given closure function and the parameter number: ".($i+1)
-							                                 .", its type: ".$parameterType." is not equal (or a subclass) to the "
-						                                     ." elements stored in the Stream: ".$this->currentTypeOfInternalData);
+							                                .", its type: ".$parameterType." is not equal (or a subclass) to the "
+							                                ." elements stored in the Stream: ".$this->currentTypeOfInternalData);
 		}
 	}
 

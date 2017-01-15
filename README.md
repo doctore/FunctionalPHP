@@ -404,6 +404,11 @@ $sortedSet2 = new SortedSet ($sortedSet1, new PersonComparator());
 var_export ($sortedSet1->toArray());   // Returns the elements in the following order: $person1, $person2
 var_export ($sortedSet2->toArray());   // Returns the elements in the following order: $person2, $person1
 
+$sortedSet1->foreach (function (Person $person) {
+	                     $person->age += 10;
+                      });
+var_export ($sortedSet1->toArray());   // Now we will see that each person is 10 years old more                 
+
 
 // We can iterate over any Iterable class using foreach loop
 foreach ($sortedSet1->iterator() as $element) {
@@ -722,5 +727,5 @@ phpunit the_file_that_you_want_to_test
 Currently the project has the following tests and assertions:
 
 ```
-(408 tests, 4562 assertions)
+(424 tests, 4619 assertions)
 ```

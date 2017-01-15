@@ -2,11 +2,17 @@
 
 namespace FunctionalPHP\iterable\collection;
 
-use FunctionalPHP\iterable\AbstractIterable;
-use FunctionalPHP\iterable\collection\Collection;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\functional\Stream;
 use FunctionalPHP\common\functional\BasicStream;
+use FunctionalPHP\common\util\ReflectionFunctionInformation;
+use FunctionalPHP\common\util\ReflectionUtil;
+
+use FunctionalPHP\exception\UnsupportedOperationException;
+
+use FunctionalPHP\iterable\AbstractIterable;
+use FunctionalPHP\iterable\collection\Collection;
+
 
 /**
  *    This class provides a skeletal implementation of the Collection interface, to minimize the effort
@@ -31,6 +37,12 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 	 * @see \FunctionalPHP\collection\Collection::equals()
 	 */
 	abstract public function equals (Collection $collection) : bool;
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::forEach()
+	 */
+	abstract public function forEach (\Closure $functionToApply);
 
 	/**
 	 * {@inheritDoc}
@@ -104,6 +116,80 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 	public function stream() : Stream {
 
 		return new BasicStream ($this);
+	}
+
+
+	/**
+	 * Checks if the given closure in foreach function verify the following rules:
+	 *
+	 *   1. Only has one parameter.
+	 *   2. The type of this unique parameter must be equal (or subclass) of Object.
+	 *   3. The returned type is empty or valid (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+	 *
+	 * @param \Closure $closureFunction
+	 *    Closure function to check.
+	 *
+	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
+	 */
+	protected function checkClosureFunctionOfForeach (\Closure $closureFunction) {
+
+		// Gets information about the given closure (returned type, types of the parameters, etc)
+		$reflectionFunctionInformation = ReflectionUtil::getReflectionInformationOfClosure ($closureFunction);
+
+		// Checks 1. and 2.
+		$this->checkClosureParameters (__FUNCTION__, $reflectionFunctionInformation, 1);
+
+		// 3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+		$returnType = $reflectionFunctionInformation->typeOfReturnedValue;
+
+		if (!empty ($returnType) && !in_array ($returnType, Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"The returned type of the given closure function: ".$returnType
+					                                    ." is not valid. Please delete the returned type or use one of the following: "
+					                                    .var_export (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH, TRUE));
+	}
+
+
+	/**
+	 * Checks if the given closure has valid parameters and verifies the following rules:
+	 *
+	 *   1. The number of parameters must be equals to $numberOfParameters
+	 *   2. The type of the parameters must be equal (or subclass) of Object.
+	 *
+	 * @param $originalStreamFunction
+	 *    Function of this Collection that we are verifying.
+	 * @param ReflectionFunctionInformation $reflectionFunctionInformation
+	 *    Information about the types of parameters, returned type, etc of the original closure function
+	 * @param int $numberOfParameters
+	 *    Number of the parameters that the given function must have.
+	 *
+	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
+	 */
+	protected function checkClosureParameters (string $originalStreamFunction, ReflectionFunctionInformation $reflectionFunctionInformation
+			                                  ,int $numberOfParameters) {
+
+		// 1. The number of parameters must be equals to $numberOfParameters
+		if ($reflectionFunctionInformation->numberOfParameters != $numberOfParameters)
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
+					                                ,"The given closure function has ".$reflectionFunctionInformation->numberOfParameters
+					                                    ." parameters, however only ".$numberOfParameters." are permitted");
+
+		// 2. The type of the parameters must be equal (or subclass) of Object
+		for ($i = 0; $i < $reflectionFunctionInformation->numberOfParameters; $i++) {
+
+			$parameterType = $reflectionFunctionInformation->typesOfParameters[$i];
+
+			if (empty ($parameterType))
+				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+						                                ,"In the given closure function and the paremeter number: "
+						                                    .($i+1).", its type can not be null or empty");
+
+			// The type of the current parameter must be equal to the stored elements in the Stream
+			if (!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($parameterType, Object::class))
+				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
+							                            ,"In the given closure function and the parameter number: ".($i+1)
+							                                .", its type: ".$parameterType." is not equal (or a subclass) of ".Object::class);
+		}
 	}
 
 }

@@ -529,6 +529,99 @@ final class PriorityQueueTest extends TestCase {
 	}
 
 
+
+	/**
+	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithMoreThanOneParameter() {
+
+		$priorityQueue = new PriorityQueue();
+
+		$priorityQueue->forEach (function (int $p1, string $p2) {
+			                        $p1 += 1;
+			                        $p2 .= "_test";
+		                         });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithParameterTypeDifferentOfObject() {
+
+		$priorityQueue = new PriorityQueue();
+
+		$priorityQueue->forEach (function (int $p1) {
+			                        $p1 += 1;
+		                         });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithInvalidReturnedType() {
+
+		$priorityQueue = new PriorityQueue();
+		$priorityQueue->add (new Person ("John", 18, TRUE));
+
+		$priorityQueue->forEach (function (Person $person) : int {
+			                        $person->age *= 2;
+		                         });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 */
+	public function testForEachOfValidClosureFunction() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person1Clone = new Person ("John", 18, TRUE);
+
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person2Clone = new Person ("Sara", 25, FALSE);
+
+		$person3 = new Person ("Mary", 20, FALSE);
+		$person3Clone = new Person ("Mary", 20, FALSE);
+
+		$priorityQueueOriginal = new PriorityQueue();
+		$priorityQueueOriginal->add ($person1);
+		$priorityQueueOriginal->add ($person2);
+		$priorityQueueOriginal->add ($person3);
+
+		$priorityQueueToModified = new PriorityQueue();
+		$priorityQueueToModified->add ($person1Clone);
+		$priorityQueueToModified->add ($person2Clone);
+		$priorityQueueToModified->add ($person3Clone);
+
+		$priorityQueueToModified->forEach (function (Person $person) {
+			                                  $person->name .= "_test";
+		                                   });
+
+		$this->assertGreaterThan (0, $priorityQueueToModified->size());
+		$this->assertEquals ($priorityQueueOriginal->size(), $priorityQueueToModified->size());
+
+		// Checks that only has changed the value of name property
+		$count = $priorityQueueOriginal->size();
+		for ($i = 1; $i <= $count; $i++) {
+
+			$headOfOriginal = $priorityQueueOriginal->poll()->get();
+			$headOfModified = $priorityQueueToModified->poll()->get();
+
+			$this->assertEquals ($headOfOriginal->name."_test", $headOfModified->name);
+			$this->assertEquals ($headOfOriginal->age, $headOfModified->age);
+			$this->assertEquals ($headOfOriginal->isMale, $headOfModified->isMale);
+		}
+	}
+
+
 	/**
 	 * @covers FunctionalPHP\collection\queue\PriorityQueue::hashCode
 	 */

@@ -20,7 +20,6 @@ use FunctionalPHP\exception\UnsupportedOperationException;
  *    $internalData[12][0] = object1  (object with a hash code = 12)
  *    $internalData[12][1] = object2  (object with a hash code = 12)
  *    $internalData[36][0] = object3  (object with a hash code = 36)
- *
  */
 class HashSet extends AbstractSet {
 
@@ -129,6 +128,21 @@ class HashSet extends AbstractSet {
 				return FALSE;
 		}
 		return TRUE;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\AbstractCollection::forEach()
+	 */
+	public function forEach (\Closure $functionToApply) {
+
+		$this->checkClosureFunctionOfForeach ($functionToApply);
+
+		foreach ($this->iterator() as $element)
+			$functionToApply ($element);
+
+		//array_map ($functionToApply, $this->internalData);
 	}
 
 

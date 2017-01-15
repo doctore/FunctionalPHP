@@ -618,6 +618,99 @@ final class SortedSetTest extends TestCase {
 	}
 
 
+
+	/**
+	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithMoreThanOneParameter() {
+
+		$sortedSet = new SortedSet();
+
+		$sortedSet->forEach (function (int $p1, string $p2) {
+			                    $p1 += 1;
+			                    $p2 .= "_test";
+		                     });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithParameterTypeDifferentOfObject() {
+
+		$sortedSet = new SortedSet();
+
+		$sortedSet->forEach (function (int $p1) {
+			                    $p1 += 1;
+		                     });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithInvalidReturnedType() {
+
+		$sortedSet = new SortedSet();
+		$sortedSet->add (new Person ("John", 18, TRUE));
+
+		$sortedSet->forEach (function (Person $person) : int {
+			                    $person->age *= 2;
+		                     });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 */
+	public function testForEachOfValidClosureFunction() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person1Clone = new Person ("John", 18, TRUE);
+
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person2Clone = new Person ("Sara", 25, FALSE);
+
+		$person3 = new Person ("Mary", 20, FALSE);
+		$person3Clone = new Person ("Mary", 20, FALSE);
+
+		$sortedSetOriginal = new SortedSet();
+		$sortedSetOriginal->add ($person1);
+		$sortedSetOriginal->add ($person2);
+		$sortedSetOriginal->add ($person3);
+
+		$sortedSetToModified = new SortedSet();
+		$sortedSetToModified->add ($person1Clone);
+		$sortedSetToModified->add ($person2Clone);
+		$sortedSetToModified->add ($person3Clone);
+
+		$sortedSetToModified->forEach (function (Person $person) {
+			                              $person->isMale = !$person->isMale;
+		                               });
+
+		$this->assertGreaterThan (0, $sortedSetToModified->size());
+		$this->assertEquals ($sortedSetOriginal->size(), $sortedSetToModified->size());
+
+		// Checks that only has changed the value of isMale property
+		$count = $sortedSetOriginal->size();
+		for ($i = 1; $i <= $count; $i++) {
+
+			$firstOfOriginal = $sortedSetOriginal->first()->get();
+			$firstOfModified = $sortedSetToModified->first()->get();
+
+			$this->assertEquals ($firstOfOriginal->name, $firstOfModified->name);
+			$this->assertEquals ($firstOfOriginal->age, $firstOfModified->age);
+			$this->assertEquals ($firstOfOriginal->isMale, !$firstOfModified->isMale);
+		}
+	}
+
+
 	/**
 	 * @covers FunctionalPHP\collection\set\SortedSet::hashCode
 	 */

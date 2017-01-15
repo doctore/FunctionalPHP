@@ -44,7 +44,7 @@ abstract class AbstractMap extends AbstractIterable implements Map {
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The given type of keys: {$typeOfKeys} is not valid. "
 					                               ."Please use one of the following: "
-							                       .var_export (Map::VALID_KEY_TYPES, TRUE));
+					                               .var_export (Map::VALID_KEY_TYPES, TRUE));
 		$this->internalData = $internalData;
 		$this->typeOfKeys   = $typeOfKeys;
 	}
@@ -178,8 +178,8 @@ abstract class AbstractMap extends AbstractIterable implements Map {
 		if ($this->typeOfKeys != $map->getTypeOfKeys())
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The type of this map: {$this->typeOfKeys} is not "
-					                              ."the same as the type of the keys of the given map: "
-							                      .$map->getTypeOfKeys());
+					                               ."the same as the type of the keys of the given map: "
+					                               .$map->getTypeOfKeys());
 		if ($map->isEmpty())
 			return FALSE;
 

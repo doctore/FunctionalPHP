@@ -39,6 +39,18 @@ abstract class AbstractSet extends AbstractCollection implements Set {
 		$this->internalData = array();
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\AbstractCollection::forEach()
+	 */
+	public function forEach (\Closure $functionToApply) {
+
+		$this->checkClosureFunctionOfForeach ($functionToApply);
+
+		array_map ($functionToApply, $this->internalData);
+	}
+
 }
 
 ?>

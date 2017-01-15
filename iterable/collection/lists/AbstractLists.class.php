@@ -93,6 +93,18 @@ abstract class AbstractLists extends AbstractCollection implements Lists {
 		return $this->indexOf ($element) >= 0;
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\AbstractCollection::forEach()
+	 */
+	public function forEach (\Closure $functionToApply) {
+
+		$this->checkClosureFunctionOfForeach ($functionToApply);
+
+		array_map ($functionToApply, $this->internalData);
+	}
+
 }
 
 ?>

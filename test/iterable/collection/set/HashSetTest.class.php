@@ -558,6 +558,105 @@ final class HashSetTest extends TestCase {
 
 
 	/**
+	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithMoreThanOneParameter() {
+
+		$hashSet = new HashSet();
+
+		$hashSet->forEach (function (int $p1, string $p2) {
+			                  $p1 += 1;
+			                  $p2 .= "_test";
+		                   });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithParameterTypeDifferentOfObject() {
+
+		$hashSet = new HashSet();
+
+		$hashSet->forEach (function (int $p1) {
+			                  $p1 += 1;
+		                   });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testForEachWithClosureWithInvalidReturnedType() {
+
+		$hashSet = new HashSet();
+		$hashSet->add (new Person ("John", 18, TRUE));
+
+		$hashSet->forEach (function (Person $person) : int {
+			                  $person->age *= 2;
+		                   });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 */
+	public function testForEachOfValidClosureFunction() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person1Clone = new Person ("John", 18, TRUE);
+
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person2Clone = new Person ("Sara", 25, FALSE);
+
+		$person3 = new Person ("Mary", 20, FALSE);
+		$person3Clone = new Person ("Mary", 20, FALSE);
+
+		$hashSetOriginal = new HashSet();
+		$hashSetOriginal->add ($person1);
+		$hashSetOriginal->add ($person2);
+		$hashSetOriginal->add ($person3);
+
+		$hashSetToModified = new HashSet();
+		$hashSetToModified->add ($person1Clone);
+		$hashSetToModified->add ($person2Clone);
+		$hashSetToModified->add ($person3Clone);
+
+		$hashSetToModified->forEach (function (Person $person) {
+			                            $person->age *= 2;
+			                            $person->isMale = !$person->isMale;
+		});
+
+		$this->assertGreaterThan (0, $hashSetToModified->size());
+		$this->assertEquals ($hashSetOriginal->size(), $hashSetToModified->size());
+
+		// Checks that has changed the value of: age and isMale properties
+		$elementsComparated = 0;
+		foreach ($hashSetOriginal->iterator() as $elementOriginal) {
+
+			foreach ($hashSetToModified->iterator() as $elementModified) {
+
+				if (strcmp ($elementOriginal->name, $elementModified->name) == 0) {
+
+					$this->assertEquals ($elementOriginal->name, $elementModified->name);
+					$this->assertEquals ($elementOriginal->age*2, $elementModified->age);
+					$this->assertEquals ($elementOriginal->isMale, !$elementModified->isMale);
+
+					$elementsComparated++;
+				}
+			}
+		}
+		$this->assertEquals ($hashSetToModified->size(), $elementsComparated);
+	}
+
+
+	/**
 	 * @covers FunctionalPHP\collection\set\HashSet::hashCode
 	 */
 	public function testHashCodeOfHashSet() {

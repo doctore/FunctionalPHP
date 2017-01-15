@@ -165,8 +165,8 @@ class ArrayList extends AbstractLists {
 		if ($positionOfElement == -1)
 			return FALSE;
 
-			array_splice ($this->internalData, $positionOfElement, 1);
-			return TRUE;
+		array_splice ($this->internalData, $positionOfElement, 1);
+		return TRUE;
 	}
 
 
@@ -238,7 +238,7 @@ class ArrayList extends AbstractLists {
 		if (!$this->isIndexOutOfBoundsForAccess ($index))
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                           ,"The given index: {$index} is not accessible in a list "
-					                            ."with a size: ".count ($this->internalData));
+					                               ."with a size: ".count ($this->internalData));
 
 		$oldElement = $this->internalData[$index];
 		$this->internalData[$index] = $element;
@@ -270,11 +270,11 @@ class ArrayList extends AbstractLists {
 		if ($toIndex > count ($this->internalData))
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 						                       ,"The given toIndex: {$toIndex} is greater than the number "
-						                       	."of elements in the list: ".count ($this->internalData));
+						                       	   ."of elements in the list: ".count ($this->internalData));
 		if ($fromIndex > $toIndex)
 			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 						                       ,"The given fromIndex: {$fromIndex} is greater than the "
-						                       	."given toIndex: ".$toIndex);
+						                       	   ."given toIndex: ".$toIndex);
 		$subList = new ArrayList();
 		for ($i = $fromIndex; $i < $toIndex; $i++)
 			$subList->add ($this->internalData[$i]);
