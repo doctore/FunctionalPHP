@@ -407,13 +407,11 @@ var_export ($sortedSet2->toArray());   // Returns the elements in the following 
 $sortedSet1->foreach (function (Person $person) {
 	                     $person->age += 10;
                       });
-var_export ($sortedSet1->toArray());   // Now we will see that each person is 10 years old more                 
-
 
 // We can iterate over any Iterable class using foreach loop
 foreach ($sortedSet1->iterator() as $element) {
 
-	echo "\nName property: ", $element->name;
+	echo "\nName property: ", $element->name;   // Now we will see that each person is 10 years old more
 	echo "\nAge property: ", $element->age;
 }
 
