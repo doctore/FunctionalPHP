@@ -133,19 +133,6 @@ class HashSet extends AbstractSet {
 
 	/**
 	 * {@inheritDoc}
-	 * @see \FunctionalPHP\iterable\collection\AbstractCollection::forEach()
-	 */
-	public function forEach (\Closure $functionToApply) {
-
-		$this->checkClosureFunctionOfForeach ($functionToApply);
-
-		foreach ($this->iterator() as $element)
-			$functionToApply ($element);
-	}
-
-
-	/**
-	 * {@inheritDoc}
 	 * @see \FunctionalPHP\collection\Iterable::iterator()
 	 */
 	public function iterator() : \Iterator {

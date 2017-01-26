@@ -40,12 +40,6 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 
 	/**
 	 * {@inheritDoc}
-	 * @see \FunctionalPHP\iterable\collection\Collection::forEach()
-	 */
-	abstract public function forEach (\Closure $functionToApply);
-
-	/**
-	 * {@inheritDoc}
 	 * @see \FunctionalPHP\collection\Collection::remove()
 	 */
 	abstract public function remove (Object $element) : bool;
@@ -91,6 +85,19 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 				return FALSE;
 		}
 		return TRUE;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\AbstractCollection::forEach()
+	 */
+	public function forEach (\Closure $functionToApply) {
+
+		$this->checkClosureFunctionOfForeach ($functionToApply);
+
+		foreach ($this->iterator() as $element)
+			$functionToApply ($element);
 	}
 
 
