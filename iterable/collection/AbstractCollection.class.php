@@ -12,6 +12,7 @@ use FunctionalPHP\exception\UnsupportedOperationException;
 
 use FunctionalPHP\iterable\AbstractIterable;
 use FunctionalPHP\iterable\collection\Collection;
+use FunctionalPHP\common\functional\Predicate;
 
 
 /**
@@ -37,6 +38,18 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 	 * @see \FunctionalPHP\collection\Collection::equals()
 	 */
 	abstract public function equals (Collection $collection) : bool;
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::filter()
+	 */
+	abstract public function filter (Predicate $predicate) : Collection;
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::filterByLambda()
+	 */
+	abstract public function filterByLambda (\Closure $funtionToFilter) : Collection;
 
 	/**
 	 * {@inheritDoc}
@@ -127,18 +140,18 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 
 
 	/**
-	 * Checks if the given closure in foreach function verify the following rules:
+	 * Checks if the given Closure in filterByLambda function verify the following rules:
 	 *
 	 *   1. Only has one parameter.
 	 *   2. The type of this unique parameter must be equal (or subclass) of Object.
-	 *   3. The returned type is empty or valid (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+	 *   3. The returned type is not empty and valid (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 	 *
 	 * @param \Closure $closureFunction
 	 *    Closure function to check.
 	 *
 	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
 	 */
-	protected function checkClosureFunctionOfForeach (\Closure $closureFunction) {
+	protected function checkClosureFunctionOfFilterByLambda (\Closure $closureFunction) {
 
 		// Gets information about the given closure (returned type, types of the parameters, etc)
 		$reflectionFunctionInformation = ReflectionUtil::getReflectionInformationOfClosure ($closureFunction);
@@ -146,14 +159,15 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 		// Checks 1. and 2.
 		$this->checkClosureParameters (__FUNCTION__, $reflectionFunctionInformation, 1);
 
-		// 3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+		// 3. The returned type is not null and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 		$returnType = $reflectionFunctionInformation->typeOfReturnedValue;
 
-		if (!empty ($returnType) && !in_array ($returnType, Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH))
+		if (empty ($returnType) || !in_array ($returnType, Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA))
+
 			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 					                                ,"The returned type of the given closure function: ".$returnType
-					                                    ." is not valid. Please delete the returned type or use one of the following: "
-					                                    .var_export (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH, TRUE));
+					                                    ." is not valid. Please use one of the following: "
+					                                    .var_export (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA, TRUE));
 	}
 
 
@@ -194,9 +208,40 @@ abstract class AbstractCollection extends AbstractIterable implements Collection
 			// The type of the current parameter must be equal to the stored elements in the Stream
 			if (!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($parameterType, Object::class))
 				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__." [".$originalStreamFunction."] "
-							                            ,"In the given closure function and the parameter number: ".($i+1)
-							                                .", its type: ".$parameterType." is not equal (or a subclass) of ".Object::class);
+						                                ,"In the given closure function and the parameter number: ".($i+1)
+						                                    .", its type: ".$parameterType." is not equal (or a subclass) of ".Object::class);
 		}
+	}
+
+
+	/**
+	 * Checks if the given closure in foreach function verify the following rules:
+	 *
+	 *   1. Only has one parameter.
+	 *   2. The type of this unique parameter must be equal (or subclass) of Object.
+	 *   3. The returned type is empty or valid (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+	 *
+	 * @param \Closure $closureFunction
+	 *    Closure function to check.
+	 *
+	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
+	 */
+	private function checkClosureFunctionOfForeach (\Closure $closureFunction) {
+
+		// Gets information about the given closure (returned type, types of the parameters, etc)
+		$reflectionFunctionInformation = ReflectionUtil::getReflectionInformationOfClosure ($closureFunction);
+
+		// Checks 1. and 2.
+		$this->checkClosureParameters (__FUNCTION__, $reflectionFunctionInformation, 1);
+
+		// 3. The returned type is null or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
+		$returnType = $reflectionFunctionInformation->typeOfReturnedValue;
+
+		if (!empty ($returnType) && !in_array ($returnType, Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"The returned type of the given closure function: ".$returnType
+					                                    ." is not valid. Please delete the returned type or use one of the following: "
+					                                    .var_export (Collection::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH, TRUE));
 	}
 
 }

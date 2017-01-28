@@ -17,7 +17,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::__construct
+	 * @covers FunctionalPHP\iterable\map\HashMap::__construct
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -28,7 +28,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::__construct
+	 * @covers FunctionalPHP\iterable\map\HashMap::__construct
 	 */
 	public function testCreateEmptyHashMap() {
 
@@ -39,7 +39,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::__construct
+	 * @covers FunctionalPHP\iterable\map\HashMap::__construct
 	 */
 	public function testCreateNotEmptyHashMap() {
 
@@ -61,7 +61,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::clear
+	 * @covers FunctionalPHP\iterable\map\HashMap::clear
 	 */
 	public function testClearHashMap() {
 
@@ -86,7 +86,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -102,7 +102,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -118,7 +118,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -134,7 +134,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -150,7 +150,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -166,7 +166,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -182,7 +182,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 */
 	public function testContainsNumericKeys() {
 
@@ -248,7 +248,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 */
 	public function testContainsStringKeys() {
 
@@ -285,7 +285,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 */
 	public function testContainsBooleanKeys() {
 
@@ -311,7 +311,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 */
 	public function testContainsObjectKeys() {
 
@@ -348,7 +348,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::containsValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::containsValue
 	 */
 	public function testContainsValue() {
 
@@ -385,7 +385,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::equals
+	 * @covers FunctionalPHP\iterable\map\HashMap::equals
 	 */
 	public function testCheckEqualityWithHashMapOfDifferentTypeOfKeys() {
 
@@ -466,7 +466,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::equals
+	 * @covers FunctionalPHP\iterable\map\HashMap::equals
 	 */
 	public function testCheckEqualityWithHashMapWithNumericKeys() {
 
@@ -508,7 +508,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::equals
+	 * @covers FunctionalPHP\iterable\map\HashMap::equals
 	 */
 	public function testCheckEqualityWithHashMapWithStringKeys() {
 
@@ -550,7 +550,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::equals
+	 * @covers FunctionalPHP\iterable\map\HashMap::equals
 	 */
 	public function testCheckEqualityWithHashMapWithBooleanKeys() {
 
@@ -592,7 +592,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::equals
+	 * @covers FunctionalPHP\iterable\map\HashMap::equals
 	 */
 	public function testCheckEqualityWithHashMapWithObjectKeys() {
 
@@ -634,7 +634,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -650,7 +650,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -666,7 +666,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -682,7 +682,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -698,7 +698,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -714,7 +714,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -730,7 +730,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 */
 	public function testGetWithNumericKeys() {
 
@@ -796,7 +796,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 */
 	public function testGetWithStringKeys() {
 
@@ -833,7 +833,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 */
 	public function testGetWithBooleanKeys() {
 
@@ -859,7 +859,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::get
+	 * @covers FunctionalPHP\iterable\map\HashMap::get
 	 */
 	public function testGetWithObjectKeys() {
 
@@ -896,7 +896,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::getKeys
+	 * @covers FunctionalPHP\iterable\map\HashMap::getKeys
 	 */
 	public function testGetKeysWithNumericKeys() {
 
@@ -963,7 +963,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::getKeys
+	 * @covers FunctionalPHP\iterable\map\HashMap::getKeys
 	 */
 	public function testGetKeysWithStringKeys() {
 
@@ -1030,7 +1030,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::getKeys
+	 * @covers FunctionalPHP\iterable\map\HashMap::getKeys
 	 */
 	public function testGetKeysWithBooleanKeys() {
 
@@ -1074,7 +1074,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::getKeys
+	 * @covers FunctionalPHP\iterable\map\HashMap::getKeys
 	 */
 	public function testGetKeysWithObjectKeys() {
 
@@ -1155,7 +1155,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::getTypeOfKeys
+	 * @covers FunctionalPHP\iterable\map\HashMap::getTypeOfKeys
 	 */
 	public function testGetTypeOfKeys() {
 
@@ -1174,7 +1174,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::hashCode
+	 * @covers FunctionalPHP\iterable\map\HashMap::hashCode
 	 */
 	public function testHashCodeWithNumericKeys() {
 
@@ -1202,7 +1202,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::hashCode
+	 * @covers FunctionalPHP\iterable\map\HashMap::hashCode
 	 */
 	public function testHashCodeWithStringKeys() {
 
@@ -1230,7 +1230,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::hashCode
+	 * @covers FunctionalPHP\iterable\map\HashMap::hashCode
 	 */
 	public function testHashCodeWithBooleanKeys() {
 
@@ -1252,7 +1252,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::hashCode
+	 * @covers FunctionalPHP\iterable\map\HashMap::hashCode
 	 */
 	public function testHashCodeWithObjectKeys() {
 
@@ -1280,7 +1280,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::isEmpty
+	 * @covers FunctionalPHP\iterable\map\HashMap::isEmpty
 	 */
 	public function testIsEmptyWithNumericKeys() {
 
@@ -1325,7 +1325,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::isEmpty
+	 * @covers FunctionalPHP\iterable\map\HashMap::isEmpty
 	 */
 	public function testIsEmptyWithStringKeys() {
 
@@ -1370,7 +1370,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::isEmpty
+	 * @covers FunctionalPHP\iterable\map\HashMap::isEmpty
 	 */
 	public function testIsEmptyWithBooleanKeys() {
 
@@ -1406,7 +1406,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::isEmpty
+	 * @covers FunctionalPHP\iterable\map\HashMap::isEmpty
 	 */
 	public function testIsEmptyWithObjectKeys() {
 
@@ -1451,7 +1451,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::iterator
+	 * @covers FunctionalPHP\iterable\map\HashMap::iterator
 	 */
 	public function testIteratorWithNumericKeys() {
 
@@ -1553,7 +1553,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::iterator
+	 * @covers FunctionalPHP\iterable\map\HashMap::iterator
 	 */
 	public function testIteratorWithStringKeys() {
 
@@ -1607,7 +1607,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::iterator
+	 * @covers FunctionalPHP\iterable\map\HashMap::iterator
 	 */
 	public function testIteratorWithBooleanKeys() {
 
@@ -1655,7 +1655,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::iterator
+	 * @covers FunctionalPHP\iterable\map\HashMap::iterator
 	 */
 	public function testIteratorWithObjectKeys() {
 
@@ -1709,7 +1709,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::keys
+	 * @covers FunctionalPHP\iterable\map\HashMap::keys
 	 */
 	public function testKeysWithNumericKeys() {
 
@@ -1772,7 +1772,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::keys
+	 * @covers FunctionalPHP\iterable\map\HashMap::keys
 	 */
 	public function testKeysWithStringKeys() {
 
@@ -1809,7 +1809,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::keys
+	 * @covers FunctionalPHP\iterable\map\HashMap::keys
 	 */
 	public function testKeysWithBooleanKeys() {
 
@@ -1836,7 +1836,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::keys
+	 * @covers FunctionalPHP\iterable\map\HashMap::keys
 	 */
 	public function testKeysWithObjectKeys() {
 
@@ -1871,7 +1871,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::put
+	 * @covers FunctionalPHP\iterable\map\HashMap::put
 	 */
 	public function testPutWithNumericKeys() {
 
@@ -1951,7 +1951,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::put
+	 * @covers FunctionalPHP\iterable\map\HashMap::put
 	 */
 	public function testPutWithStringKeys() {
 
@@ -1996,7 +1996,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::put
+	 * @covers FunctionalPHP\iterable\map\HashMap::put
 	 */
 	public function testPutWithBooleanKeys() {
 
@@ -2038,7 +2038,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::put
+	 * @covers FunctionalPHP\iterable\map\HashMap::put
 	 */
 	public function testPutWithObjectKeys() {
 
@@ -2083,7 +2083,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2095,7 +2095,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2107,7 +2107,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2119,7 +2119,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2131,7 +2131,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2143,7 +2143,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2155,7 +2155,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 */
 	public function testPutAllElementsOfEmptyMap() {
 
@@ -2166,7 +2166,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 */
 	public function testPutAllWithNumericKeysAndHashMap() {
 
@@ -2224,7 +2224,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 */
 	public function testPutAllWithStringKeysAndHashMap() {
 
@@ -2257,7 +2257,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 */
 	public function testPutAllWithBooleanKeysAndHashMap() {
 
@@ -2288,7 +2288,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::putAll
+	 * @covers FunctionalPHP\iterable\map\HashMap::putAll
 	 */
 	public function testPutAllWithObjectKeysAndHashMap() {
 
@@ -2321,7 +2321,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::remove
+	 * @covers FunctionalPHP\iterable\map\HashMap::remove
 	 */
 	public function testRemoveWithNumericKeys() {
 
@@ -2415,7 +2415,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::remove
+	 * @covers FunctionalPHP\iterable\map\HashMap::remove
 	 */
 	public function testRemoveWithStringKeys() {
 
@@ -2509,7 +2509,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::remove
+	 * @covers FunctionalPHP\iterable\map\HashMap::remove
 	 */
 	public function testRemoveWithBooleanKeys() {
 
@@ -2558,7 +2558,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::remove
+	 * @covers FunctionalPHP\iterable\map\HashMap::remove
 	 */
 	public function testRemoveWithObjectKeys() {
 
@@ -2652,7 +2652,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::removeByKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::removeByKey
 	 */
 	public function testRemoveByKeyWithNumericKeys() {
 
@@ -2745,7 +2745,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::removeByKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::removeByKey
 	 */
 	public function testRemoveByKeyWithStringKeys() {
 
@@ -2838,7 +2838,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::removeByKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::removeByKey
 	 */
 	public function testRemoveByKeyWithBooleanKeys() {
 
@@ -2886,7 +2886,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::removeByKey
+	 * @covers FunctionalPHP\iterable\map\HashMap::removeByKey
 	 */
 	public function testRemoveByKeyWithObjectKeys() {
 
@@ -2979,7 +2979,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -2993,7 +2993,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3007,7 +3007,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3021,7 +3021,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3035,7 +3035,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3049,7 +3049,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3063,7 +3063,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 */
 	public function testReplaceWithNumericKeys() {
 
@@ -3105,7 +3105,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 */
 	public function testReplaceWithStringKeys() {
 
@@ -3147,7 +3147,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 */
 	public function testReplaceWithBooleanKeys() {
 
@@ -3175,7 +3175,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replace
+	 * @covers FunctionalPHP\iterable\map\HashMap::replace
 	 */
 	public function testReplaceWithObjectKeys() {
 
@@ -3217,7 +3217,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3231,7 +3231,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3245,7 +3245,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3259,7 +3259,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3273,7 +3273,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3287,7 +3287,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -3301,7 +3301,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 */
 	public function testReplaceWithNewValueWithNumericKeys() {
 
@@ -3369,7 +3369,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 */
 	public function testReplaceWithNewValueWithStringKeys() {
 
@@ -3407,7 +3407,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 */
 	public function testReplaceWithNewValueWithBooleanKeys() {
 
@@ -3445,7 +3445,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::replaceWithNewValue
+	 * @covers FunctionalPHP\iterable\map\HashMap::replaceWithNewValue
 	 */
 	public function testReplaceWithNewValueWithObjectKeys() {
 
@@ -3483,7 +3483,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::size
+	 * @covers FunctionalPHP\iterable\map\HashMap::size
 	 */
 	public function testSizeOfHashMap() {
 
@@ -3528,7 +3528,7 @@ final class HashMapTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\map\HashMap::values
+	 * @covers FunctionalPHP\iterable\map\HashMap::values
 	 */
 	public function testValuesOfHashMap() {
 

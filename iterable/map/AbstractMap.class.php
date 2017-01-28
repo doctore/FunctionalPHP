@@ -33,8 +33,8 @@ abstract class AbstractMap extends AbstractIterable implements Map {
 	 * @param array $internalData
 	 *    Array buffer into which the elements are stored
 	 * @param string $typeOfKeys
-	 *    Type of the keys stored in this map: Map::KEY_BOOLEAN_TYPE, Map::KEY_NUMERIC_TYPE,
-	 *    Map::KEY_STRING_TYPE or Map::KEY_OBJECT_TYPE
+	 *    Type of the keys stored in this Map: Map::KEY_BOOLEAN_TYPE, Map::KEY_NUMERIC_TYPE,
+	 *                                         Map::KEY_STRING_TYPE or Map::KEY_OBJECT_TYPE
 	 *
 	 * @throws IllegalArgumentException if $typeOfKeys has not a valid value.
 	 */

@@ -5,7 +5,10 @@ namespace FunctionalPHP\iterable\collection\set;
 use FunctionalPHP\iterable\collection\Collection;
 use FunctionalPHP\iterable\collection\set\Set;
 use FunctionalPHP\iterable\collection\set\AbstractSet;
+
 use FunctionalPHP\common\Object;
+use FunctionalPHP\common\functional\Predicate;
+
 use FunctionalPHP\exception\UnsupportedOperationException;
 
 /**
@@ -34,7 +37,7 @@ class HashSet extends AbstractSet {
 		parent::__construct (array());
 
 		// Adds the given collection to the current set
-		if (!is_null ($collection))
+		if (!is_null ($collection) && !$collection->isEmpty())
 			$this->addAll ($collection);
 	}
 
@@ -128,6 +131,42 @@ class HashSet extends AbstractSet {
 				return FALSE;
 		}
 		return TRUE;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::filter()
+	 */
+	public function filter (Predicate $predicate) : Collection {
+
+		$filteredHashSet = new HashSet();
+
+		foreach ($this->iterator() as $element) {
+
+			if ($predicate->test ($element))
+				$filteredHashSet->add ($element);
+		}
+		return $filteredHashSet;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::filterByLambda()
+	 */
+	public function filterByLambda (\Closure $funtionToFilter) : Collection {
+
+		$this->checkClosureFunctionOfFilterByLambda ($funtionToFilter);
+
+		$filteredHashSet = new HashSet();
+
+		foreach ($this->iterator() as $element) {
+
+			if ($funtionToFilter ($element))
+				$filteredHashSet->add ($element);
+		}
+		return $filteredHashSet;
 	}
 
 

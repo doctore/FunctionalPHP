@@ -10,8 +10,14 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
+
 use FunctionalPHP\test\Person;
 use FunctionalPHP\test\PersonComparator;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
+use FunctionalPHP\test\HasPersonMoreThanOneWordAsNamePredicate;
+use FunctionalPHP\test\HasPersonNoAgeValuePredicate;
+use FunctionalPHP\test\HasPersonNameWithValuePredicate;
+
 
 /**
  * Class used to test FunctionalPHP\collection\set\SortedSet
@@ -20,7 +26,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::__construct
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::__construct
 	 */
 	public function testCreateEmptySortedSet() {
 
@@ -31,7 +37,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::__construct
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::__construct
 	 */
 	public function testCreateNotEmptySortedSetWithoutComparator() {
 
@@ -55,7 +61,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::__construct
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::__construct
 	 */
 	public function testCreateNotEmptySortedSetWithComparator() {
 
@@ -83,7 +89,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::add
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::add
 	 */
 	public function testAddElements() {
 
@@ -132,7 +138,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::addAll
 	 */
 	public function testAddAllElementsOfEmptyCollection() {
 
@@ -143,7 +149,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::addAll
 	 */
 	public function testAddAllElementsWithSortedSet() {
 
@@ -182,7 +188,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::addAll
 	 */
 	public function testAddAllElementsWithArrayList() {
 
@@ -217,7 +223,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::addAll
 	 */
 	public function testAddAllElementsWithHashSet() {
 
@@ -252,7 +258,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::addAll
 	 */
 	public function testAddAllElementsWithPriorityQueue() {
 
@@ -287,7 +293,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::clear
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::clear
 	 */
 	public function testClearSortedSet() {
 
@@ -312,7 +318,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::contains
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::contains
 	 */
 	public function testCheckElementsContainedInSortedSet() {
 
@@ -343,7 +349,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenSortedSet() {
 
@@ -371,7 +377,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenArrayList() {
 
@@ -396,7 +402,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenHashSet() {
 
@@ -421,7 +427,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenPriorityQueue() {
 
@@ -446,7 +452,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::equals
 	 */
 	public function testCheckEqualityWithSortedSet() {
 
@@ -486,7 +492,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::equals
 	 */
 	public function testCheckEqualityWithArrayList() {
 
@@ -505,7 +511,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::equals
 	 */
 	public function testCheckEqualityWithHashSet() {
 
@@ -559,7 +565,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::equals
 	 */
 	public function testCheckEqualityWithPriorityQueue() {
 
@@ -577,8 +583,222 @@ final class SortedSetTest extends TestCase {
 	}
 
 
+
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::first
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filter
+	 */
+	public function testFilterOfEmptySortedSet() {
+
+		$sortedSet = new SortedSet();
+		$this->assertEquals (0, $sortedSet->size());
+
+		$filteredSortedSet = $sortedSet->filter (new HasPersonOddAgePredicate());
+		$this->assertEquals (0, $filteredSortedSet->size());
+
+		$filteredSortedSet = $sortedSet->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+		$this->assertEquals (0, $filteredSortedSet->size());
+
+		$filteredSortedSet = $sortedSet->filter (new HasPersonNoAgeValuePredicate());
+		$this->assertEquals (0, $filteredSortedSet->size());
+
+		$filteredSortedSet = $sortedSet->filter (new HasPersonNameWithValuePredicate());
+		$this->assertEquals (0, $filteredSortedSet->size());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filter
+	 */
+	public function testFilterOnePredicate() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 20, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Marc", 11, TRUE);
+
+		$sortedSet = new SortedSet();
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
+		$sortedSet->add ($person4);
+		$sortedSet->add ($person5);
+
+		// HasPersonOddAgePredicate
+		$filteredSortedSet = $sortedSet->filter (new HasPersonOddAgePredicate());
+		$this->assertGreaterThan (0, $filteredSortedSet->size());
+
+		foreach ($filteredSortedSet->iterator() as $person)
+			$this->assertTrue ($person->age % 2 != 0);
+
+		// HasPersonMoreThanOneWordAsNamePredicate
+		$filteredSortedSet = $sortedSet->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+		$this->assertGreaterThan (0, $filteredSortedSet->size());
+
+		foreach ($filteredSortedSet->iterator() as $person)
+			$this->assertTrue (str_word_count ($person->name) > 1);
+
+		// HasPersonNoAgeValuePredicate
+		$filteredSortedSet = $sortedSet->filter (new HasPersonNoAgeValuePredicate());
+		$this->assertEquals (0, $filteredSortedSet->size());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filter
+	 */
+	public function testFilterMoreThanOnePredicate() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Marc", 11, TRUE);
+
+		$sortedSet = new SortedSet();
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
+		$sortedSet->add ($person4);
+		$sortedSet->add ($person5);
+
+		// HasPersonOddAgePredicate && HasPersonMoreThanOneWordAsNamePredicate
+		$filteredSortedSet = $sortedSet->filter (new HasPersonOddAgePredicate())
+		                               ->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+
+		$this->assertGreaterThan (0, $filteredSortedSet->size());
+
+		foreach ($filteredSortedSet->iterator() as $person) {
+
+			$this->assertTrue ($person->age % 2 != 0);
+			$this->assertTrue (str_word_count ($person->name) > 1);
+		}
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithMoreThanOneParameter() {
+
+		$sortedSet = new SortedSet();
+
+		$sortedSet->filterByLambda (function (int $p1, string $p2) {
+			                           $p1 += 1;
+			                           $p2 .= "_test";
+		                            });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithParameterTypeDifferentOfStreamElements() {
+
+		$sortedSet = new SortedSet();
+
+		$sortedSet->filterByLambda (function (string $p1) {
+			                           $p1 .= "_test";
+		                            });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithInvalidReturnedType() {
+
+		$sortedSet = new SortedSet();
+
+		$sortedSet->filterByLambda (function (Person $person) : Person {
+			                           $person->age *= 2;
+		                            });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::filterByLambda
+	 */
+	public function testFilterByLambdaByOneIteration() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Son", 11, TRUE);
+
+		$sortedSet = new SortedSet();
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
+		$sortedSet->add ($person4);
+		$sortedSet->add ($person5);
+
+		// Filter even age values
+		$filteredSortedSet = $sortedSet->filterByLambda (function (Person $person) : bool {
+			                                                return $person->age % 2 == 0;
+		                                                 });
+
+		$this->assertGreaterThan (0, $filteredSortedSet->size());
+
+		foreach ($filteredSortedSet->iterator() as $person)
+			$this->assertEquals (0, $person->age % 2);
+
+		// Filter name values with lenght = 3
+		$filteredSortedSet = $sortedSet->filterByLambda (function (Person $person) : bool {
+				                                            return strlen ($person->name) == 3;
+				                                         });
+
+		$this->assertGreaterThan (0, $filteredSortedSet->size());
+		foreach ($filteredSortedSet->iterator() as $person)
+			$this->assertEquals (3, strlen ($person->name));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filterByLambda
+	 */
+	public function testFilterByLambdaByMoreThanOneIteration() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Son", 12, TRUE);
+
+		$sortedSet = new SortedSet();
+		$sortedSet->add ($person1);
+		$sortedSet->add ($person2);
+		$sortedSet->add ($person3);
+		$sortedSet->add ($person4);
+		$sortedSet->add ($person5);
+
+		// Filter even age values and name values with lenght = 3
+		$filteredSortedSet = $sortedSet->filterByLambda (function (Person $person) : bool {
+			                                                return $person->age % 2 == 0;
+		                                                 })
+		                               ->filterByLambda (function (Person $person) : bool {
+			                                                return strlen ($person->name) == 3;
+		                                                 });
+
+		$this->assertGreaterThan (0, $filteredSortedSet->size());
+
+		foreach ($filteredSortedSet->iterator() as $person) {
+
+			$this->assertEquals (0, $person->age % 2);
+			$this->assertEquals (3, strlen ($person->name));
+		}
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::first
 	 */
 	public function testFirstElementOfSortedSet() {
 
@@ -620,7 +840,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -636,7 +856,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -651,7 +871,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -667,7 +887,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::forEach
 	 */
 	public function testForEachOfValidClosureFunction() {
 
@@ -712,7 +932,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::hashCode
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::hashCode
 	 */
 	public function testHashCodeOfSortedSet() {
 
@@ -737,7 +957,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::headSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::headSet
 	 */
 	public function testHeadSetUsingCompareToOfStoredObjects() {
 
@@ -819,7 +1039,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::headSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::headSet
 	 */
 	public function testHeadSetUsingGivenComparator() {
 
@@ -901,7 +1121,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::isEmpty
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::isEmpty
 	 */
 	public function testEmptySortedSet() {
 
@@ -946,7 +1166,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::iterator
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::iterator
 	 */
 	public function testIterateOverSortedSet() {
 
@@ -989,7 +1209,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::last
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::last
 	 */
 	public function testLastElementOfSortedSet() {
 
@@ -1030,7 +1250,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::remove
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::remove
 	 */
 	public function testRemoveElements() {
 
@@ -1063,7 +1283,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenSortedSet() {
 
@@ -1103,7 +1323,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenArrayList() {
 
@@ -1133,7 +1353,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenHashSet() {
 
@@ -1163,7 +1383,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenPriorityQueue() {
 
@@ -1193,7 +1413,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenSortedSet() {
 
@@ -1249,7 +1469,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenArrayList() {
 
@@ -1305,7 +1525,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenHashSet() {
 
@@ -1361,7 +1581,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenPriorityQueue() {
 
@@ -1417,7 +1637,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::size
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::size
 	 */
 	public function testSizeOfSortedSet() {
 
@@ -1462,7 +1682,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::stream
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::stream
 	 */
 	public function testStreamOfSortedSet() {
 
@@ -1498,7 +1718,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::subSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::subSet
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -1513,7 +1733,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::subSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::subSet
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
 	 */
@@ -1528,7 +1748,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::subSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::subSet
 	 */
 	public function testSubSetUsingCompareToOfStoredObjects() {
 
@@ -1633,7 +1853,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::subSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::subSet
 	 */
 	public function testSubSetUsingGivenComparator() {
 
@@ -1738,7 +1958,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::tailSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::tailSet
 	 */
 	public function testTailSetUsingCompareToOfStoredObjects() {
 
@@ -1820,7 +2040,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::tailSet
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::tailSet
 	 */
 	public function testTailSetUsingGivenComparator() {
 
@@ -1902,7 +2122,7 @@ final class SortedSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\SortedSet::toArray
+	 * @covers FunctionalPHP\iterable\collection\set\SortedSet::toArray
 	 */
 	public function testToArrayOfSortedSet() {
 

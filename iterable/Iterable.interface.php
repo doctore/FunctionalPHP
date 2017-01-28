@@ -29,7 +29,7 @@ interface Iterable {
 	public function hashCode() : int;
 
 	/**
-	 * Returns an iterator over elements of this object
+	 * Returns an Iterator over elements of this object
 	 *
 	 * @return an Iterator
 	 */

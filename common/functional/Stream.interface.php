@@ -20,7 +20,7 @@ use FunctionalPHP\iterable\Iterable;
  */
 interface Stream {
 
-	// Permited "returned types" of the functions that receives a closure function as parameter
+	// Permited "returned types" of the functions that receives a Closure function as parameter
 	const VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP = array ("bool", "float", "int", "string");
 	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA = array ("bool");
 	const VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH = array ("void");
@@ -28,14 +28,14 @@ interface Stream {
 
 
 	/**
-	 *    Creates a concatenated stream whose elements are all the elements of the first stream followed
-	 * by all the elements of the second stream. The resulting stream is ordered if both of the input
+	 *    Creates a concatenated Stream whose elements are all the elements of the first Stream followed
+	 * by all the elements of the second Stream. The resulting Stream is ordered if both of the input
 	 * streams are ordered.
 	 *
 	 * @param Stream $firstStream
-	 *    The first stream to concatenate
+	 *    The first Stream to concatenate
 	 * @param Stream $secondStream
-	 *    The second stream to concatenate
+	 *    The second Stream to concatenate
 	 *
 	 * @return Stream with the concatenation of the two input streams
 	 *
@@ -46,82 +46,82 @@ interface Stream {
 	public static function concat (Stream $firstStream, Stream $secondStream) : Stream;
 
 	/**
-	 *    Returns whether all elements of this stream match the provided predicate. May not evaluate
-	 * the predicate on all elements if not necessary for determining the result. If the stream is
+	 *    Returns whether all elements of this Stream match the provided predicate. May not evaluate
+	 * the predicate on all elements if not necessary for determining the result. If the Stream is
 	 * empty then TRUE is returned and the predicate is not evaluated.
 	 *
 	 * @param Predicate $predicate
-	 *    Predicate to apply to elements of this stream.
+	 *    Predicate to apply to elements of this Stream.
 	 *
-	 * @return TRUE if either all elements of the stream match the provided predicate or the stream
+	 * @return TRUE if either all elements of the Stream match the provided predicate or the Stream
 	 *         is empty, otherwise FALSE.
 	 */
 	public function allMatch (Predicate $predicate) : bool;
 
 	/**
-	 *    Returns whether any elements of this stream match the provided predicate. May not evaluate
-	 * the predicate on all elements if not necessary for determining the result. If the stream is
+	 *    Returns whether any elements of this Stream match the provided predicate. May not evaluate
+	 * the predicate on all elements if not necessary for determining the result. If the Stream is
 	 * empty then FALSE is returned and the predicate is not evaluated.
 	 *
 	 * @param Predicate $predicate
-	 *    Predicate to apply to elements of this stream.
+	 *    Predicate to apply to elements of this Stream.
 	 *
-	 * @return TRUE if any elements of the stream match the provided predicate, otherwise FALSE
+	 * @return TRUE if any elements of the Stream match the provided predicate, otherwise FALSE
 	 */
 	public function anyMatch (Predicate $predicate) : bool;
 
 	/**
-	 * Performs a collect operation on the elements of this stream using a CollectorImpl.
+	 * Performs a collect operation on the elements of this Stream using a CollectorImpl.
 	 *
 	 * @example
 	 *	 $basicStream->collect (Collectors::partitioningByUsingCollection (new MyPredicate(), new HashSet()));
 	 *
 	 * @param CollectorImpl $collector
-	 *    Object with the information used to know how to accumulate the elements of the this stream
+	 *    Object with the information used to know how to accumulate the elements of the this Stream
 	 *
-	 * @return Iterable with the result to apply the given CollectorImpl to this stream
+	 * @return Iterable with the result to apply the given CollectorImpl to this Stream
 	 *
-	 * @throws UnsupportedOperationException if the type of the elements stored in the stream is not
+	 * @throws UnsupportedOperationException if the type of the elements stored in the Stream is not
 	 *                                       Object (or a subclass of it)
 	 */
 	public function collect (CollectorImpl $collector) : Iterable;
 
 	/**
-	 * Returns the count of elements in this stream.
+	 * Returns the count of elements in this Stream.
 	 *
-	 * @return the count of elements in this stream
+	 * @return the count of elements in this Stream
 	 */
 	public function count() : int;
 
 	/**
-	 *    Returns a stream consisting of the distinct elements (according to
-	 * equals method of the stored objects) of this stream.
+	 *    Returns a Stream consisting of the distinct elements (according to
+	 * equals method of the stored objects) of this Stream.
 	 *
 	 *    For ordered streams, the selection of distinct elements is stable
 	 * (for duplicated elements, the element appearing first in the encounter
 	 * order is preserved).
 	 *
-	 * @return a stream with unique elements
+	 * @return a Stream with unique elements
 	 */
 	public function distinct() : Stream;
 
 	/**
-	 * Returns a stream consisting of the elements of this stream that match the given predicate.
+	 * Returns a Stream consisting of the elements of this Stream that match the given predicate.
 	 *
 	 * @param Predicate $predicate
 	 *    Predicate to apply to each element to determine if it should be included.
 	 *
-	 * @return a stream with filtered elements
+	 * @return a Stream with filtered elements
 	 */
 	public function filter (Predicate $predicate) : Stream;
 
 	/**
-	 *    Returns a stream consisting of the elements of this stream that match the given predicate.
+	 *    Returns a Stream consisting of the elements of this Stream that match the given Closure.
 	 * The given function must satisfies the following rules:
 	 *
 	 *   1. Only has one parameter.
-	 *   2. The type of this unique parameter is equal to the type of the stream's elements.
-	 *      (or subclass of Object if the stream stores Objects).
+	 *   2. The type of this unique parameter is equal to the type of the Stream's elements.
+	 *      (or subclass of Object if the Stream stores Objects).
 	 *   3. The returned type is not empty and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FILTERBYLAMBDA)
 	 *
 	 * @example
@@ -132,29 +132,29 @@ interface Stream {
 	 * @param \Closure $funtionToFilter
 	 *    Anonymous function to apply to each element to determine if it should be included.
 	 *
-	 * @return a stream with filtered elements
+	 * @return a Stream with filtered elements
 	 *
 	 * @throws UnsupportedOperationException if the given function is not valid
 	 */
 	public function filterByLambda (\Closure $funtionToFilter) : Stream;
 
 	/**
-	 *    Returns an Optional describing the first element of the stream, or an Optional with NULL
-	 * as if the stream is empty.
+	 *    Returns an Optional describing the first element of the Stream, or an Optional with NULL
+	 * as if the Stream is empty.
 	 *
-	 * @return an Optional describing the first element of the stream, or an Optional with NULL as
-	 *         content if the stream is empty.
+	 * @return an Optional describing the first element of the Stream, or an Optional with NULL as
+	 *         content if the Stream is empty.
 	 */
 	public function findFirst() : Optional;
 
 	/**
-	 *    Returns a stream consisting of the results of replacing each element of this stream with
-	 * the contents of a mapped stream produced by applying the provided mapping function to each
+	 *    Returns a Stream consisting of the results of replacing each element of this Stream with
+	 * the contents of a mapped Stream produced by applying the provided mapping function to each
 	 * element. The given function must satisfies the following rules:
 	 *
 	 *   1. Only has one parameter.
-	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
-	 *      (or subclass of Object if the stream stores Objects).
+	 *   2. The type of this unique parameter must be equal to the type of the Stream's elements.
+	 *      (or subclass of Object if the Stream stores Objects).
 	 *   3. The returned type must be an instance of Stream.
 	 *
 	 * @example
@@ -172,12 +172,12 @@ interface Stream {
 	public function flatMap (\Closure $funtionUsedToFlat) : Stream;
 
 	/**
-	 *    Applies the given function to the elements of this stream. The given function must satisfies
+	 *    Applies the given function to the elements of this Stream. The given function must satisfies
 	 * the following rules:
 	 *
 	 *   1. Only has one parameter.
-	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
-	 *      (or subclass of Object if the stream stores Objects).
+	 *   2. The type of this unique parameter must be equal to the type of the Stream's elements.
+	 *      (or subclass of Object if the Stream stores Objects).
 	 *   3. The returned type is empty or valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_FOREACH)
 	 *
 	 * @example
@@ -200,37 +200,37 @@ interface Stream {
 	public function getCurrentTypeStoredByStream() : string;
 
 	/**
-	 *    Returns a stream consisting of the elements of this stream, truncated to be no longer
+	 *    Returns a Stream consisting of the elements of this Stream, truncated to be no longer
 	 * than $maxSize in length.
 	 *
 	 * @param int $maxSize
-	 *    The number of elements the stream should be limited to.
+	 *    The number of elements the Stream should be limited to.
 	 *
-	 * @return a stream truncated to be no longer than $maxSize in length.
+	 * @return a Stream truncated to be no longer than $maxSize in length.
 	 *
 	 * @throws IllegalArgumentException if $maxSize < 0
 	 */
 	public function limit (int $maxSize) : Stream;
 
 	/**
-	 * Returns the minimum element of this stream according to the provided Comparator.
+	 * Returns the minimum element of this Stream according to the provided Comparator.
 	 *
 	 * @param Comparator $comparator
-	 *    Comparator to compare elements of this stream
+	 *    Comparator to compare elements of this Stream
 	 *
-	 * @return an Optional describing the minimum element of this stream
+	 * @return an Optional describing the minimum element of this Stream
 	 *
 	 * @throws UnsupportedOperationException if the type of Stream's elements is not a subclass of Object
 	 */
 	public function min (Comparator $comparator) : Optional;
 
 	/**
-	 *    Returns a stream consisting of the results of applying the given function to the elements
-	 * of this stream. The given function must satisfies the following rules:
+	 *    Returns a Stream consisting of the results of applying the given function to the elements
+	 * of this Stream. The given function must satisfies the following rules:
 	 *
 	 *   1. Only has one parameter.
-	 *   2. The type of this unique parameter must be equal to the type of the stream's elements.
-	 *      (or subclass of Object if the stream stores Objects).
+	 *   2. The type of this unique parameter must be equal to the type of the Stream's elements.
+	 *      (or subclass of Object if the Stream stores Objects).
 	 *   3. The returned type is not empty and valid, that is:
 	 *        3.1 Equal to the type of Stream's elements
 	 *        3.2 One of Stream::VALID_NATIVE_RETURNED_TYPES_OF_CLOSURE_IN_MAP
@@ -244,39 +244,39 @@ interface Stream {
 	 * @param \Closure $functionToApply
 	 *    Function to apply to each element.
 	 *
-	 * @return a stream after applying the given function to its elements
+	 * @return a Stream after applying the given function to its elements
 	 *
 	 * @throws UnsupportedOperationException if the given function is not valid
 	 */
 	public function map (\Closure $functionToApply) : Stream;
 
 	/**
-	 * Returns the maximum element of this stream according to the provided Comparator.
+	 * Returns the maximum element of this Stream according to the provided Comparator.
 	 *
 	 * @param Comparator $comparator
-	 *    Comparator to compare elements of this stream
+	 *    Comparator to compare elements of this Stream
 	 *
-	 * @return an Optional describing the maximum element of this stream
+	 * @return an Optional describing the maximum element of this Stream
 	 *
 	 * @throws UnsupportedOperationException if the type of Stream's elements is not a subclass of Object
 	 */
 	public function max (Comparator $comparator) : Optional;
 
 	/**
-	 *    Returns whether no elements of this stream match the provided predicate. May not evaluate
-	 * the predicate on all elements if not necessary for determining the result. If the stream is
+	 *    Returns whether no elements of this Stream match the provided predicate. May not evaluate
+	 * the predicate on all elements if not necessary for determining the result. If the Stream is
 	 * empty then TRUE is returned and the predicate is not evaluated.
 	 *
 	 * @param Predicate $predicate
-	 *    Predicate to apply to elements of this stream.
+	 *    Predicate to apply to elements of this Stream.
 	 *
-	 * @return TRUE if either no elements of the stream match the provided predicate or the stream
+	 * @return TRUE if either no elements of the Stream match the provided predicate or the Stream
 	 *         is empty, otherwise FALSE.
 	 */
 	public function noneMatch (Predicate $predicate) : bool;
 
 	/**
-	 *    Performs a reduction on the elements of this stream, using an associative accumulation
+	 *    Performs a reduction on the elements of this Stream, using an associative accumulation
 	 * function, and returns an Optional describing the reduced value, if any. This is equivalent
 	 * to:
 	 *
@@ -293,8 +293,8 @@ interface Stream {
 	 *
 	 *   1. Only has two parameters.
 	 *   2. The type of the first parameter must be equal to the return type of this function.
-	 *   3. The type of the second parameter must be equal to the type of the stream's elements.
-	 *      (or subclass of Object if the stream stores Objects).
+	 *   3. The type of the second parameter must be equal to the type of the Stream's elements.
+	 *      (or subclass of Object if the Stream stores Objects).
 	 *
 	 * @example
 	 *   $basicStream->reduce (function (int $accumulatedValue, MyObject $myObject) : int {
@@ -305,7 +305,7 @@ interface Stream {
 	 * @param \Closure $accumulator
 	 *    An associative function for combining two values
 	 * @param $initialValue
-	 *    Initial value used to accumulate the values of the elements stored in the stream
+	 *    Initial value used to accumulate the values of the elements stored in the Stream
 	 *
 	 * @return Optional describing the result of the reduction
 	 *
@@ -317,7 +317,7 @@ interface Stream {
 	 *    Sorts the elements of the Stream according to natural order
 	 * (@see \FunctionalPHP\common\Object::compareTo() for Objects).
 	 *
-	 * @return a stream sorted according to natural order
+	 * @return a Stream sorted according to natural order
 	 */
 	public function sorted() : Stream;
 
@@ -338,8 +338,8 @@ interface Stream {
 	 * satisfies the following rules:
 	 *
 	 *   1. Only has two parameters.
-	 *   2. The type of the given parameters must be equal to the type of the stream's elements.
-	 *      (or subclass of Object if the stream stores Objects).
+	 *   2. The type of the given parameters must be equal to the type of the Stream's elements.
+	 *      (or subclass of Object if the Stream stores Objects).
 	 *   3. The returned type is not empty and valid (Stream::VALID_RETURNED_TYPES_OF_CLOSURE_IN_SORTEDBYLAMBDA)
 	 *
 	 * @example
@@ -360,9 +360,9 @@ interface Stream {
 	public function sortedByLambda (\Closure $sortFunction) : Stream;
 
 	/**
-	 * Returns an array containing all of the elements in this stream.
+	 * Returns an array containing all of the elements in this Stream.
 	 *
-	 * @return an array containing all of the elements in this stream
+	 * @return an array containing all of the elements in this Stream
 	 */
 	public function toArray() : array;
 

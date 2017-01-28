@@ -11,7 +11,13 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
+
 use FunctionalPHP\test\Person;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
+use FunctionalPHP\test\HasPersonMoreThanOneWordAsNamePredicate;
+use FunctionalPHP\test\HasPersonNoAgeValuePredicate;
+use FunctionalPHP\test\HasPersonNameWithValuePredicate;
+
 
 /**
  * Class used to test FunctionalPHP\collection\set\HashSet
@@ -20,7 +26,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::__construct
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::__construct
 	 */
 	public function testCreateEmptyHashSet() {
 
@@ -31,7 +37,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::__construct
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::__construct
 	 */
 	public function testCreateNotEmptyHashSet() {
 
@@ -55,7 +61,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::add
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::add
 	 */
 	public function testAddElements() {
 
@@ -101,7 +107,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::addAll
 	 */
 	public function testAddAllElementsOfEmptyCollection() {
 
@@ -112,7 +118,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::addAll
 	 */
 	public function testAddAllElementsWithHashSet() {
 
@@ -147,7 +153,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::addAll
 	 */
 	public function testAddAllElementsWithArrayList() {
 
@@ -182,7 +188,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::addAll
 	 */
 	public function testAddAllElementsWithSortedSet() {
 
@@ -217,7 +223,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::addAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::addAll
 	 */
 	public function testAddAllElementsWithPriorityQueue() {
 
@@ -252,7 +258,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::clear
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::clear
 	 */
 	public function testClearHashSet() {
 
@@ -277,7 +283,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::contains
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::contains
 	 */
 	public function testCheckElementsContainedInHashSet() {
 
@@ -308,7 +314,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenHashSet() {
 
@@ -336,7 +342,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenArrayList() {
 
@@ -361,7 +367,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenSortedSet() {
 
@@ -386,7 +392,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::containsAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenPriorityQueue() {
 
@@ -411,7 +417,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::equals
 	 */
 	public function testCheckEqualityWithHashSet() {
 
@@ -466,7 +472,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::equals
 	 */
 	public function testCheckEqualityWithArrayList() {
 
@@ -485,7 +491,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::equals
 	 */
 	public function testCheckEqualityWithSortedSet() {
 
@@ -539,7 +545,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::equals
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::equals
 	 */
 	public function testCheckEqualityWithPriorityQueue() {
 
@@ -558,7 +564,220 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filter
+	 */
+	public function testFilterOfEmptyHashSet() {
+
+		$hashSet = new HashSet();
+		$this->assertEquals (0, $hashSet->size());
+
+		$filteredHashSet = $hashSet->filter (new HasPersonOddAgePredicate());
+		$this->assertEquals (0, $filteredHashSet->size());
+
+		$filteredHashSet = $hashSet->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+		$this->assertEquals (0, $filteredHashSet->size());
+
+		$filteredHashSet = $hashSet->filter (new HasPersonNoAgeValuePredicate());
+		$this->assertEquals (0, $filteredHashSet->size());
+
+		$filteredHashSet = $hashSet->filter (new HasPersonNameWithValuePredicate());
+		$this->assertEquals (0, $filteredHashSet->size());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filter
+	 */
+	public function testFilterOnePredicate() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 20, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Marc", 11, TRUE);
+
+		$hashSet = new HashSet();
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
+		$hashSet->add ($person4);
+		$hashSet->add ($person5);
+
+		// HasPersonOddAgePredicate
+		$filteredHashSet = $hashSet->filter (new HasPersonOddAgePredicate());
+		$this->assertGreaterThan (0, $filteredHashSet->size());
+
+		foreach ($filteredHashSet->iterator() as $person)
+			$this->assertTrue ($person->age % 2 != 0);
+
+		// HasPersonMoreThanOneWordAsNamePredicate
+		$filteredHashSet = $hashSet->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+		$this->assertGreaterThan (0, $filteredHashSet->size());
+
+		foreach ($filteredHashSet->iterator() as $person)
+			$this->assertTrue (str_word_count ($person->name) > 1);
+
+		// HasPersonNoAgeValuePredicate
+		$filteredHashSet = $hashSet->filter (new HasPersonNoAgeValuePredicate());
+		$this->assertEquals (0, $filteredHashSet->size());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filter
+	 */
+	public function testFilterMoreThanOnePredicate() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Marc", 11, TRUE);
+
+		$hashSet = new HashSet();
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
+		$hashSet->add ($person4);
+		$hashSet->add ($person5);
+
+		// HasPersonOddAgePredicate && HasPersonMoreThanOneWordAsNamePredicate
+		$filteredHashSet = $hashSet->filter (new HasPersonOddAgePredicate())
+		                           ->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+
+		$this->assertGreaterThan (0, $filteredHashSet->size());
+
+		foreach ($filteredHashSet->iterator() as $person) {
+
+			$this->assertTrue ($person->age % 2 != 0);
+			$this->assertTrue (str_word_count ($person->name) > 1);
+		}
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithMoreThanOneParameter() {
+
+		$hashSet = new HashSet();
+
+		$hashSet->filterByLambda (function (int $p1, string $p2) {
+			                         $p1 += 1;
+			                         $p2 .= "_test";
+		                          });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithParameterTypeDifferentOfStreamElements() {
+
+		$hashSet = new HashSet();
+
+		$hashSet->filterByLambda (function (string $p1) {
+			                         $p1 .= "_test";
+		                          });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithInvalidReturnedType() {
+
+		$hashSet = new HashSet();
+
+		$hashSet->filterByLambda (function (Person $person) : Person {
+			                         $person->age *= 2;
+		                          });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filterByLambda
+	 */
+	public function testFilterByLambdaByOneIteration() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Son", 11, TRUE);
+
+		$hashSet = new HashSet();
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
+		$hashSet->add ($person4);
+		$hashSet->add ($person5);
+
+		// Filter even age values
+		$filteredHashSet = $hashSet->filterByLambda (function (Person $person) : bool {
+			                                            return $person->age % 2 == 0;
+		                                             });
+
+		$this->assertGreaterThan (0, $filteredHashSet->size());
+
+		foreach ($filteredHashSet->iterator() as $person)
+			$this->assertEquals (0, $person->age % 2);
+
+		// Filter name values with lenght = 3
+		$filteredHashSet = $hashSet->filterByLambda (function (Person $person) : bool {
+			                                            return strlen ($person->name) == 3;
+		                                             });
+
+		$this->assertGreaterThan (0, $filteredHashSet->size());
+		foreach ($filteredHashSet->iterator() as $person)
+			$this->assertEquals (3, strlen ($person->name));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::filterByLambda
+	 */
+	public function testFilterByLambdaByMoreThanOneIteration() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Son", 12, TRUE);
+
+		$hashSet = new HashSet();
+		$hashSet->add ($person1);
+		$hashSet->add ($person2);
+		$hashSet->add ($person3);
+		$hashSet->add ($person4);
+		$hashSet->add ($person5);
+
+		// Filter even age values and name values with lenght = 3
+		$filteredHashSet = $hashSet->filterByLambda (function (Person $person) : bool {
+			                                            return $person->age % 2 == 0;
+		                                             })
+		                           ->filterByLambda (function (Person $person) : bool {
+			                                            return strlen ($person->name) == 3;
+		                                             });
+
+		$this->assertGreaterThan (0, $filteredHashSet->size());
+
+		foreach ($filteredHashSet->iterator() as $person) {
+
+			$this->assertEquals (0, $person->age % 2);
+			$this->assertEquals (3, strlen ($person->name));
+		}
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -574,7 +793,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -589,7 +808,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -605,7 +824,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::forEach
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::forEach
 	 */
 	public function testForEachOfValidClosureFunction() {
 
@@ -657,7 +876,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::hashCode
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::hashCode
 	 */
 	public function testHashCodeOfHashSet() {
 
@@ -682,7 +901,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::isEmpty
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::isEmpty
 	 */
 	public function testEmptyHashSet() {
 
@@ -727,7 +946,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::iterator
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::iterator
 	 */
 	public function testIterateOverHashSet() {
 
@@ -779,7 +998,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::remove
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::remove
 	 */
 	public function testRemoveElements() {
 
@@ -866,7 +1085,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenHashSet() {
 
@@ -899,7 +1118,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenArrayList() {
 
@@ -930,7 +1149,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenSortedSet() {
 
@@ -961,7 +1180,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::removeAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenPriorityQueue() {
 
@@ -992,7 +1211,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenHashSet() {
 
@@ -1062,7 +1281,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenArrayList() {
 
@@ -1132,7 +1351,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenSortedSet() {
 
@@ -1202,7 +1421,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::retainAll
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::retainAll
 	 */
 	public function testRetainAllElementsOfGivenPriorityQueue() {
 
@@ -1272,7 +1491,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::size
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::size
 	 */
 	public function testSizeOfHashSet() {
 
@@ -1317,7 +1536,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::stream
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::stream
 	 */
 	public function testStreamOfHashSet() {
 
@@ -1353,7 +1572,7 @@ final class HashSetTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\set\HashSet::toArray
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::toArray
 	 */
 	public function testToArrayOfHashSet() {
 

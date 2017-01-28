@@ -378,18 +378,22 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\set\SortedSet;
 
 $person1 = new Person ("John Snow", 23, TRUE);
-$person2 = new Person ("Peter Pan", 11, TRUE);
+$person2 = new Person ("Peter Pan", 12, TRUE);
 $personEqualsTo1 = new Person ("John Snow", 23, TRUE);
 
 
 // ArrayList
-$arrayList1 = new ArrayList();
-$arrayList1->add ($person1);
-$arrayList1->add ($personEqualsTo1);   // Permits duplicates
+$arrayList = new ArrayList();
+$arrayList->add ($person1);
+$arrayList->add ($person2);
+$arrayList->add ($personEqualsTo1);   // Permits duplicates
 
-$arrayList2 = new ArrayList ($arrayList1);   // Contains the same elements of $arrayList1
-$arrayList2->remove ($person2);              // Returns FALSE, $person2 does not exists in $arrayList2
-$arrayList2->remove ($person1);              // Returns TRUE, now $arrayList2 only has one element: $personEqualsTo1
+$filteredArrayList = arrayList1->filterByLambda (function (Person $person) : bool {    
+			                                        return $person->age % 2 == 0;
+		                                         });            // Contains only $person2 (his age is even)
+
+$filteredArrayList->remove ($person1);     // Returns FALSE, $person1 does not exists in $filteredArrayList
+$filteredArrayList->remove ($person2);     // Returns TRUE, now $filteredArrayList is empty
 
 
 // SortedSet
@@ -725,5 +729,5 @@ phpunit the_file_that_you_want_to_test
 Currently the project has the following tests and assertions:
 
 ```
-(424 tests, 4619 assertions)
+(456 tests, 4719 assertions)
 ```

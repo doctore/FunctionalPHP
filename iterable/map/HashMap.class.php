@@ -23,13 +23,13 @@ use FunctionalPHP\exception\IllegalArgumentException;
 class HashMap extends AbstractMap {
 
 	/**
-	 * Constructs a map containing the elements of the specified map.
+	 * Constructs a Map containing the elements of the specified Map.
 	 *
 	 * @param string $typeOfKeys
 	 *    Type of the keys stored in this map: Map::KEY_BOOLEAN_TYPE, Map::KEY_NUMERIC_TYPE,
 	 *    Map::KEY_STRING_TYPE or Map::KEY_OBJECT_TYPE
 	 * @param Map $map
-	 *    The map whose elements are to be placed into this map
+	 *    The Map whose elements are to be placed into this Map
 	 *
 	 * @throws IllegalArgumentException if $typeOfKeys has not a valid value.
 	 */
@@ -37,14 +37,14 @@ class HashMap extends AbstractMap {
 
 		parent::__construct (array(), $typeOfKeys);
 
-		// Adds the given map to the current map
-		if (!is_null ($map))
+		// Adds the given Map to the current Map
+		if (!is_null ($map) && !$map->isEmpty())
 			$this->putAll ($map);
 	}
 
 
 	/**
-	 * Free the resources used by this set
+	 * Free the resources used by this Map
 	 */
 	function __destruct() {
 

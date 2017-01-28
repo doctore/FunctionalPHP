@@ -10,7 +10,12 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
+
 use FunctionalPHP\test\Person;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
+use FunctionalPHP\test\HasPersonMoreThanOneWordAsNamePredicate;
+use FunctionalPHP\test\HasPersonNoAgeValuePredicate;
+use FunctionalPHP\test\HasPersonNameWithValuePredicate;
 
 /**
  * Class used to test FunctionalPHP\collection\lists\ArrayList
@@ -19,7 +24,7 @@ final class ArrayListTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\lists\ArrayList::__construct
+	 * @covers FunctionalPHP\iterable\collection\lists\ArrayList::__construct
 	 */
     public function testCreateEmptyArrayList() {
 
@@ -30,7 +35,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::__construct
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::__construct
      */
     public function testCreateNotEmptyArrayList() {
 
@@ -53,7 +58,7 @@ final class ArrayListTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\lists\ArrayList::add
+	 * @covers FunctionalPHP\iterable\collection\lists\ArrayList::add
 	 */
     public function testAddElements() {
 
@@ -88,7 +93,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addByIndex
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addByIndex
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -100,7 +105,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addByIndex
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addByIndex
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -112,7 +117,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addByIndex
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addByIndex
      */
     public function testAddElementsByIndex() {
 
@@ -141,7 +146,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addAll
      */
     public function testAddAllElementsOfEmptyCollection() {
 
@@ -152,7 +157,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addAll
      */
     public function testAddAllElementsWithArrayList() {
 
@@ -187,7 +192,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addAll
      */
     public function testAddAllElementsWithHashSet() {
 
@@ -222,7 +227,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addAll
      */
     public function testAddAllElementsWithSortedSet() {
 
@@ -257,7 +262,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::addAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::addAll
      */
     public function testAddAllElementsWithPriorityQueue() {
 
@@ -292,7 +297,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::clear
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::clear
      */
     public function testClearArrayList() {
 
@@ -317,7 +322,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::contains
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::contains
      */
     public function testCheckElementsContainedInArrayList() {
 
@@ -348,7 +353,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::containsAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::containsAll
      */
     public function testCheckElementsContainedInAGivenArrayList() {
 
@@ -376,7 +381,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::containsAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::containsAll
      */
     public function testCheckElementsContainedInAGivenHashSet() {
 
@@ -401,7 +406,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::containsAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::containsAll
      */
     public function testCheckElementsContainedInAGivenSortedSet() {
 
@@ -426,7 +431,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::containsAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::containsAll
      */
     public function testCheckElementsContainedInAGivenPriorityQueue() {
 
@@ -451,7 +456,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::equals
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::equals
      */
     public function testCheckEqualityWithArrayList() {
 
@@ -511,7 +516,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::equals
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::equals
      */
     public function testCheckEqualityWithHashSet() {
 
@@ -530,7 +535,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::equals
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::equals
      */
     public function testCheckEqualityWithSortedSet() {
 
@@ -549,7 +554,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::equals
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::equals
      */
     public function testCheckEqualityWithPriorityQueue() {
 
@@ -568,7 +573,219 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filter
+     */
+    public function testFilterOfEmptyArrayList() {
+
+    	$arrayList = new ArrayList();
+    	$this->assertEquals (0, $arrayList->size());
+
+    	$filteredArrayList = $arrayList->filter (new HasPersonOddAgePredicate());
+    	$this->assertEquals (0, $filteredArrayList->size());
+
+    	$filteredArrayList = $arrayList->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+    	$this->assertEquals (0, $filteredArrayList->size());
+
+    	$filteredArrayList = $arrayList->filter (new HasPersonNoAgeValuePredicate());
+    	$this->assertEquals (0, $filteredArrayList->size());
+
+    	$filteredArrayList = $arrayList->filter (new HasPersonNameWithValuePredicate());
+    	$this->assertEquals (0, $filteredArrayList->size());
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filter
+     */
+    public function testFilterOnePredicate() {
+
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person2 = new Person ("Sara", 25, FALSE);
+    	$person3 = new Person ("Mary Swan", 20, FALSE);
+    	$person4 = new Person ("Seth", 31, TRUE);
+    	$person5 = new Person ("Marc", 11, TRUE);
+
+    	$arrayList = new ArrayList();
+    	$arrayList->add ($person1);
+    	$arrayList->add ($person2);
+    	$arrayList->add ($person3);
+    	$arrayList->add ($person4);
+    	$arrayList->add ($person5);
+
+    	// HasPersonOddAgePredicate
+    	$filteredArrayList = $arrayList->filter (new HasPersonOddAgePredicate());
+    	$this->assertGreaterThan (0, $filteredArrayList->size());
+
+    	foreach ($filteredArrayList->iterator() as $person)
+    		$this->assertTrue ($person->age % 2 != 0);
+
+    	// HasPersonMoreThanOneWordAsNamePredicate
+    	$filteredArrayList = $arrayList->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+    	$this->assertGreaterThan (0, $filteredArrayList->size());
+
+    	foreach ($filteredArrayList->iterator() as $person)
+    		$this->assertTrue (str_word_count ($person->name) > 1);
+
+    	// HasPersonNoAgeValuePredicate
+   		$filteredArrayList = $arrayList->filter (new HasPersonNoAgeValuePredicate());
+   		$this->assertEquals (0, $filteredArrayList->size());
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filter
+     */
+    public function testFilterMoreThanOnePredicate() {
+
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person2 = new Person ("Sara", 25, FALSE);
+    	$person3 = new Person ("Mary Swan", 21, FALSE);
+    	$person4 = new Person ("Seth", 31, TRUE);
+    	$person5 = new Person ("Marc", 11, TRUE);
+
+    	$arrayList = new ArrayList();
+    	$arrayList->add ($person1);
+    	$arrayList->add ($person2);
+    	$arrayList->add ($person3);
+    	$arrayList->add ($person4);
+    	$arrayList->add ($person5);
+
+    	// HasPersonOddAgePredicate && HasPersonMoreThanOneWordAsNamePredicate
+    	$filteredArrayList = $arrayList->filter (new HasPersonOddAgePredicate())
+    	                               ->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+
+    	$this->assertGreaterThan (0, $filteredArrayList->size());
+
+    	foreach ($filteredArrayList->iterator() as $person) {
+
+    		$this->assertTrue ($person->age % 2 != 0);
+    		$this->assertTrue (str_word_count ($person->name) > 1);
+    	}
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filterByLambda
+     *
+     * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+     */
+    public function testFilterByLambdaWithClosureWithMoreThanOneParameter() {
+
+    	$arrayList = new ArrayList();
+
+    	$arrayList->filterByLambda (function (int $p1, string $p2) {
+    		                           $p1 += 1;
+    		                           $p2 .= "_test";
+    	                            });
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filterByLambda
+     *
+     * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+     */
+    public function testFilterByLambdaWithClosureWithParameterTypeDifferentOfStreamElements() {
+
+    	$arrayList = new ArrayList();
+
+    	$arrayList->filterByLambda (function (string $p1) {
+    		                           $p1 .= "_test";
+    	                            });
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filterByLambda
+     *
+     * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+     */
+    public function testFilterByLambdaWithClosureWithInvalidReturnedType() {
+
+    	$arrayList = new ArrayList();
+
+    	$arrayList->filterByLambda (function (Person $person) : Person {
+    		                           $person->age *= 2;
+    	                            });
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filterByLambda
+     */
+    public function testFilterByLambdaByOneIteration() {
+
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person2 = new Person ("Sara", 25, FALSE);
+    	$person3 = new Person ("Mary Swan", 21, FALSE);
+    	$person4 = new Person ("Seth", 31, TRUE);
+    	$person5 = new Person ("Son", 11, TRUE);
+
+    	$arrayList = new ArrayList();
+    	$arrayList->add ($person1);
+    	$arrayList->add ($person2);
+    	$arrayList->add ($person3);
+    	$arrayList->add ($person4);
+    	$arrayList->add ($person5);
+
+    	// Filter even age values
+    	$filteredArrayList = $arrayList->filterByLambda (function (Person $person) : bool {
+    		                                                return $person->age % 2 == 0;
+    	                                                 });
+
+   		$this->assertGreaterThan (0, $filteredArrayList->size());
+
+   		foreach ($filteredArrayList->iterator() as $person)
+    		$this->assertEquals (0, $person->age % 2);
+
+    	// Filter name values with lenght = 3
+    	$filteredArrayList = $arrayList->filterByLambda (function (Person $person) : bool {
+    				                                        return strlen ($person->name) == 3;
+    			                                         });
+
+    	$this->assertGreaterThan (0, $filteredArrayList->size());
+    	foreach ($filteredArrayList->iterator() as $person)
+    		$this->assertEquals (3, strlen ($person->name));
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::filterByLambda
+     */
+    public function testFilterByLambdaByMoreThanOneIteration() {
+
+    	$person1 = new Person ("John", 18, TRUE);
+    	$person2 = new Person ("Sara", 25, FALSE);
+    	$person3 = new Person ("Mary Swan", 21, FALSE);
+    	$person4 = new Person ("Seth", 31, TRUE);
+    	$person5 = new Person ("Son", 12, TRUE);
+
+    	$arrayList = new ArrayList();
+    	$arrayList->add ($person1);
+    	$arrayList->add ($person2);
+    	$arrayList->add ($person3);
+    	$arrayList->add ($person4);
+    	$arrayList->add ($person5);
+
+    	// Filter even age values and name values with lenght = 3
+    	$filteredArrayList = $arrayList->filterByLambda (function (Person $person) : bool {
+    		                                                return $person->age % 2 == 0;
+    	                                                 })
+    	                               ->filterByLambda (function (Person $person) : bool {
+    		                                                return strlen ($person->name) == 3;
+    	                                                 });
+
+    	$this->assertGreaterThan (0, $filteredArrayList->size());
+    	foreach ($filteredArrayList->iterator() as $person) {
+
+    		$this->assertEquals (0, $person->age % 2);
+    		$this->assertEquals (3, strlen ($person->name));
+   		}
+    }
+
+
+    /**
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::forEach
      *
      * @expectedException FunctionalPHP\exception\UnsupportedOperationException
      */
@@ -584,7 +801,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::forEach
      *
      * @expectedException FunctionalPHP\exception\UnsupportedOperationException
      */
@@ -599,7 +816,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::forEach
      *
      * @expectedException FunctionalPHP\exception\UnsupportedOperationException
      */
@@ -615,7 +832,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::forEach
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::forEach
      */
     public function testForEachOfValidClosureFunction() {
 
@@ -656,7 +873,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::get
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::get
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -668,7 +885,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::get
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::get
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -682,7 +899,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::get
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::get
      */
     public function testGetElementsByIndex() {
 
@@ -704,7 +921,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::hashCode
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::hashCode
      */
     public function testHashCodeOfArrayList() {
 
@@ -729,7 +946,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::indexOf
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::indexOf
      */
     public function testFindFirstOccurrenceOfElements() {
 
@@ -765,7 +982,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::isEmpty
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::isEmpty
      */
     public function testEmptyArrayList() {
 
@@ -814,7 +1031,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::iterator
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::iterator
      */
     public function testIterateOverArrayList() {
 
@@ -853,7 +1070,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::lastIndexOf
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::lastIndexOf
      */
     public function testFindLastOccurrenceOfElements() {
 
@@ -890,7 +1107,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::remove
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::remove
      */
     public function testRemoveElements() {
 
@@ -928,7 +1145,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeAll
      */
     public function testRemoveAllElementsOfGivenArrayList() {
 
@@ -969,7 +1186,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeAll
      */
     public function testRemoveAllElementsOfGivenHashSet() {
 
@@ -999,7 +1216,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeAll
      */
     public function testRemoveAllElementsOfGivenSortedSet() {
 
@@ -1029,7 +1246,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeAll
      */
     public function testRemoveAllElementsOfGivenPriorityQueue() {
 
@@ -1062,7 +1279,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeByIndex
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeByIndex
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1074,7 +1291,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeByIndex
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeByIndex
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1088,7 +1305,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::removeByIndex
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::removeByIndex
      */
     public function testRemoveElementsByIndex() {
 
@@ -1127,7 +1344,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::retainAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::retainAll
      */
     public function testRetainAllElementsOfGivenArrayList() {
 
@@ -1187,7 +1404,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::retainAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::retainAll
      */
     public function testRetainAllElementsOfGivenHashSet() {
 
@@ -1237,7 +1454,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::retainAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::retainAll
      */
     public function testRetainAllElementsOfGivenSortedSet() {
 
@@ -1287,7 +1504,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::retainAll
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::retainAll
      */
     public function testRetainAllElementsOfGivenPriorityQueue() {
 
@@ -1337,7 +1554,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::set
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::set
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1349,7 +1566,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::set
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::set
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1365,7 +1582,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::set
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::set
      */
     public function testSetElementsByIndex() {
 
@@ -1396,7 +1613,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::size
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::size
      */
     public function testSizeOfArrayList() {
 
@@ -1445,7 +1662,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::stream
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::stream
      */
     public function testStreamOfArrayList() {
 
@@ -1481,7 +1698,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::subList
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::subList
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1495,7 +1712,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::subList
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::subList
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1509,7 +1726,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::subList
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::subList
      *
      * @expectedException FunctionalPHP\exception\IllegalArgumentException
      */
@@ -1523,7 +1740,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::subList
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::subList
      */
     public function testSubListOfArrayList() {
 
@@ -1561,7 +1778,7 @@ final class ArrayListTest extends TestCase {
 
 
     /**
-     * @covers FunctionalPHP\collection\lists\ArrayList::toArray
+     * @covers FunctionalPHP\iterable\collection\lists\ArrayList::toArray
      */
     public function testToArrayOfArrayList() {
 

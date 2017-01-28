@@ -10,8 +10,14 @@ use FunctionalPHP\iterable\collection\lists\ArrayList;
 use FunctionalPHP\iterable\collection\queue\PriorityQueue;
 use FunctionalPHP\iterable\collection\set\HashSet;
 use FunctionalPHP\iterable\collection\set\SortedSet;
+
 use FunctionalPHP\test\Person;
 use FunctionalPHP\test\PersonComparator;
+use FunctionalPHP\test\HasPersonOddAgePredicate;
+use FunctionalPHP\test\HasPersonMoreThanOneWordAsNamePredicate;
+use FunctionalPHP\test\HasPersonNoAgeValuePredicate;
+use FunctionalPHP\test\HasPersonNameWithValuePredicate;
+
 
 /**
  * Class used to test FunctionalPHP\collection\queue\PriorityQueue
@@ -19,7 +25,7 @@ use FunctionalPHP\test\PersonComparator;
 final class PriorityQueueTest extends TestCase {
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::__construct
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::__construct
 	 */
 	public function testCreateEmptySortedSet() {
 
@@ -30,7 +36,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::__construct
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::__construct
 	 */
 	public function testCreateNotEmptySortedSetWithoutComparator() {
 
@@ -54,7 +60,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::__construct
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::__construct
 	 */
 	public function testCreateNotEmptySortedSetWithComparator() {
 
@@ -79,7 +85,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::add
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::add
 	 */
 	public function testAddElements() {
 
@@ -115,7 +121,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::addAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::addAll
 	 */
 	public function testAddAllElementsOfEmptyCollection() {
 
@@ -126,7 +132,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::addAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::addAll
 	 */
 	public function testAddAllElementsWithPriorityQueue() {
 
@@ -166,7 +172,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::addAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::addAll
 	 */
 	public function testAddAllElementsWithArrayList() {
 
@@ -202,7 +208,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::addAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::addAll
 	 */
 	public function testAddAllElementsWithHashSet() {
 
@@ -238,7 +244,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::addAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::addAll
 	 */
 	public function testAddAllElementsWithSortedSet() {
 
@@ -274,7 +280,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::clear
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::clear
 	 */
 	public function testClearPriorityQueue() {
 
@@ -299,7 +305,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::contains
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::contains
 	 */
 	public function testCheckElementsContainedInPriorityQueue() {
 
@@ -330,7 +336,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::containsAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenPriorityQueue() {
 
@@ -358,7 +364,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::containsAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenArrayList() {
 
@@ -383,7 +389,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::containsAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenHashSet() {
 
@@ -408,7 +414,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::containsAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::containsAll
 	 */
 	public function testCheckElementsContainedInAGivenSortedSet() {
 
@@ -433,7 +439,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::equals
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::equals
 	 */
 	public function testCheckEqualityWithPriorityQueue() {
 
@@ -473,7 +479,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::equals
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::equals
 	 */
 	public function testCheckEqualityWithArrayList() {
 
@@ -492,7 +498,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::equals
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::equals
 	 */
 	public function testCheckEqualityWithHashSet() {
 
@@ -511,7 +517,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::equals
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::equals
 	 */
 	public function testCheckEqualityWithSortedSet() {
 
@@ -529,9 +535,221 @@ final class PriorityQueueTest extends TestCase {
 	}
 
 
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filter
+	 */
+	public function testFilterOfEmptyPriorityQueue() {
+
+		$priorityQueue = new PriorityQueue();
+		$this->assertEquals (0, $priorityQueue->size());
+
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonOddAgePredicate());
+		$this->assertEquals (0, $filteredPriorityQueue->size());
+
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+		$this->assertEquals (0, $filteredPriorityQueue->size());
+
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonNoAgeValuePredicate());
+		$this->assertEquals (0, $filteredPriorityQueue->size());
+
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonNameWithValuePredicate());
+		$this->assertEquals (0, $filteredPriorityQueue->size());
+	}
+
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filter
+	 */
+	public function testFilterOnePredicate() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 20, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Marc", 11, TRUE);
+
+		$priorityQueue = new PriorityQueue();
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person4);
+		$priorityQueue->add ($person5);
+
+		// HasPersonOddAgePredicate
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonOddAgePredicate());
+		$this->assertGreaterThan (0, $filteredPriorityQueue->size());
+
+		foreach ($filteredPriorityQueue->iterator() as $person)
+			$this->assertTrue ($person->age % 2 != 0);
+
+		// HasPersonMoreThanOneWordAsNamePredicate
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+		$this->assertGreaterThan (0, $filteredPriorityQueue->size());
+
+		foreach ($filteredPriorityQueue->iterator() as $person)
+			$this->assertTrue (str_word_count ($person->name) > 1);
+
+		// HasPersonNoAgeValuePredicate
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonNoAgeValuePredicate());
+		$this->assertEquals (0, $filteredPriorityQueue->size());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filter
+	 */
+	public function testFilterMoreThanOnePredicate() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Marc", 11, TRUE);
+
+		$priorityQueue = new PriorityQueue();
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person4);
+		$priorityQueue->add ($person5);
+
+		// HasPersonOddAgePredicate && HasPersonMoreThanOneWordAsNamePredicate
+		$filteredPriorityQueue = $priorityQueue->filter (new HasPersonOddAgePredicate())
+		                                       ->filter (new HasPersonMoreThanOneWordAsNamePredicate());
+
+		$this->assertGreaterThan (0, $filteredPriorityQueue->size());
+
+		foreach ($filteredPriorityQueue->iterator() as $person) {
+
+			$this->assertTrue ($person->age % 2 != 0);
+			$this->assertTrue (str_word_count ($person->name) > 1);
+		}
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithMoreThanOneParameter() {
+
+		$priorityQueue = new PriorityQueue();
+
+		$priorityQueue->filterByLambda (function (int $p1, string $p2) {
+			                               $p1 += 1;
+			                               $p2 .= "_test";
+		                                });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithParameterTypeDifferentOfStreamElements() {
+
+		$priorityQueue = new PriorityQueue();
+
+		$priorityQueue->filterByLambda (function (string $p1) {
+		                                   $p1 .= "_test";
+		                                });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filterByLambda
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testFilterByLambdaWithClosureWithInvalidReturnedType() {
+
+		$priorityQueue = new PriorityQueue();
+
+		$priorityQueue->filterByLambda (function (Person $person) : Person {
+			                               $person->age *= 2;
+		                                });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filterByLambda
+	 */
+	public function testFilterByLambdaByOneIteration() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Son", 11, TRUE);
+
+		$priorityQueue = new PriorityQueue();
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person4);
+		$priorityQueue->add ($person5);
+
+		// Filter even age values
+		$filteredPriorityQueue = $priorityQueue->filterByLambda (function (Person $person) : bool {
+			                                                        return $person->age % 2 == 0;
+		                                                         });
+
+		$this->assertGreaterThan (0, $filteredPriorityQueue->size());
+
+		foreach ($filteredPriorityQueue->iterator() as $person)
+			$this->assertEquals (0, $person->age % 2);
+
+		// Filter name values with lenght = 3
+		$filteredPriorityQueue = $priorityQueue->filterByLambda (function (Person $person) : bool {
+			                                                        return strlen ($person->name) == 3;
+		                                                         });
+
+		$this->assertGreaterThan (0, $filteredPriorityQueue->size());
+		foreach ($filteredPriorityQueue->iterator() as $person)
+			$this->assertEquals (3, strlen ($person->name));
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::filterByLambda
+	 */
+	public function testFilterByLambdaByMoreThanOneIteration() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Sara", 25, FALSE);
+		$person3 = new Person ("Mary Swan", 21, FALSE);
+		$person4 = new Person ("Seth", 31, TRUE);
+		$person5 = new Person ("Son", 12, TRUE);
+
+		$priorityQueue = new PriorityQueue();
+		$priorityQueue->add ($person1);
+		$priorityQueue->add ($person2);
+		$priorityQueue->add ($person3);
+		$priorityQueue->add ($person4);
+		$priorityQueue->add ($person5);
+
+		// Filter even age values and name values with lenght = 3
+		$filteredPriorityQueue = $priorityQueue->filterByLambda (function (Person $person) : bool {
+			                                                        return $person->age % 2 == 0;
+		                                                         })
+		                                       ->filterByLambda (function (Person $person) : bool {
+			                                                        return strlen ($person->name) == 3;
+		                                                         });
+
+		$this->assertGreaterThan (0, $filteredPriorityQueue->size());
+
+		foreach ($filteredPriorityQueue->iterator() as $person) {
+
+			$this->assertEquals (0, $person->age % 2);
+			$this->assertEquals (3, strlen ($person->name));
+		}
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -547,7 +765,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -562,7 +780,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::forEach
 	 *
 	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
 	 */
@@ -578,7 +796,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::forEach
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::forEach
 	 */
 	public function testForEachOfValidClosureFunction() {
 
@@ -623,7 +841,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::hashCode
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::hashCode
 	 */
 	public function testHashCodeOfPriorityQueue() {
 
@@ -648,7 +866,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::isEmpty
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::isEmpty
 	 */
 	public function testEmptyPriorityQueue() {
 
@@ -697,7 +915,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::iterator
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::iterator
 	 */
 	public function testIterateOverPriorityQueue() {
 
@@ -744,7 +962,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::peek
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::peek
 	 */
 	public function testPeekUsingCompareToOfStoredObjects() {
 
@@ -778,7 +996,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::peek
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::peek
 	 */
 	public function testPeekUsingGivenComparator() {
 
@@ -812,7 +1030,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::poll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::poll
 	 */
 	public function testPollUsingCompareToOfStoredObjects() {
 
@@ -857,7 +1075,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::poll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::poll
 	 */
 	public function testPollUsingGivenComparator() {
 
@@ -902,7 +1120,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::remove
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::remove
 	 */
 	public function testRemoveElements() {
 
@@ -948,7 +1166,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::removeAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenPriorityQueue() {
 
@@ -988,7 +1206,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::removeAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenArrayList() {
 
@@ -1022,7 +1240,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::removeAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenHashSet() {
 
@@ -1056,7 +1274,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::removeAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::removeAll
 	 */
 	public function testRemoveAllElementsOfGivenSortedSet() {
 
@@ -1090,7 +1308,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::retainAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::retainAll
 	 */
 	public function testRetainAllElementsOfGivenPriorityQueue() {
 
@@ -1154,7 +1372,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::retainAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::retainAll
 	 */
 	public function testRetainAllElementsOfGivenArrayList() {
 
@@ -1203,7 +1421,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::retainAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::retainAll
 	 */
 	public function testRetainAllElementsOfGivenHashSet() {
 
@@ -1252,7 +1470,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::retainAll
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::retainAll
 	 */
 	public function testRetainAllElementsOfGivenSortedSet() {
 
@@ -1301,7 +1519,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::size
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::size
 	 */
 	public function testSizeOfPriorityQueue() {
 
@@ -1350,7 +1568,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::stream
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::stream
 	 */
 	public function testStreamOfPriorityQueue() {
 
@@ -1386,7 +1604,7 @@ final class PriorityQueueTest extends TestCase {
 
 
 	/**
-	 * @covers FunctionalPHP\collection\queue\PriorityQueue::toArray
+	 * @covers FunctionalPHP\iterable\collection\queue\PriorityQueue::toArray
 	 */
 	public function testToArrayOfPriorityQueue() {
 

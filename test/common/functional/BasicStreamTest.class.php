@@ -783,7 +783,7 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaByOneIteration() {
 
-		// Filter pair age values
+		// Filter even age values
 		$arrayListOfPersons = $this->generatePersonsArrayList();
 		$basicStream = new BasicStream ($arrayListOfPersons);
 
@@ -819,7 +819,7 @@ final class BasicStreamTest extends TestCase {
 	 */
 	public function testFilterByLambdaByMoreThanOneIteration() {
 
-		// Filter pair age values
+		// Filter even age values and name values with lenght = 3
 		$arrayListOfPersons = $this->generatePersonsArrayList();
 		$basicStream = new BasicStream ($arrayListOfPersons);
 

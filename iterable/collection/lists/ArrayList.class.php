@@ -6,6 +6,7 @@ use FunctionalPHP\iterable\collection\Collection;
 use FunctionalPHP\iterable\collection\lists\Lists;
 use FunctionalPHP\iterable\collection\lists\AbstractLists;
 use FunctionalPHP\common\Object;
+use FunctionalPHP\common\functional\Predicate;
 use FunctionalPHP\exception\IllegalArgumentException;
 
 /**
@@ -25,7 +26,7 @@ class ArrayList extends AbstractLists {
 		parent::__construct (array());
 
 		// Adds the given collection to the current list
-		if (!is_null ($collection))
+		if (!is_null ($collection) && !$collection->isEmpty())
 			$this->addAll ($collection);
 	}
 
@@ -93,6 +94,42 @@ class ArrayList extends AbstractLists {
         		return FALSE;
         }
         return TRUE;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::filter()
+	 */
+	public function filter (Predicate $predicate) : Collection {
+
+		$filteredArrayList = new ArrayList();
+
+		foreach ($this->internalData as $element) {
+
+			if ($predicate->test ($element))
+				$filteredArrayList->add ($element);
+		}
+		return $filteredArrayList;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\Collection::filterByLambda()
+	 */
+	public function filterByLambda (\Closure $funtionToFilter) : Collection {
+
+		$this->checkClosureFunctionOfFilterByLambda ($funtionToFilter);
+
+		$filteredArrayList = new ArrayList();
+
+		foreach ($this->internalData as $element) {
+
+			if ($funtionToFilter ($element))
+				$filteredArrayList->add ($element);
+		}
+		return $filteredArrayList;
 	}
 
 
