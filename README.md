@@ -540,12 +540,12 @@ $arrayListOfPersons->stream()->filterByLambda (function (Person $person) : bool 
                              ->toArray();   // Return [$person4]
                              
 // forEach
-$stream = $$arrayListOfPersons->stream();
+$stream = $arrayListOfPersons->stream();
 $stream->forEach (function (Person $person) {
 	                 $person->age *= 2;
                   });
-$stream->toArray();                // Return an array on which all age values has been multiplied by 2
-$$arrayListOfPersons->toArray();   // Return the same result.
+$stream->toArray();               // Return an array on which all age values has been multiplied by 2
+$arrayListOfPersons->toArray();   // Return the same result.
 
 // sortedByComparator
 $arrayListOfPersons->stream()->sortedByComparator (new PersonComparator())
