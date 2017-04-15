@@ -10,6 +10,7 @@ use FunctionalPHP\common\Object;
 use FunctionalPHP\common\functional\Predicate;
 
 use FunctionalPHP\exception\UnsupportedOperationException;
+use FunctionalPHP\common\Optional;
 
 /**
  *    This class implements the Set interface, backed by a hash table. It makes no guarantees as to
@@ -93,19 +94,7 @@ class HashSet extends AbstractSet {
 	 */
 	public function contains (Object $element) : bool {
 
-		$hashCode = $element->hashCode();
-
-		// If it is the first element with that hash code
-		if (!isset ($this->internalData[$hashCode]))
-			return FALSE;
-
-		foreach ($this->internalData[$hashCode] as $internalElement) {
-
-			// If this set contains an "equal element" => it will be replaced by the given one
-			if ($internalElement->equals ($element))
-				return TRUE;
-		}
-		return FALSE;
+		return $this->getElementEqualsTo ($element)->isPresent();
 	}
 
 
@@ -167,6 +156,16 @@ class HashSet extends AbstractSet {
 				$filteredHashSet->add ($element);
 		}
 		return $filteredHashSet;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\collection\set\Set::get()
+	 */
+	public function get (Object $element) : Optional {
+
+		return $this->getElementEqualsTo ($element);
 	}
 
 
@@ -275,6 +274,36 @@ class HashSet extends AbstractSet {
 			$result[] = $element;
 
 		return $result;
+	}
+
+
+	/**
+	 * Returns an Optional with the Object in the current Set equals to the given one.
+	 *
+	 * @param Object $element
+	 *    Element to search for
+	 *
+	 * @return an Optional with the Object in the current Set equals to the given one,
+	 *         with NULL if $element does not exists.
+	 */
+	private function getElementEqualsTo (Object $element) : Optional {
+
+		if ($this->isEmpty())
+			return new Optional (NULL);
+
+		$hashCode = $element->hashCode();
+
+		// If it is the first element with that hash code
+		if (!isset ($this->internalData[$hashCode]))
+			return new Optional (NULL);
+
+		foreach ($this->internalData[$hashCode] as $internalElement) {
+
+			// If this set contains an "equal element" => it will be replaced by the given one
+			if ($internalElement->equals ($element))
+				return new Optional ($internalElement);
+		}
+		return new Optional (NULL);
 	}
 
 }

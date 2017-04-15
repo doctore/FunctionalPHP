@@ -875,6 +875,46 @@ final class HashSetTest extends TestCase {
 	}
 
 
+
+	/**
+	 * @covers FunctionalPHP\iterable\collection\set\HashSet::get
+	 */
+	public function testCheckGetElementsInHashSet() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$personEqualTo1 = new Person ("John", 18, FALSE);
+
+
+		$hashSet = new HashSet();
+		$this->assertFalse ($hashSet->get ($person1)->isPresent());
+		$this->assertFalse ($hashSet->get ($person2)->isPresent());
+		$this->assertFalse ($hashSet->get ($personEqualTo1)->isPresent());
+
+		$hashSet->add ($person2);
+		$this->assertFalse ($hashSet->get ($person1)->isPresent());
+		$this->assertTrue ($hashSet->get ($person2)->isPresent());
+		$this->assertFalse ($hashSet->get ($personEqualTo1)->isPresent());
+
+		$hashSet->add ($person1);
+		$this->assertTrue ($hashSet->get ($person1)->isPresent());
+		$this->assertTrue ($hashSet->get ($personEqualTo1)->isPresent());
+
+		$personInHashSet = $hashSet->get ($person1)->get();
+
+		$this->assertEquals ($person1->name, $personInHashSet->name);
+		$this->assertEquals ($person1->age, $personInHashSet->age);
+		$this->assertEquals ($person1->isMale, $personInHashSet->isMale);
+
+		$this->assertEquals ($personEqualTo1->name, $personInHashSet->name);
+		$this->assertEquals ($personEqualTo1->age, $personInHashSet->age);
+
+		// isMale property is different in both objects
+		$this->assertNotEquals ($personEqualTo1->isMale, $personInHashSet->isMale);
+	}
+
+
+
 	/**
 	 * @covers FunctionalPHP\iterable\collection\set\HashSet::hashCode
 	 */
