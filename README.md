@@ -233,7 +233,7 @@ class CarComparator implements Comparator {
 	 * {@inheritDoc}
 	 * @see \FunctionalPHP\common\Comparator::compare()
 	 */
-	public function compare (Object $person1, Object $person2): int {
+	public function compare (Object $car1, Object $car2): int {
 
 		/**
 		 *    Assumes Car as parameters and returns the "inverse result" that
@@ -729,5 +729,5 @@ phpunit the_file_that_you_want_to_test
 Currently the project has the following tests and assertions:
 
 ```
-(456 tests, 4719 assertions)
+(457 tests, 4733 assertions)
 ```

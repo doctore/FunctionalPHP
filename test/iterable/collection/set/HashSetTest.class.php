@@ -885,7 +885,6 @@ final class HashSetTest extends TestCase {
 		$person2 = new Person ("Mary", 20, FALSE);
 		$personEqualTo1 = new Person ("John", 18, FALSE);
 
-
 		$hashSet = new HashSet();
 		$this->assertFalse ($hashSet->get ($person1)->isPresent());
 		$this->assertFalse ($hashSet->get ($person2)->isPresent());
