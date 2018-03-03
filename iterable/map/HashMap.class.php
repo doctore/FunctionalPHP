@@ -326,33 +326,6 @@ class HashMap extends AbstractMap {
 		return (count ($this->internalData, COUNT_RECURSIVE ) - count ($this->internalData));
 	}
 
-
-	/**
-	 *    Returns the type of the given key. It must be one of the following: Map::KEY_BOOLEAN_TYPE,
-	 * Map::KEY_NUMERIC_TYPE, Map::KEY_STRING_TYPE and Map::KEY_OBJECT_TYPE (Object instances).
-	 *
-	 * @param mixed $key
-	 *    Key to check
-	 *
-	 * @return the type of the given key, NULL if it does not belongs to the permitted types
-	 */
-	private function getTypeOfKey ($key) {
-
-		if (is_int ($key) || is_float ($key))
-			return Map::KEY_NUMERIC_TYPE;
-
-		if (is_string ($key))
-			return Map::KEY_STRING_TYPE;
-
-		if ($key instanceof Object)
-			return Map::KEY_OBJECT_TYPE;
-
-		if (is_bool ($key))
-			return Map::KEY_BOOLEAN_TYPE;
-
-		return NULL;
-	}
-
 }
 
 

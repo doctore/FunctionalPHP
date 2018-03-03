@@ -6,7 +6,9 @@ use FunctionalPHP\iterable\AbstractIterable;
 use FunctionalPHP\iterable\map\Map;
 use FunctionalPHP\common\Object;
 use FunctionalPHP\common\Optional;
+use FunctionalPHP\common\util\ReflectionUtil;
 use FunctionalPHP\exception\IllegalArgumentException;
+use FunctionalPHP\exception\UnsupportedOperationException;
 
 /**
  *    This class provides a skeletal implementation of the Map interface, to minimize the effort
@@ -91,6 +93,60 @@ abstract class AbstractMap extends AbstractIterable implements Map {
 	 * @see \FunctionalPHP\collection\map\Map::replaceWithNewValue()
 	 */
 	abstract public function replaceWithNewValue ($key, Object $oldValue, Object $newValue) : bool;
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\map\Map::computeIfAbsent()
+	 */
+	public function computeIfAbsent ($key, \Closure $mappingFunction) : Optional {
+
+		// Checks the given key
+		if ($this->typeOfKeys !== $this->getTypeOfKey ($key))
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The type of the given key: ".$this->getTypeOfKey ($key)
+					                            ." is not the same as the type of the keys stored in "
+					                            ." this map: ".$this->typeOfKeys);
+
+		$this->checkClosureFunctionOfComputeIf ($mappingFunction);
+
+		$existingValue = $this->get ($key);
+		if (!$existingValue->isPresent()) {
+
+			$newValue = $mappingFunction ($key);
+			if ($newValue != NULL)
+				return $this->put ($key, $newValue);
+		}
+		return $existingValue;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 * @see \FunctionalPHP\iterable\map\Map::computeIfPresent()
+	 */
+	public function computeIfPresent ($key, \Closure $remappingFunction) : Optional {
+
+		// Checks the given key
+		if ($this->typeOfKeys !== $this->getTypeOfKey ($key))
+			throw new IllegalArgumentException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                           ,"The type of the given key: ".$this->getTypeOfKey ($key)
+					                            ." is not the same as the type of the keys stored in "
+					                            ." this map: ".$this->typeOfKeys);
+
+		$this->checkClosureFunctionOfComputeIf ($remappingFunction);
+
+		$existingValue = $this->get ($key);
+		if ($existingValue->isPresent()) {
+
+			$newValue = $remappingFunction ($key);
+			if ($newValue != NULL)
+				return $this->put ($key, $newValue);
+			else
+				return $this->removeByKey ($key);
+		}
+		return $existingValue;
+	}
 
 
 	/**
@@ -201,6 +257,109 @@ abstract class AbstractMap extends AbstractIterable implements Map {
 			$arrayOfValues[] = $internalValue;
 
 		return $arrayOfValues;
+	}
+
+
+	/**
+	 *    Returns the type of the given key. It must be one of the following: Map::KEY_BOOLEAN_TYPE,
+	 * Map::KEY_NUMERIC_TYPE, Map::KEY_STRING_TYPE and Map::KEY_OBJECT_TYPE (Object instances).
+	 *
+	 * @param mixed $key
+	 *    Key to check
+	 *
+	 * @return the type of the given key, NULL if it does not belongs to the permitted types
+	 */
+	protected function getTypeOfKey ($key) {
+
+		if (is_int ($key) || is_float ($key))
+			return Map::KEY_NUMERIC_TYPE;
+
+		if (is_string ($key))
+			return Map::KEY_STRING_TYPE;
+
+		if ($key instanceof Object)
+			return Map::KEY_OBJECT_TYPE;
+
+		if (is_bool ($key))
+			return Map::KEY_BOOLEAN_TYPE;
+
+		return NULL;
+	}
+
+
+	/**
+	 * Checks if the given string representation of a type is equivalent with the key's type stored in the Map
+	 *
+	 * @param string $typeToCheck
+	 *    Type to check
+	 *
+	 * @return TRUE is the given type is equivalent to the key's type, FALSE otherwise.
+	 */
+	protected function isGivenTypeEquivalentToTypeOfKey (string $typeToCheck) : bool {
+
+		if (empty ($typeToCheck))
+			return FALSE;
+
+		if ($this->typeOfKeys == Map::KEY_NUMERIC_TYPE)
+			return (strcmp ($typeToCheck, "int") == 0 || strcmp ($typeToCheck, "integer") == 0 ||
+					strcmp ($typeToCheck, "float") == 0 || strcmp ($typeToCheck, "double") == 0);
+
+		if ($this->typeOfKeys == Map::KEY_STRING_TYPE)
+			return (strcmp ($typeToCheck, "string") == 0);
+
+		if ($this->typeOfKeys == Map::KEY_OBJECT_TYPE)
+			return (ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($typeToCheck, Object::class));
+
+		if ($this->typeOfKeys == Map::KEY_BOOLEAN_TYPE)
+			return (strcmp ($typeToCheck, "bool") == 0 || strcmp ($typeToCheck, "boolean") == 0);
+
+		return TRUE;
+	}
+
+
+	/**
+	 *    Checks if the given closure used in computeIfAbsent and computeIfPresent functions verify
+	 * the following rules:
+	 *
+	 *   1. Only has one parameter.
+	 *   2. The type of this unique parameter must be equal to the type of keys stored in the map
+	 *   3. The returned type is not empty and valid (a subclass of Object).
+	 *
+	 * @param \Closure $closureFunction
+	 *    Closure function to check.
+	 *
+	 * @throws UnsupportedOperationException if the closure function does not verify all previous rules
+	 */
+	private function checkClosureFunctionOfComputeIf (\Closure $closureFunction) {
+
+		// Gets information about the given closure (returned type, types of the parameters, etc)
+		$reflectionFunctionInformation = ReflectionUtil::getReflectionInformationOfClosure ($closureFunction);
+
+		// 1. Only has one parameter
+		if ($reflectionFunctionInformation->numberOfParameters != 1)
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"The given closure function has ".$reflectionFunctionInformation->numberOfParameters
+					                                 ." parameters, however only one is allowed");
+
+		// 2. The type of this unique parameter must be equal to the type of keys stored in the map
+		$parameterType = $reflectionFunctionInformation->typesOfParameters[0];
+
+		if (!$this->isGivenTypeEquivalentToTypeOfKey ($parameterType))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+							                        ,"In the given closure function, the type of its parameter: ".$parameterType
+					                                  ." is not equal (or a subclass) to the elements stored in the Map: ".$this->typeOfKeys);
+
+		// 3. The returned type is not empty and valid (a subclass of Object)
+		$returnType = $reflectionFunctionInformation->typeOfReturnedValue;
+
+		if (empty ($returnType))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+					                                ,"The returned type of the given closure function can not be null or empty");
+		// Test if it is a subclass of Object
+		if (!ReflectionUtil::isGivenTypeNameBelongsToTheGivenList ($returnType, Object::class))
+			throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
+									                ,"The returned type of the given closure function: ".$returnType." is not "
+									                 ."valid. Please use a subclass of ".Object::class);
 	}
 
 }

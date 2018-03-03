@@ -86,6 +86,221 @@ final class HashMapTest extends TestCase {
 
 
 	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfAbsent
+	 *
+	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
+	 */
+	public function testComputeIfAbsentWithInvalidTypeOfKeys() {
+
+		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
+
+		$hashMap->computeIfAbsent (12, function (string $p1): Object {
+			                              return NULL;
+		                               });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfAbsent
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testComputeIfAbsentWithClosureWithMoreThanOneParameter() {
+
+		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
+
+		$hashMap->computeIfAbsent ("stringKey", function (string $p1, int $p2): Object {
+			                                       return NULL;
+		                                        });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfAbsent
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testComputeIfAbsentWithClosureWithParameterTypeDifferentOfHashMapKeys() {
+
+		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
+
+		$hashMap->computeIfAbsent ("stringKey", function (int $p1): Object {
+			                                       return NULL;
+		                                        });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfAbsent
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testComputeIfAbsentWithClosureWithInvalidReturnedType() {
+
+		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
+
+		$hashMap->computeIfAbsent ("stringKey", function (string $p1): string {
+			                                       return $p1;
+		                                        });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfAbsent
+	 */
+	public function testComputeIfAbsentWithExistingKey() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+
+		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
+		$hashMap->put ($person1->name, $person1);
+		$hashMap->put ($person2->name, $person2);
+
+		$hashMap->computeIfAbsent ($person2->name, function (string $personName): Person {
+			                                          return new Person ($personName, 25, TRUE);
+		                                           });
+
+		$this->assertEquals (2, $hashMap->size());
+		$this->assertTrue ($hashMap->get ($person2->name)->isPresent());
+
+		// Nothing has changed
+		$this->assertEquals ($person2->name, $hashMap->get ($person2->name)->get()->name);
+		$this->assertEquals ($person2->age, $hashMap->get ($person2->name)->get()->age);
+		$this->assertEquals ($person2->isMale, $hashMap->get ($person2->name)->get()->isMale);
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfAbsent
+	 */
+	public function testComputeIfAbsentWithNoExistingKey() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person3 = new Person ("Sara", 25, FALSE);
+
+		$hashMap = new HashMap (Map::KEY_STRING_TYPE);
+		$hashMap->put ($person1->name, $person1);
+		$hashMap->put ($person2->name, $person2);
+
+		$hashMap->computeIfAbsent ($person3->name, function (string $personName): Person {
+			                                          return new Person ($personName, 25, FALSE);
+		                                           });
+
+		$this->assertEquals (3, $hashMap->size());
+		$this->assertTrue ($hashMap->get ($person3->name)->isPresent());
+		$this->assertEquals ($person3, $hashMap->get ($person3->name)->get());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfPresent
+	 *
+	 * @expectedException FunctionalPHP\exception\IllegalArgumentException
+	 */
+	public function testComputeIfPresentWithInvalidTypeOfKeys() {
+
+		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
+
+		$hashMap->computeIfPresent ("stringKey", function (int $p1): Object {
+			                                        return NULL;
+		                                         });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfPresent
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testComputeIfPresentWithClosureWithMoreThanOneParameter() {
+
+		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
+
+		$hashMap->computeIfPresent (12, function (int $p1, string $p2): Object {
+			                               return NULL;
+		                                });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfPresent
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testComputeIfPresentWithClosureWithParameterTypeDifferentOfHashMapKeys() {
+
+		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
+
+		$hashMap->computeIfPresent (12, function (string $p1): Object {
+			                               return NULL;
+		                                });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfPresent
+	 *
+	 * @expectedException FunctionalPHP\exception\UnsupportedOperationException
+	 */
+	public function testComputeIfPresentWithClosureWithInvalidReturnedType() {
+
+		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
+
+		$hashMap->computeIfPresent (12, function (int $p1): int {
+			                               return $p1;
+		                                });
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfPresent
+	 */
+	public function testComputeIfPresentWithNoExistingKey() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$noExistingAge = 32;
+
+		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
+		$hashMap->put ($person1->age, $person1);
+		$hashMap->put ($person2->age, $person2);
+
+		$hashMap->computeIfPresent ($noExistingAge, function (int $personAge): Person {
+			                                            return new Person ("Unknown", $personAge, TRUE);
+		                                             });
+
+		$this->assertEquals (2, $hashMap->size());
+		$this->assertFalse ($hashMap->get ($noExistingAge)->isPresent());
+	}
+
+
+	/**
+	 * @covers FunctionalPHP\iterable\map\HashMap::computeIfPresent
+	 */
+	public function testComputeIfPresentWithExistingKey() {
+
+		$person1 = new Person ("John", 18, TRUE);
+		$person2 = new Person ("Mary", 20, FALSE);
+		$person2New = new Person ("Sara", $person2->age + 5, FALSE);
+
+		$hashMap = new HashMap (Map::KEY_NUMERIC_TYPE);
+		$hashMap->put ($person1->age, $person1);
+		$hashMap->put ($person2->age, $person2);
+
+		$hashMap->computeIfPresent ($person2->age, function (int $personAge): Person {
+			                                          return new Person ("Sara", $personAge + 5, FALSE);
+		                                           });
+
+		$this->assertEquals (2, $hashMap->size());
+		$this->assertTrue ($hashMap->get ($person2->age)->isPresent());
+		$this->assertFalse ($hashMap->get ($person2New->age)->isPresent());
+		$this->assertEquals ($person2New, $hashMap->get ($person2->age)->get());
+	}
+
+
+	/**
 	 * @covers FunctionalPHP\iterable\map\HashMap::containsKey
 	 *
 	 * @expectedException FunctionalPHP\exception\IllegalArgumentException

@@ -26,6 +26,41 @@ interface Map extends Iterable {
 	const VALID_KEY_TYPES  = array (Map::KEY_BOOLEAN_TYPE, Map::KEY_NUMERIC_TYPE
 			                       ,Map::KEY_OBJECT_TYPE, Map::KEY_STRING_TYPE);
 
+
+	/**
+	 *    If the specified key is not already associated with a value (or is mapped to NULL, attempts
+	 * to compute its value using the given mapping function and enters it into this map unless NULL.
+	 *
+	 * @param mixed $key
+	 *    Key to search in this Map
+	 * @param \Closure $mappingFunction
+	 *    Anonymous function used to calculate the new value related with the given key
+	 *
+ 	 * @return an Optional with the current (existing or computed) value associated with
+	 *         the specified key, or with NULL if the computed value is NULL
+	 *
+	 * @throws IllegalArgumentException if the key is not of the same type which is stored in the Map
+	 * @throws UnsupportedOperationException if the given function is not valid
+	 */
+	public function computeIfAbsent ($key, \Closure $mappingFunction) : Optional;
+
+	/**
+	 *    If the value for the specified key is present and non-null, attempts to compute a new mapping
+	 * given the key and its current mapped value. If the function returns NULL, the mapping is removed
+	 *
+	 * @param mixed $key
+	 *    Key to search in this Map
+	 * @param \Closure $remappingFunction
+	 *    Anonymous function used to calculate the new value related with the given key
+	 *
+	 * @return an Optional with the current (existing or computed) value associated with
+	 *         the specified key, or with NULL if the computed value is NULL
+	 *
+	 * @throws IllegalArgumentException if the key is not of the same type which is stored in the Map
+	 * @throws UnsupportedOperationException if the given function is not valid
+	 */
+	public function computeIfPresent ($key, \Closure $remappingFunction) : Optional;
+
 	/**
 	 *    Returns true if this Map contains a mapping for the specified key. More formally, returns
 	 * true if and only if this Map contains a mapping for a key k such that

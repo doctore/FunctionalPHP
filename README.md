@@ -729,5 +729,5 @@ phpunit the_file_that_you_want_to_test
 Currently the project has the following tests and assertions:
 
 ```
-(457 tests, 4733 assertions)
+(469 tests, 4755 assertions)
 ```

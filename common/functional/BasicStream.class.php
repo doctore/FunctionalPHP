@@ -716,7 +716,7 @@ class BasicStream implements Stream {
 			if (empty ($parameterType))
 				throw new UnsupportedOperationException (__CLASS__.'-'.__FUNCTION__.':'.__LINE__
 						                                ,"In the given closure function and the paremeter number: "
-						                                    .($i+1).", its type can not be null or empty");
+						                                    .($i+1).", its type cannot be null or empty");
 
 			// The type of the current parameter must be equal to the stored elements in the Stream
 			if (strcmp ($parameterType, $this->currentTypeOfInternalData) != 0 &&
