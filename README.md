@@ -1,6 +1,6 @@
 # FunctionalPHP
 
-- [Why this project was created?](#why-this-project-was-created)
+- [Why was this project created?](#why-was-this-project-created)
 - [Elements included in this project](#elements-included-in-this-project)
     - [Iterable](#iterable)
     - [Common classes](#common-classes)
@@ -14,7 +14,7 @@
     - [Basic use of Collectors](#basic-use-of-collectors)
 - [Tests](#tests)    
 
-## Why this project was created?
+## Why was this project created?
 
 The main purpose of this module is to help to PHP 7/Java 8 developers use functional programming in a similar way in both languages. So, despite the differences between Java and PHP, a Java 8 developer will be comfortable when he/she wants to use functional programming in PHP 7, and a PHP 7 developer that uses this module won't need to learn a lot of things and new concepts when he/she wants to use functional programming in Java 8.
 
